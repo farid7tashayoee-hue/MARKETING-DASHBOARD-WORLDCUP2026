@@ -22,7 +22,7 @@ const CAMPAIGN_DATA = {
     totalDays: 39,
     currentDay: 18,
     totalMatches: 104,
-    matchesPlayed: 48,
+    matchesPlayed: 72,
     nextDeadlineLabel: "پایان مهلت چیدمان حذفی",
     nextDeadlineDate: "۷ تیر",
     lastUpdated: "۷ تیر ۱۴۰۵"
@@ -32,9 +32,9 @@ const CAMPAIGN_DATA = {
   kpis: {
     signups:          14523,
     signupsTarget:    25000,
-    activeUsersAvg:   4200,
-    totalPredictions: 87340,
-    visits:           155412,  // کل سشن ۳۰ روز اخیر
+    activeUsersAvg:   17948,
+    totalPredictions: 358487,
+    visits:           155412,
     totalSpendToman:  0        // از مجموع کانال‌ها محاسبه می‌شود
   },
 
