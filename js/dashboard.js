@@ -98,12 +98,12 @@
         foot: "از " + fmt(k.visits || 0) + " بازدید"
       },
       {
-        icon: "💰", label: "هزینه کل تبلیغات", value: fmtMoney(totalSpend), unit: " تومان",
-        foot: toFa((D.channels || []).length) + " کانال"
+        icon: "💰", label: "هزینه کل تبلیغات", value: "★ ★ ★ ★ ★", unit: "",
+        foot: toFa((D.channels || []).length) + " کانال", masked: true
       },
       {
-        icon: "🧮", label: "CPA — هزینه هر ثبت‌نام", value: fmtMoney(cpa), unit: " تومان",
-        foot: "هزینه ÷ ثبت‌نام"
+        icon: "🧮", label: "CPA — هزینه هر ثبت‌نام", value: "★ ★ ★ ★ ★", unit: "",
+        foot: "هزینه ÷ ثبت‌نام", masked: true
       }
     ];
 
