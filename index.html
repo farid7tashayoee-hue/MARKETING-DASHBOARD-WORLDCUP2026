@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>داشبورد لیگ ۲۴ عیار اکسیراز — جام جهانی ۲۰۲۶</title>
+
+  <!-- فونت فارسی -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <!-- کتابخانه نمودار -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <link rel="stylesheet" href="css/dashboard.css" />
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+
+  <div class="wrap">
+
+    <!-- ============ هدر کمپین ============ -->
+    <header class="hero">
+      <div class="hero-brand">
+        <span class="ingot" aria-hidden="true">۲۴</span>
+        <div>
+          <h1 id="campaignName">لیگ ۲۴ عیار اکسیراز</h1>
+          <p class="slogan" id="campaignSlogan">جایی که پیش‌بینی تو، طلا میشه!</p>
+        </div>
+      </div>
+
+      <div class="hero-meta">
+        <div class="meta-pill">
+          <span class="meta-label">روز کمپین</span>
+          <span class="meta-value"><b id="dayCurrent">۰</b> / <span id="dayTotal">۳۹</span></span>
+        </div>
+        <div class="meta-pill">
+          <span class="meta-label">بازی برگزارشده</span>
+          <span class="meta-value"><b id="matchCurrent">۰</b> / <span id="matchTotal">۱۰۴</span></span>
+        </div>
+        <div class="meta-pill deadline">
+          <span class="meta-label">ددلاین بعدی</span>
+          <span class="meta-value"><b id="deadlineDate">—</b></span>
+          <span class="meta-sub" id="deadlineLabel">—</span>
+        </div>
+      </div>
+
+      <div class="progress-track" title="پیشرفت کمپین">
+        <div class="progress-fill" id="campaignProgress"></div>
+      </div>
+      <p class="updated">آخرین به‌روزرسانی داده‌ها: <span id="lastUpdated">—</span></p>
+    </header>
+
+    <!-- ============ کارت‌های KPI ============ -->
+    <section aria-label="شاخص‌های کلیدی">
+      <div class="kpi-grid" id="kpiGrid"><!-- توسط dashboard.js پر می‌شود --></div>
+    </section>
+
+    <!-- ============ روند زمانی ============ -->
+    <section class="panel">
+      <div class="panel-head">
+        <h2>روند روزانه</h2>
+        <span class="panel-sub">ثبت‌نام، پیش‌بینی و کاربران فعال در طول کمپین</span>
+      </div>
+      <div class="chart-box chart-tall">
+        <canvas id="trendChart"></canvas>
+      </div>
+    </section>
+
+    <!-- ============ قیف + کانال‌ها ============ -->
+    <div class="cols-2">
+      <section class="panel">
+        <div class="panel-head">
+          <h2>قیف اکتساب</h2>
+          <span class="panel-sub">از بازدید تا کاربر بازگشتی</span>
+        </div>
+        <div class="funnel" id="funnel"><!-- پر می‌شود --></div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <h2>سهم ثبت‌نام کانال‌ها</h2>
+          <span class="panel-sub">بر اساس utm_source</span>
+        </div>
+        <div class="chart-box">
+          <canvas id="channelChart"></canvas>
+        </div>
+      </section>
+    </div>
+
+    <!-- ============ جدول عملکرد کانال‌ها ============ -->
+    <section class="panel">
+      <div class="panel-head">
+        <h2>عملکرد کانال‌های رسانه‌ای</h2>
+        <span class="panel-sub">هزینه، کلیک، ثبت‌نام، نرخ تبدیل و CPA</span>
+      </div>
+      <div class="table-scroll">
+        <table class="data-table" id="channelTable">
+          <thead>
+            <tr>
+              <th>کانال</th>
+              <th>هزینه (تومان)</th>
+              <th>کلیک</th>
+              <th>ثبت‌نام</th>
+              <th>نرخ تبدیل</th>
+              <th>CPA</th>
+            </tr>
+          </thead>
+          <tbody><!-- پر می‌شود --></tbody>
+          <tfoot><!-- جمع کل --></tfoot>
+        </table>
+      </div>
+    </section>
+
+    <!-- ============ تعامل: انواع پیش‌بینی + نگهداشت ============ -->
+    <div class="cols-2">
+      <section class="panel">
+        <div class="panel-head">
+          <h2>پیش‌بینی به تفکیک نوع</h2>
+          <span class="panel-sub">ترکیب تعامل کاربران</span>
+        </div>
+        <div class="chart-box">
+          <canvas id="predictionChart"></canvas>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <h2>نگهداشت و تعامل</h2>
+          <span class="panel-sub">دعوت، هت‌تریک، اکسیر و حضور متوالی</span>
+        </div>
+        <div class="mini-grid" id="retentionGrid"><!-- پر می‌شود --></div>
+        <div class="streak-block" id="streakBlock"><!-- پر می‌شود --></div>
+      </section>
+    </div>
+
+    <!-- ============ کاربران + ایران ============ -->
+    <div class="cols-2">
+      <section class="panel">
+        <div class="panel-head">
+          <h2>کاربران جدید در برابر قدیمی</h2>
+          <span class="panel-sub">منبع رشد پایگاه کاربری</span>
+        </div>
+        <div class="split-bar" id="userSplit"><!-- پر می‌شود --></div>
+        <div class="mini-grid two" id="userGrid"><!-- پر می‌شود --></div>
+      </section>
+
+      <section class="panel iran-panel">
+        <div class="panel-head">
+          <h2>پیش‌بینی‌های ویژه تیم ملی ایران</h2>
+          <span class="panel-sub">مهلت تا ۲۵ خرداد</span>
+        </div>
+        <div class="mini-grid" id="iranGrid"><!-- پر می‌شود --></div>
+      </section>
+    </div>
+
+    <footer class="foot">
+      <span>داشبورد KPI — لیگ ۲۴ عیار اکسیراز · جام جهانی ۲۰۲۶</span>
+    </footer>
+
+  </div>
+
+  <script src="js/data.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

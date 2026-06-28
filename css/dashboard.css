@@ -1,0 +1,258 @@
+/* ============================================================
+   داشبورد لیگ ۲۴ عیار اکسیراز — تم طلایی / تیره (RTL)
+   ============================================================ */
+
+:root {
+  /* پس‌زمینه تیره */
+  --bg:        #0a0e1a;
+  --bg-2:      #0f1426;
+  --surface:   rgba(255, 255, 255, 0.035);
+  --surface-2: rgba(255, 255, 255, 0.06);
+  --border:    rgba(212, 175, 55, 0.18);
+  --border-hi: rgba(212, 175, 55, 0.45);
+
+  /* طلای ۲۴ عیار */
+  --gold:      #e8c156;
+  --gold-soft: #f4d77a;
+  --gold-deep: #b8860b;
+  --gold-grad: linear-gradient(135deg, #f4d77a 0%, #e8c156 45%, #b8860b 100%);
+
+  /* رنگ‌های فیفا ۲۰۲۶ (لهجه‌های داده) */
+  --c-red:   #e23744;
+  --c-blue:  #2f6fed;
+  --c-green: #1faa6b;
+  --c-pink:  #e0489e;
+  --c-cyan:  #2bb8c4;
+  --c-violet:#8b5cf6;
+
+  --text:      #f3f0e6;
+  --text-dim:  rgba(243, 240, 230, 0.66);
+  --text-faint:rgba(243, 240, 230, 0.40);
+
+  --font: "Vazirmatn", system-ui, sans-serif;
+  --max: 1280px;
+  --radius: 18px;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font);
+  background:
+    radial-gradient(1100px 600px at 100% -5%, rgba(232, 193, 86, 0.10), transparent 60%),
+    radial-gradient(900px 500px at -5% 10%, rgba(47, 111, 237, 0.08), transparent 55%),
+    var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 { line-height: 1.25; font-weight: 800; }
+
+/* لایه‌ی نویز/گرین */
+.grain {
+  position: fixed; inset: 0; z-index: 9999; pointer-events: none;
+  opacity: 0.04; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.wrap {
+  max-width: var(--max);
+  margin-inline: auto;
+  padding: clamp(16px, 3vw, 36px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(16px, 2.4vw, 28px);
+}
+
+/* ---------------- هدر ---------------- */
+.hero {
+  background:
+    linear-gradient(180deg, rgba(232, 193, 86, 0.08), transparent 70%),
+    var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: clamp(20px, 3vw, 34px);
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: ""; position: absolute; inset-block-start: -40%; inset-inline-end: -10%;
+  width: 360px; height: 360px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(232, 193, 86, 0.18), transparent 65%);
+  pointer-events: none;
+}
+.hero-brand {
+  display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
+}
+.ingot {
+  flex: 0 0 auto;
+  width: 64px; height: 64px; border-radius: 14px;
+  display: grid; place-items: center;
+  font-size: 26px; font-weight: 900; color: #2a1e00;
+  background: var(--gold-grad);
+  box-shadow: 0 8px 26px rgba(232, 193, 86, 0.30), inset 0 1px 0 rgba(255,255,255,0.5);
+}
+.hero h1 {
+  font-size: clamp(22px, 3vw, 32px);
+  background: var(--gold-grad);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.slogan { color: var(--text-dim); font-size: clamp(13px, 1.6vw, 15px); margin-top: 2px; }
+
+.hero-meta {
+  display: flex; gap: 12px; flex-wrap: wrap; margin-top: 22px;
+}
+.meta-pill {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 14px; padding: 10px 16px;
+  display: flex; flex-direction: column; gap: 2px; min-width: 130px;
+}
+.meta-label { font-size: 12px; color: var(--text-faint); }
+.meta-value { font-size: 18px; font-weight: 700; }
+.meta-value b { color: var(--gold); font-size: 22px; }
+.meta-sub { font-size: 11px; color: var(--text-dim); }
+.meta-pill.deadline { border-color: var(--border-hi); }
+
+.progress-track {
+  margin-top: 22px; height: 10px; border-radius: 999px;
+  background: var(--surface-2); overflow: hidden;
+}
+.progress-fill {
+  height: 100%; width: 0%;
+  background: var(--gold-grad);
+  border-radius: 999px;
+  transition: width 1s var(--ease);
+}
+.updated { margin-top: 10px; font-size: 12px; color: var(--text-faint); }
+
+/* ---------------- کارت‌های KPI ---------------- */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(12px, 1.6vw, 18px);
+}
+.kpi-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 20px;
+  position: relative; overflow: hidden;
+  transition: border-color .3s var(--ease), transform .3s var(--ease);
+}
+.kpi-card:hover { border-color: var(--border-hi); transform: translateY(-3px); }
+.kpi-card .k-icon {
+  width: 38px; height: 38px; border-radius: 10px;
+  display: grid; place-items: center; font-size: 18px;
+  background: rgba(232, 193, 86, 0.12); color: var(--gold);
+  margin-bottom: 14px;
+}
+.kpi-card .k-label { font-size: 13px; color: var(--text-dim); }
+.kpi-card .k-value {
+  font-size: clamp(26px, 3vw, 34px); font-weight: 900; margin-top: 4px;
+  letter-spacing: -0.5px;
+}
+.kpi-card .k-value small { font-size: 14px; font-weight: 600; color: var(--text-faint); }
+.kpi-card .k-foot { font-size: 12px; color: var(--text-faint); margin-top: 6px; }
+.kpi-card .k-bar {
+  margin-top: 12px; height: 6px; border-radius: 999px; background: var(--surface-2); overflow: hidden;
+}
+.kpi-card .k-bar > span { display: block; height: 100%; background: var(--gold-grad); border-radius: 999px; }
+
+/* ---------------- پنل‌ها ---------------- */
+.panel {
+  background: var(--bg-2); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: clamp(16px, 2vw, 24px);
+}
+.panel-head { margin-bottom: 18px; }
+.panel-head h2 { font-size: clamp(16px, 2vw, 19px); }
+.panel-sub { font-size: 12px; color: var(--text-faint); display: block; margin-top: 2px; }
+
+.cols-2 { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(12px, 2vw, 24px); }
+
+.chart-box { position: relative; height: 300px; }
+.chart-box.chart-tall { height: 360px; }
+
+/* ---------------- قیف ---------------- */
+.funnel { display: flex; flex-direction: column; gap: 10px; }
+.funnel-row {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 12px 16px; position: relative; overflow: hidden;
+}
+.funnel-row .f-fill {
+  position: absolute; inset-block: 0; inset-inline-start: 0;
+  background: linear-gradient(90deg, rgba(232,193,86,0.16), rgba(232,193,86,0.04));
+  z-index: 0;
+}
+.funnel-row .f-name, .funnel-row .f-num { position: relative; z-index: 1; }
+.funnel-row .f-name { font-size: 14px; color: var(--text-dim); }
+.funnel-row .f-num { font-weight: 800; font-size: 18px; }
+.funnel-row .f-rate { font-size: 12px; color: var(--gold); margin-inline-start: 8px; }
+
+/* ---------------- جدول ---------------- */
+.table-scroll { overflow-x: auto; }
+.data-table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 560px; }
+.data-table th, .data-table td {
+  padding: 12px 14px; text-align: center; border-bottom: 1px solid var(--border);
+}
+.data-table th { color: var(--text-faint); font-weight: 600; font-size: 12px; white-space: nowrap; }
+.data-table td:first-child, .data-table th:first-child { text-align: start; }
+.data-table tbody tr:hover { background: var(--surface); }
+.data-table .num { font-variant-numeric: tabular-nums; }
+.data-table tfoot td { font-weight: 800; color: var(--gold); border-top: 2px solid var(--border-hi); border-bottom: none; }
+.data-table .cpa-good { color: var(--c-green); }
+.data-table .cpa-bad { color: var(--c-red); }
+
+/* ---------------- مینی‌کارت‌ها ---------------- */
+.mini-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.mini-grid.two { grid-template-columns: repeat(2, 1fr); margin-top: 14px; }
+.mini-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 14px; text-align: center;
+}
+.mini-card .m-val { font-size: 22px; font-weight: 900; color: var(--gold); }
+.mini-card .m-label { font-size: 12px; color: var(--text-dim); margin-top: 2px; }
+
+.streak-block { margin-top: 14px; display: flex; flex-direction: column; gap: 8px; }
+.streak-row { display: flex; align-items: center; gap: 10px; }
+.streak-row .s-label { font-size: 13px; color: var(--text-dim); width: 88px; flex: 0 0 auto; }
+.streak-row .s-track { flex: 1; height: 8px; border-radius: 999px; background: var(--surface-2); overflow: hidden; }
+.streak-row .s-fill { height: 100%; background: var(--gold-grad); border-radius: 999px; }
+.streak-row .s-num { font-size: 13px; font-weight: 700; width: 52px; text-align: end; flex: 0 0 auto; }
+
+/* ---------------- split bar (کاربر جدید/قدیمی) ---------------- */
+.split-bar { display: flex; height: 44px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border); }
+.split-bar .sp { display: grid; place-items: center; font-size: 13px; font-weight: 700; color: #1a1405; min-width: 40px; }
+.split-bar .sp.new { background: var(--gold-grad); }
+.split-bar .sp.old { background: rgba(47, 111, 237, 0.55); color: #fff; }
+
+/* ---------------- ایران ---------------- */
+.iran-panel { border-color: rgba(226, 55, 68, 0.30); }
+.iran-panel::after { content: "🇮🇷"; position: absolute; }
+
+/* ---------------- فوتر ---------------- */
+.foot { text-align: center; color: var(--text-faint); font-size: 12px; padding: 12px 0; }
+
+/* ---------------- خالی بودن داده ---------------- */
+.empty { color: var(--text-faint); font-size: 13px; text-align: center; padding: 30px 10px; }
+
+/* ---------------- ریسپانسیو ---------------- */
+@media (max-width: 920px) {
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  .cols-2 { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  .kpi-grid { grid-template-columns: 1fr; }
+  .mini-grid { grid-template-columns: repeat(2, 1fr); }
+  .hero-meta { flex-direction: column; }
+  .meta-pill { width: 100%; }
+}
+
+/* احترام به کاهش حرکت */
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
