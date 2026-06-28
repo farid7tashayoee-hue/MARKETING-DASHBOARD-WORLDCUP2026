@@ -38,8 +38,27 @@ const CAMPAIGN_DATA = {
     totalSpendToman:  0        // از مجموع کانال‌ها محاسبه می‌شود
   },
 
-  /* ---- روند روزانه (منتظر داده واقعی روزانه) ---- */
-  daily: [],
+  /* ---- روند روزانه — سشن و رویداد از نمودار پنل (تقریبی) ---- */
+  daily: [
+    { date: "۲۱ خرداد", signups: 0, predictions: 22000, activeUsers: 7000,  event: "افتتاحیه" },
+    { date: "۲۲ خرداد", signups: 0, predictions: 57000, activeUsers: 9000  },
+    { date: "۲۳ خرداد", signups: 0, predictions: 62000, activeUsers: 9500  },
+    { date: "۲۴ خرداد", signups: 0, predictions: 64000, activeUsers: 9500  },
+    { date: "۲۵ خرداد", signups: 0, predictions: 57000, activeUsers: 5500,  event: "ددلاین پیش‌بینی ایران" },
+    { date: "۲۶ خرداد", signups: 0, predictions: 52000, activeUsers: 9000  },
+    { date: "۲۷ خرداد", signups: 0, predictions: 62000, activeUsers: 9000  },
+    { date: "۲۸ خرداد", signups: 0, predictions: 55000, activeUsers: 6500,  event: "ددلاین براکت" },
+    { date: "۲۹ خرداد", signups: 0, predictions: 44000, activeUsers: 6000  },
+    { date: "۳۰ خرداد", signups: 0, predictions: 38000, activeUsers: 8000  },
+    { date: "۳۱ خرداد", signups: 0, predictions: 44000, activeUsers: 5500  },
+    { date: "۱ تیر",    signups: 0, predictions: 27000, activeUsers: 9400  },
+    { date: "۲ تیر",    signups: 0, predictions: 24000, activeUsers: 7000  },
+    { date: "۳ تیر",    signups: 0, predictions: 19000, activeUsers: 5800  },
+    { date: "۴ تیر",    signups: 0, predictions: 19000, activeUsers: 5800  },
+    { date: "۵ تیر",    signups: 0, predictions: 20000, activeUsers: 6200  },
+    { date: "۶ تیر",    signups: 0, predictions: 37000, activeUsers: 8000  },
+    { date: "۷ تیر",    signups: 0, predictions: 19000, activeUsers: 5200,  event: "شروع مرحله حذفی" },
+  ],
 
   /* ---- قیف اکتساب ---- */
   funnel: {
