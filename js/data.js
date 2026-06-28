@@ -183,6 +183,32 @@ const CAMPAIGN_DATA = {
     { label: "۳۰ روز", sessions: 156282, pageViews: 326957, events: 778450, userSessions: 79018 },
   ],
 
+  /* ---- منبع ورود بازیکنان (از فایل participants) ---- */
+  sourceBreakdown: [
+    { source: "google",                          label: "گوگل",                           count: 8382 },
+    { source: "direct",                          label: "مستقیم",                         count: 5493 },
+    { source: "l24jaryan",                       label: "جریان",                          count: 909  },
+    { source: "bale_bazu24",                     label: "بله — بازو",                    count: 495  },
+    { source: "exiraz_sms24",                    label: "پیامک اکسیراز — عمومی",         count: 450  },
+    { source: "l24agahsazan",                    label: "آگاه‌سازان",                    count: 336  },
+    { source: "asanpardakht_sms",                label: "آسان‌پرداخت — پیامک",           count: 229  },
+    { source: "khabaronline",                    label: "خبرآنلاین",                     count: 217  },
+    { source: "exiraz_24_reminder1",             label: "پیامک اکسیراز — یادآور ۱",      count: 217  },
+    { source: "l24bale",                         label: "بله — لیگ ۲۴",                 count: 208  },
+    { source: "l24chavosh",                      label: "چاووش",                         count: 174  },
+    { source: "zoomit",                          label: "زومیت",                         count: 172  },
+    { source: "asriran",                         label: "عصر ایران",                     count: 100  },
+    { source: "l24instagram",                    label: "اینستاگرام — لینک",             count: 94   },
+    { source: "exiraz_24_reminder",              label: "پیامک اکسیراز — یادآور",        count: 65   },
+    { source: "l24sabavision",                   label: "صباویژن",                       count: 43   },
+    { source: "asanpardakht",                    label: "آسان‌پرداخت",                   count: 36   },
+    { source: "exiraz_24_iran_belg",             label: "پیامک اکسیراز — ایران/بلژیک",   count: 20   },
+    { source: "instagram",                       label: "اینستاگرام",                    count: 18   },
+    { source: "exiraz_24_sms_iran_new1stmatch",  label: "پیامک اکسیراز — اولین بازی",   count: 14   },
+    { source: "telegram",                        label: "تلگرام",                        count: 9    },
+    { source: "linkedin",                        label: "لینکدین",                       count: 8    },
+  ],
+
   /* ---- پیش‌بینی به تفکیک نوع (منتظر داده واقعی) ---- */
   predictionTypes: [
     { name: "پیش‌بینی روزانه بازی‌ها",    count: 0 },

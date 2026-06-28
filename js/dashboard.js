@@ -251,7 +251,40 @@
   }
 
   /* ============================================================
-     ۷) نمودار انواع پیش‌بینی (دونات)
+     ۷) نمودار منبع ورود بازیکنان (بار افقی)
+     ============================================================ */
+  function renderSourceChart() {
+    const sb = (D.sourceBreakdown || []).slice().sort((a, b) => b.count - a.count);
+    const box = $("#sourceChart");
+    if (!sb.length) { showEmpty(box, "داده‌ای موجود نیست."); return; }
+
+    new Chart(box, {
+      type: "bar",
+      data: {
+        labels: sb.map((s) => s.label),
+        datasets: [{ data: sb.map((s) => s.count),
+          backgroundColor: PALETTE.map((c) => c + "cc"),
+          borderColor: PALETTE, borderWidth: 1.5,
+          borderRadius: 6
+        }]
+      },
+      options: {
+        indexAxis: "y",
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: { label: (c) => " " + fmt(c.raw) + " بازیکن" } }
+        },
+        scales: {
+          x: { grid: GRID, ticks: { callback: (v) => toFa(v.toLocaleString("en-US")) } },
+          y: { grid: { display: false } }
+        }
+      }
+    });
+  }
+
+  /* ============================================================
+     ۸) نمودار انواع پیش‌بینی (دونات)
      ============================================================ */
   function renderPredictionChart() {
     const pt = (D.predictionTypes || []).filter((p) => (p.count || 0) > 0);
@@ -346,6 +379,7 @@
     renderFunnel();
     renderChannelChart();
     renderChannelTable();
+    renderSourceChart();
     renderPredictionChart();
     renderRetention();
     renderUsers();
