@@ -34,8 +34,8 @@ const CAMPAIGN_DATA = {
     signupsTarget:    25000,
     activeUsersAvg:   4200,
     totalPredictions: 87340,
-    visits:           98600,
-    totalSpendToman:  0     // از مجموع کانال‌ها محاسبه می‌شود
+    visits:           155412,  // کل سشن ۳۰ روز اخیر
+    totalSpendToman:  0        // از مجموع کانال‌ها محاسبه می‌شود
   },
 
   /* ---- روند روزانه ---- */
@@ -68,16 +68,18 @@ const CAMPAIGN_DATA = {
     returning:       6800
   },
 
-  /* ---- عملکرد کانال‌ها ---- */
+  /* ---- عملکرد کانال‌ها ----
+     clicks = سشن واقعی از پنل آنالیتیکس (۳۰ روز اخیر)
+     signups = سشن کاربران ثبت‌نام‌شده از همان منبع ---- */
   channels: [
-    { source: "zoomit",        label: "زومیت — بنر استیکی",          spendToman: 180000000, clicks: 28400, signups: 3820 },
-    { source: "khabaronline",  label: "خبرآنلاین — بنر استیکی",       spendToman: 341000000, clicks: 41200, signups: 5610 },
-    { source: "asanpardakht",  label: "آسان‌پرداخت — ترنزکشن (A/B)",  spendToman: 95000000,  clicks: 18700, signups: 2140 },
-    { source: "asanpardakht_sms", label: "آسان‌پرداخت — پیامک",       spendToman: 32000000,  clicks: 9400,  signups: 820  },
-    { source: "asriran",       label: "عصر ایران — بنر",              spendToman: 28000000,  clicks: 7200,  signups: 610  },
-    { source: "chand",         label: "Chand — این‌اپ",               spendToman: 68000000,  clicks: 11300, signups: 980  },
-    { source: "tgju",          label: "TGJU — بنر دیسپلی",            spendToman: 45000000,  clicks: 8600,  signups: 430  },
-    { source: "exiraz_sms",    label: "پیامک اکسیراز (یادآور/براکت)", spendToman: 18000000,  clicks: 6100,  signups: 113  },
+    { source: "zoomit",           label: "زومیت — بنر استیکی",          spendToman: 180000000, clicks: 8918,  signups: 260  },
+    { source: "khabaronline",     label: "خبرآنلاین — بنر استیکی",       spendToman: 341000000, clicks: 36928, signups: 318  },
+    { source: "asanpardakht",     label: "آسان‌پرداخت — ترنزکشن (A/B)",  spendToman: 95000000,  clicks: 610,   signups: 54   },
+    { source: "asanpardakht_sms", label: "آسان‌پرداخت — پیامک",          spendToman: 32000000,  clicks: 413,   signups: 395  },
+    { source: "asriran",          label: "عصر ایران — بنر",              spendToman: 28000000,  clicks: 8783,  signups: 170  },
+    { source: "chand",            label: "Chand — این‌اپ",               spendToman: 68000000,  clicks: 0,     signups: 0    },
+    { source: "tgju",             label: "TGJU — بنر دیسپلی",            spendToman: 45000000,  clicks: 0,     signups: 0    },
+    { source: "exiraz_sms",       label: "پیامک اکسیراز (یادآور/براکت)", spendToman: 18000000,  clicks: 777,   signups: 767  },
   ],
 
   /* ---- پیش‌بینی به تفکیک نوع ---- */
