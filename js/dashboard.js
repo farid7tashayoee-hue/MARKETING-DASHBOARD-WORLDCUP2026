@@ -143,8 +143,8 @@
       type: "line",
       data: { labels, datasets: [
         mk("signups", PALETTE[0], "ثبت‌نام", true),
-        mk("predictions", PALETTE[1], "پیش‌بینی", false),
-        mk("activeUsers", PALETTE[2], "کاربر فعال", false)
+        mk("predictions", PALETTE[1], "Event", false),
+        mk("activeUsers", PALETTE[2], "Session", false)
       ]},
       options: {
         responsive: true, maintainAspectRatio: false,
