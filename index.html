@@ -21,25 +21,47 @@
   <div id="password-gate" style="
     position:fixed;inset:0;z-index:9999;
     background:#0d0d0d;
-    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;
     font-family:'Vazirmatn',sans-serif;
   ">
-    <div style="font-size:2.2rem;font-weight:900;color:#e8c156;letter-spacing:1px;">۲۴</div>
-    <div style="font-size:1.1rem;color:#aaa;margin-bottom:8px;">داشبورد لیگ ۲۴ عیار اکسیراز</div>
-    <input id="pwd-input" type="password" placeholder="رمز عبور را وارد کنید"
+    <!-- آواتار شماره ۲۴ -->
+    <div style="
+      width:96px;height:96px;border-radius:50%;
+      background:linear-gradient(135deg,#e8c156 0%,#b8952e 100%);
+      display:flex;align-items:center;justify-content:center;
+      font-size:2.4rem;font-weight:900;color:#0d0d0d;
+      box-shadow:0 0 0 4px #1a1a1a, 0 0 0 6px #e8c15655;
+      margin-bottom:4px;
+    ">۲۴</div>
+
+    <!-- هویت -->
+    <div style="text-align:center;line-height:1.6;">
+      <div style="font-size:1.25rem;font-weight:800;color:#fff;">شماره ۲۴</div>
+      <div style="font-size:.85rem;color:#e8c156;font-weight:600;">مدیر کمپین لیگ ۲۴ عیار</div>
+    </div>
+
+    <!-- پیام خوش‌آمد -->
+    <div style="font-size:.9rem;color:#888;text-align:center;max-width:240px;line-height:1.7;">
+      سلام! این داشبورد فقط برای تیم داخلیه.<br/>رمز عبور رو وارد کن.
+    </div>
+
+    <!-- فرم -->
+    <input id="pwd-input" type="password" placeholder="رمز عبور"
       style="
-        padding:12px 20px;border-radius:10px;border:1.5px solid #333;
-        background:#1a1a1a;color:#fff;font-family:'Vazirmatn',sans-serif;
-        font-size:1rem;text-align:center;width:260px;outline:none;
-        direction:ltr;letter-spacing:2px;
+        padding:12px 20px;border-radius:10px;border:1.5px solid #2a2a2a;
+        background:#161616;color:#fff;font-family:'Vazirmatn',sans-serif;
+        font-size:1rem;text-align:center;width:240px;outline:none;
+        direction:ltr;letter-spacing:3px;margin-top:4px;
       "
     />
     <button onclick="checkPassword()" style="
-      padding:11px 36px;border-radius:10px;border:none;
-      background:#e8c156;color:#0d0d0d;font-family:'Vazirmatn',sans-serif;
-      font-size:1rem;font-weight:700;cursor:pointer;
-    ">ورود</button>
-    <div id="pwd-error" style="color:#e05;font-size:.9rem;min-height:20px;"></div>
+      padding:12px 40px;border-radius:10px;border:none;
+      background:linear-gradient(135deg,#e8c156,#b8952e);
+      color:#0d0d0d;font-family:'Vazirmatn',sans-serif;
+      font-size:1rem;font-weight:800;cursor:pointer;
+      box-shadow:0 4px 20px #e8c15630;
+    ">ورود به داشبورد</button>
+    <div id="pwd-error" style="color:#ff4466;font-size:.85rem;min-height:18px;"></div>
   </div>
 
   <script>
