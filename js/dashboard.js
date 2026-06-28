@@ -86,8 +86,8 @@
         foot: k.signupsTarget ? "هدف: " + fmt(k.signupsTarget) : "KPI اصلی کمپین"
       },
       {
-        icon: "🔥", label: "میانگین کاربران فعال روزانه", value: fmt(k.activeUsersAvg),
-        foot: "DAU"
+        icon: "🔥", label: "کل بازیکنان فعال", value: fmt(k.activeUsersAvg),
+        foot: "کاربران شرکت‌کننده در کمپین"
       },
       {
         icon: "🎯", label: "کل پیش‌بینی‌ها", value: fmt(k.totalPredictions),
@@ -102,8 +102,8 @@
         foot: toFa((D.channels || []).length) + " کانال", masked: true
       },
       {
-        icon: "🧮", label: "CPA — هزینه هر ثبت‌نام", value: "★ ★ ★ ★ ★", unit: "",
-        foot: "هزینه ÷ ثبت‌نام", masked: true
+        icon: "🧮", label: "CPA — میانگین هزینه هر ثبت‌نام", value: fmtMoney(cpa), unit: " تومان",
+        foot: "هزینه ÷ ثبت‌نام"
       }
     ];
 

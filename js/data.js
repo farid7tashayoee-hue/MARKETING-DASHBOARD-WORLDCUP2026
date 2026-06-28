@@ -32,7 +32,7 @@ const CAMPAIGN_DATA = {
   kpis: {
     signups:          14523,   // واقعی
     signupsTarget:    0,
-    activeUsersAvg:   17948,   // واقعی — از پنل
+    activeUsersAvg:   18047,   // واقعی — کل بازیکنان فعال کمپین
     totalPredictions: 358487,  // واقعی — از پنل
     visits:           155412,  // واقعی — کل سشن ۳۰ روز
     totalSpendToman:  0        // از مجموع کانال‌ها محاسبه می‌شود
