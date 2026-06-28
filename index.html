@@ -16,6 +16,48 @@
   <link rel="stylesheet" href="css/dashboard.css" />
 </head>
 <body>
+
+  <!-- ============ صفحه رمز ============ -->
+  <div id="password-gate" style="
+    position:fixed;inset:0;z-index:9999;
+    background:#0d0d0d;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;
+    font-family:'Vazirmatn',sans-serif;
+  ">
+    <div style="font-size:2.2rem;font-weight:900;color:#e8c156;letter-spacing:1px;">۲۴</div>
+    <div style="font-size:1.1rem;color:#aaa;margin-bottom:8px;">داشبورد لیگ ۲۴ عیار اکسیراز</div>
+    <input id="pwd-input" type="password" placeholder="رمز عبور را وارد کنید"
+      style="
+        padding:12px 20px;border-radius:10px;border:1.5px solid #333;
+        background:#1a1a1a;color:#fff;font-family:'Vazirmatn',sans-serif;
+        font-size:1rem;text-align:center;width:260px;outline:none;
+        direction:ltr;letter-spacing:2px;
+      "
+    />
+    <button onclick="checkPassword()" style="
+      padding:11px 36px;border-radius:10px;border:none;
+      background:#e8c156;color:#0d0d0d;font-family:'Vazirmatn',sans-serif;
+      font-size:1rem;font-weight:700;cursor:pointer;
+    ">ورود</button>
+    <div id="pwd-error" style="color:#e05;font-size:.9rem;min-height:20px;"></div>
+  </div>
+
+  <script>
+    document.getElementById('pwd-input').addEventListener('keydown', function(e){
+      if(e.key === 'Enter') checkPassword();
+    });
+    function checkPassword() {
+      var v = document.getElementById('pwd-input').value;
+      if(v === 'ExiR@z_L24##') {
+        document.getElementById('password-gate').style.display = 'none';
+      } else {
+        document.getElementById('pwd-error').textContent = 'رمز اشتباه است';
+        document.getElementById('pwd-input').value = '';
+        document.getElementById('pwd-input').focus();
+      }
+    }
+  </script>
+
   <div class="grain" aria-hidden="true"></div>
 
   <div class="wrap">
