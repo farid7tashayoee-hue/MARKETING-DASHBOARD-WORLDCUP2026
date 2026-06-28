@@ -76,8 +76,6 @@ const CAMPAIGN_DATA = {
     // ---- رسانه‌های پولی ----
     { source: "khabaronline",     label: "خبرآنلاین — بنر استیکی",                       spendToman: 341000000, sessions: 37076, pageViews: 42861,  events: 85500,  signups: 318   },
     { source: "zoomit",           label: "زومیت — بنر استیکی",                           spendToman: 180000000, sessions: 8980,  pageViews: 10117,  events: 15440,  signups: 260   },
-    { source: "chand",            label: "Chand — این‌اپ",                               spendToman: 68000000,  sessions: 0,     pageViews: 0,      events: 0,      signups: 0     },
-    { source: "tgju",             label: "TGJU — بنر دیسپلی",                            spendToman: 45000000,  sessions: 0,     pageViews: 0,      events: 0,      signups: 0     },
     { source: "asanpardakht",     label: "آسان‌پرداخت — ترنزکشن (A/B)",                  spendToman: 95000000,  sessions: 610,   pageViews: 743,    events: 1238,   signups: 54    },
     { source: "asriran",          label: "عصر ایران — بنر",                              spendToman: 28000000,  sessions: 8946,  pageViews: 10278,  events: 17732,  signups: 172   },
     { source: "asanpardakht_sms", label: "آسان‌پرداخت — پیامک",                          spendToman: 32000000,  sessions: 413,   pageViews: 1475,   events: 2383,   signups: 395   },
