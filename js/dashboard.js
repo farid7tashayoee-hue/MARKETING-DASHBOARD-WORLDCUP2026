@@ -219,30 +219,22 @@
 
     tbody.innerHTML = ch.map((c) => {
       const conv = pct(c.signups || 0, c.clicks || 0);
-      const cpa = (c.signups || 0) > 0 ? (c.spendToman || 0) / c.signups : 0;
-      const cpaCls = cpa === 0 ? "" : (cpa <= 50000 ? "cpa-good" : "");
       return `<tr>
         <td>${c.label || c.source}</td>
-        <td class="num">${fmtMoney(c.spendToman || 0)}</td>
         <td class="num">${fmt(c.clicks || 0)}</td>
         <td class="num">${fmt(c.signups || 0)}</td>
         <td class="num">${c.clicks ? fmtPct(conv) : "—"}</td>
-        <td class="num ${cpaCls}">${c.signups ? fmtMoney(cpa) : "—"}</td>
       </tr>`;
     }).join("");
 
-    const tSpend = sum(ch, "spendToman");
     const tClicks = sum(ch, "clicks");
     const tSign = sum(ch, "signups");
     const tConv = pct(tSign, tClicks);
-    const tCpa = tSign > 0 ? tSpend / tSign : 0;
     tfoot.innerHTML = `<tr>
       <td>مجموع</td>
-      <td class="num">${fmtMoney(tSpend)}</td>
       <td class="num">${fmt(tClicks)}</td>
       <td class="num">${fmt(tSign)}</td>
       <td class="num">${tClicks ? fmtPct(tConv) : "—"}</td>
-      <td class="num">${tSign ? fmtMoney(tCpa) : "—"}</td>
     </tr>`;
   }
 
