@@ -68,37 +68,42 @@ const CAMPAIGN_DATA = {
     returning:       0
   },
 
-  /* ---- عملکرد کانال‌ها ----
-     clicks = سشن از پنل آنالیتیکس (۳۰ روز)
-     signups = سشن کاربران ثبت‌نام‌شده از همان منبع (۳۰ روز) ---- */
+  /* ---- عملکرد کانال‌ها — داده ۳۰ روز از پنل آنالیتیکس ---- */
   channels: [
     // ---- ارگانیک و مستقیم ----
-    { source: "direct",           label: "مستقیم",                                        spendToman: 0,         clicks: 52382, signups: 47746 },
-    { source: "google",           label: "گوگل — ارگانیک",                                spendToman: 0,         clicks: 32228, signups: 20634 },
+    { source: "direct",           label: "مستقیم",                                        spendToman: 0,         sessions: 52382, pageViews: 138120, events: 329644, signups: 47746 },
+    { source: "google",           label: "گوگل — ارگانیک",                                spendToman: 0,         sessions: 32228, pageViews: 85643,  events: 242617, signups: 20634 },
     // ---- رسانه‌های پولی ----
-    { source: "khabaronline",     label: "خبرآنلاین — بنر استیکی",                       spendToman: 341000000, clicks: 37076, signups: 318   },
-    { source: "zoomit",           label: "زومیت — بنر استیکی",                           spendToman: 180000000, clicks: 8980,  signups: 260   },
-    { source: "chand",            label: "Chand — این‌اپ",                               spendToman: 68000000,  clicks: 0,     signups: 0     },
-    { source: "tgju",             label: "TGJU — بنر دیسپلی",                            spendToman: 45000000,  clicks: 0,     signups: 0     },
-    { source: "asanpardakht",     label: "آسان‌پرداخت — ترنزکشن (A/B)",                  spendToman: 95000000,  clicks: 610,   signups: 54    },
-    { source: "asriran",          label: "عصر ایران — بنر",                              spendToman: 28000000,  clicks: 8946,  signups: 172   },
-    { source: "asanpardakht_sms", label: "آسان‌پرداخت — پیامک",                          spendToman: 32000000,  clicks: 413,   signups: 395   },
+    { source: "khabaronline",     label: "خبرآنلاین — بنر استیکی",                       spendToman: 341000000, sessions: 37076, pageViews: 42861,  events: 85500,  signups: 318   },
+    { source: "zoomit",           label: "زومیت — بنر استیکی",                           spendToman: 180000000, sessions: 8980,  pageViews: 10117,  events: 15440,  signups: 260   },
+    { source: "chand",            label: "Chand — این‌اپ",                               spendToman: 68000000,  sessions: 0,     pageViews: 0,      events: 0,      signups: 0     },
+    { source: "tgju",             label: "TGJU — بنر دیسپلی",                            spendToman: 45000000,  sessions: 0,     pageViews: 0,      events: 0,      signups: 0     },
+    { source: "asanpardakht",     label: "آسان‌پرداخت — ترنزکشن (A/B)",                  spendToman: 95000000,  sessions: 610,   pageViews: 743,    events: 1238,   signups: 54    },
+    { source: "asriran",          label: "عصر ایران — بنر",                              spendToman: 28000000,  sessions: 8946,  pageViews: 10278,  events: 17732,  signups: 172   },
+    { source: "asanpardakht_sms", label: "آسان‌پرداخت — پیامک",                          spendToman: 32000000,  sessions: 413,   pageViews: 1475,   events: 2383,   signups: 395   },
     // ---- پیامک اکسیراز ----
-    { source: "exiraz_sms24",              label: "پیامک اکسیراز — عمومی",              spendToman: 18000000,  clicks: 777,   signups: 767   },
-    { source: "exiraz_24_iran_belg",       label: "پیامک اکسیراز — ایران/بلژیک",        spendToman: 0,         clicks: 981,   signups: 976   },
-    { source: "exiraz_24_reminder",        label: "پیامک اکسیراز — یادآور",             spendToman: 0,         clicks: 959,   signups: 954   },
-    { source: "exiraz_24_reminder1",       label: "پیامک اکسیراز — یادآور ۱",           spendToman: 0,         clicks: 927,   signups: 918   },
-    { source: "exiraz_24_sms_iran_new1stmatch", label: "پیامک اکسیراز — اولین بازی ایران", spendToman: 0,    clicks: 655,   signups: 653   },
+    { source: "exiraz_sms24",                  label: "پیامک اکسیراز — عمومی",              spendToman: 18000000, sessions: 777,  pageViews: 3234,  events: 4397,  signups: 767 },
+    { source: "exiraz_24_iran_belg",           label: "پیامک اکسیراز — ایران/بلژیک",        spendToman: 0,        sessions: 981,  pageViews: 2246,  events: 5688,  signups: 976 },
+    { source: "exiraz_24_reminder",            label: "پیامک اکسیراز — یادآور",             spendToman: 0,        sessions: 959,  pageViews: 2678,  events: 8193,  signups: 954 },
+    { source: "exiraz_24_reminder1",           label: "پیامک اکسیراز — یادآور ۱",           spendToman: 0,        sessions: 927,  pageViews: 2398,  events: 6243,  signups: 918 },
+    { source: "exiraz_24_sms_iran_new1stmatch",label: "پیامک اکسیراز — اولین بازی ایران",   spendToman: 0,        sessions: 655,  pageViews: 1693,  events: 5523,  signups: 653 },
     // ---- لینک‌های داخلی و شبکه‌های اجتماعی ----
-    { source: "l24sabavision",    label: "صباویژن — لینک",                               spendToman: 0,         clicks: 4062,  signups: 47    },
-    { source: "l24jaryan",        label: "جریان — لینک داخلی",                           spendToman: 0,         clicks: 2978,  signups: 1174  },
-    { source: "bale_bazu24",      label: "بله — بازو",                                  spendToman: 0,         clicks: 1360,  signups: 1326  },
-    { source: "l24bale",          label: "بله — لیگ ۲۴",                               spendToman: 0,         clicks: 1194,  signups: 1186  },
-    { source: "l24agahsazan",     label: "آگاه‌سازان — لینک",                           spendToman: 0,         clicks: 765,   signups: 752   },
-    { source: "l24instagram",     label: "اینستاگرام — لینک",                           spendToman: 0,         clicks: 367,   signups: 285   },
-    { source: "l24chavosh",       label: "چاووش — لینک",                                spendToman: 0,         clicks: 192,   signups: 185   },
-    { source: "instagram",        label: "اینستاگرام — ارگانیک",                        spendToman: 0,         clicks: 155,   signups: 77    },
-    { source: "telegram",         label: "تلگرام",                                      spendToman: 0,         clicks: 96,    signups: 89    },
+    { source: "l24sabavision",    label: "صباویژن — لینک",           spendToman: 0, sessions: 4062, pageViews: 4383,  events: 5543,  signups: 47    },
+    { source: "l24jaryan",        label: "جریان — لینک داخلی",       spendToman: 0, sessions: 2978, pageViews: 6876,  events: 21826, signups: 1174  },
+    { source: "bale_bazu24",      label: "بله — بازو",               spendToman: 0, sessions: 1360, pageViews: 5845,  events: 9761,  signups: 1326  },
+    { source: "l24bale",          label: "بله — لیگ ۲۴",            spendToman: 0, sessions: 1194, pageViews: 3206,  events: 5703,  signups: 1186  },
+    { source: "l24agahsazan",     label: "آگاه‌سازان — لینک",        spendToman: 0, sessions: 765,  pageViews: 2550,  events: 5104,  signups: 752   },
+    { source: "l24instagram",     label: "اینستاگرام — لینک",        spendToman: 0, sessions: 367,  pageViews: 1099,  events: 2928,  signups: 285   },
+    { source: "l24chavosh",       label: "چاووش — لینک",             spendToman: 0, sessions: 192,  pageViews: 526,   events: 851,   signups: 185   },
+    { source: "instagram",        label: "اینستاگرام — ارگانیک",     spendToman: 0, sessions: 155,  pageViews: 398,   events: 897,   signups: 77    },
+    { source: "telegram",         label: "تلگرام",                   spendToman: 0, sessions: 96,   pageViews: 276,   events: 618,   signups: 89    },
+  ],
+
+  /* ---- بازه‌های زمانی (جایگزین قیف اکتساب) ---- */
+  periods: [
+    { label: "امروز",   sessions: 5016,   pageViews: 9499,   events: 20527,  userSessions: 2756  },
+    { label: "۷ روز",  sessions: 42573,  pageViews: 82814,  events: 166646, userSessions: 25385 },
+    { label: "۳۰ روز", sessions: 156282, pageViews: 326957, events: 778450, userSessions: 79018 },
   ],
 
   /* ---- پیش‌بینی به تفکیک نوع (منتظر داده واقعی) ---- */

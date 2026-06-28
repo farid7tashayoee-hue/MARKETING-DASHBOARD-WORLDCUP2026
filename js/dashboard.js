@@ -163,27 +163,28 @@
      ۴) قیف اکتساب
      ============================================================ */
   function renderFunnel() {
-    const f = D.funnel || {};
-    const steps = [
-      { name: "بازدید صفحه", val: f.visits || 0 },
-      { name: "ثبت‌نام", val: f.signups || 0 },
-      { name: "اولین پیش‌بینی", val: f.firstPrediction || 0 },
-      { name: "کاربر بازگشتی", val: f.returning || 0 }
-    ];
-    const top = steps[0].val || Math.max(...steps.map((s) => s.val), 1);
-    const el = $("#funnel");
-    if (!top) { el.innerHTML = '<p class="empty">قیف خالی است — funnel را در data.js پر کنید.</p>'; return; }
+    const periods = D.periods || [];
+    const el = $("#periodsTable");
+    if (!periods.length) { el.innerHTML = '<p class="empty">داده‌ای وجود ندارد.</p>'; return; }
 
-    el.innerHTML = steps.map((s, i) => {
-      const w = pct(s.val, top);
-      const rate = i > 0 && steps[i - 1].val > 0
-        ? `<span class="f-rate">${fmtPct(pct(s.val, steps[i - 1].val))}</span>` : "";
-      return `<div class="funnel-row">
-        <div class="f-fill" style="width:${w}%"></div>
-        <span class="f-name">${s.name}${rate}</span>
-        <span class="f-num">${fmt(s.val)}</span>
-      </div>`;
-    }).join("");
+    el.innerHTML = `
+      <table class="data-table" style="width:100%">
+        <thead><tr>
+          <th>بازه</th><th>سشن</th><th>بازدید</th><th>رویداد</th><th>تبدیل</th>
+        </tr></thead>
+        <tbody>
+          ${periods.map((p) => {
+            const conv = pct(p.userSessions || 0, p.sessions || 0);
+            return `<tr>
+              <td><b>${p.label}</b></td>
+              <td class="num">${fmt(p.sessions)}</td>
+              <td class="num">${fmt(p.pageViews)}</td>
+              <td class="num">${fmt(p.events)}</td>
+              <td class="num">${fmtPct(conv)}</td>
+            </tr>`;
+          }).join("")}
+        </tbody>
+      </table>`;
   }
 
   /* ============================================================
@@ -218,23 +219,27 @@
     const tfoot = $("#channelTable tfoot");
 
     tbody.innerHTML = ch.map((c) => {
-      const conv = pct(c.signups || 0, c.clicks || 0);
+      const conv = pct(c.signups || 0, c.sessions || 0);
       return `<tr>
         <td>${c.label || c.source}</td>
-        <td class="num">${fmt(c.clicks || 0)}</td>
-        <td class="num">${fmt(c.signups || 0)}</td>
-        <td class="num">${c.clicks ? fmtPct(conv) : "—"}</td>
+        <td class="num">${fmt(c.sessions || 0)}</td>
+        <td class="num">${fmt(c.pageViews || 0)}</td>
+        <td class="num">${fmt(c.events || 0)}</td>
+        <td class="num">${c.sessions ? fmtPct(conv) : "—"}</td>
       </tr>`;
     }).join("");
 
-    const tClicks = sum(ch, "clicks");
+    const tSess = sum(ch, "sessions");
+    const tPV   = sum(ch, "pageViews");
+    const tEv   = sum(ch, "events");
     const tSign = sum(ch, "signups");
-    const tConv = pct(tSign, tClicks);
+    const tConv = pct(tSign, tSess);
     tfoot.innerHTML = `<tr>
       <td>مجموع</td>
-      <td class="num">${fmt(tClicks)}</td>
-      <td class="num">${fmt(tSign)}</td>
-      <td class="num">${tClicks ? fmtPct(tConv) : "—"}</td>
+      <td class="num">${fmt(tSess)}</td>
+      <td class="num">${fmt(tPV)}</td>
+      <td class="num">${fmt(tEv)}</td>
+      <td class="num">${tSess ? fmtPct(tConv) : "—"}</td>
     </tr>`;
   }
 
