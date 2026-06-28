@@ -24,25 +24,54 @@
     display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;
     font-family:'Vazirmatn',sans-serif;
   ">
-    <!-- آواتار شماره ۲۴ -->
-    <div style="
-      width:96px;height:96px;border-radius:50%;
-      background:linear-gradient(135deg,#e8c156 0%,#b8952e 100%);
-      display:flex;align-items:center;justify-content:center;
-      font-size:2.4rem;font-weight:900;color:#0d0d0d;
-      box-shadow:0 0 0 4px #1a1a1a, 0 0 0 6px #e8c15655;
-      margin-bottom:4px;
-    ">۲۴</div>
+    <!-- پیراهن شماره ۲۴ -->
+    <div style="position:relative;width:110px;height:115px;margin-bottom:8px;">
+      <!-- آستین چپ -->
+      <div style="
+        position:absolute;top:0;left:0;
+        width:38px;height:32px;
+        background:linear-gradient(135deg,#e8c156,#b8952e);
+        border-radius:6px 0 0 4px;
+        transform:rotate(-8deg);transform-origin:right bottom;
+      "></div>
+      <!-- آستین راست -->
+      <div style="
+        position:absolute;top:0;right:0;
+        width:38px;height:32px;
+        background:linear-gradient(135deg,#b8952e,#e8c156);
+        border-radius:0 6px 4px 0;
+        transform:rotate(8deg);transform-origin:left bottom;
+      "></div>
+      <!-- بدنه پیراهن -->
+      <div style="
+        position:absolute;bottom:0;left:8px;right:8px;
+        height:88px;
+        background:linear-gradient(160deg,#e8c156 0%,#c9a83c 60%,#b8952e 100%);
+        border-radius:4px 4px 12px 12px;
+      "></div>
+      <!-- یقه V -->
+      <div style="
+        position:absolute;top:2px;left:50%;
+        transform:translateX(-50%);
+        width:0;height:0;
+        border-left:13px solid transparent;
+        border-right:13px solid transparent;
+        border-top:20px solid #0d0d0d;
+        z-index:2;
+      "></div>
+      <!-- شماره ۲۴ -->
+      <div style="
+        position:absolute;bottom:14px;left:50%;
+        transform:translateX(-50%);
+        font-size:2rem;font-weight:900;color:#0d0d0d;
+        letter-spacing:-1px;white-space:nowrap;z-index:2;
+      ">۲۴</div>
+    </div>
 
     <!-- هویت -->
     <div style="text-align:center;line-height:1.6;">
       <div style="font-size:1.25rem;font-weight:800;color:#fff;">شماره ۲۴</div>
       <div style="font-size:.85rem;color:#e8c156;font-weight:600;">مدیر کمپین لیگ ۲۴ عیار</div>
-    </div>
-
-    <!-- پیام خوش‌آمد -->
-    <div style="font-size:.9rem;color:#888;text-align:center;max-width:240px;line-height:1.7;">
-      سلام! این داشبورد فقط برای تیم داخلیه.<br/>رمز عبور رو وارد کن.
     </div>
 
     <!-- فرم -->
