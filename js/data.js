@@ -25,7 +25,7 @@ const CAMPAIGN_DATA = {
     matchesPlayed: 72,
     nextDeadlineLabel: "پایان مهلت چیدمان حذفی",
     nextDeadlineDate: "۷ تیر",
-    lastUpdated: "۷ تیر ۱۴۰۵"
+    lastUpdated: "۷ تیر ۱۴۰۵ — ۲۳:۰۰"
   },
 
   /* ---- کارت‌های KPI اصلی ---- */
