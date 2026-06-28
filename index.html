@@ -239,7 +239,11 @@
     <section class="panel">
       <div class="panel-head">
         <h2>عملکرد کانال‌های رسانه‌ای</h2>
-        <span class="panel-sub">هزینه، کلیک، ثبت‌نام، نرخ تبدیل و CPA</span>
+        <div class="period-tabs">
+          <button class="period-btn active" onclick="switchPeriod('today',this)">امروز</button>
+          <button class="period-btn" onclick="switchPeriod('week7',this)">۷ روز</button>
+          <button class="period-btn" onclick="switchPeriod('month30',this)">۳۰ روز</button>
+        </div>
       </div>
       <div class="table-scroll">
         <table class="data-table" id="channelTable">

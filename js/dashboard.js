@@ -9,6 +9,14 @@
   const D = window.CAMPAIGN_DATA;
   if (!D) { console.error("CAMPAIGN_DATA یافت نشد — js/data.js را بررسی کنید."); return; }
 
+  let activePeriod = "today";
+  window.switchPeriod = function(p, btn) {
+    activePeriod = p;
+    document.querySelectorAll(".period-btn").forEach((b) => b.classList.remove("active"));
+    if (btn) btn.classList.add("active");
+    renderChannelTable();
+  };
+
   /* ---------- ابزارهای کمکی ---------- */
   const $ = (s) => document.querySelector(s);
 
@@ -191,7 +199,7 @@
      ۵) نمودار سهم کانال‌ها (دونات)
      ============================================================ */
   function renderChannelChart() {
-    const ch = (D.channels || []).filter((c) => (c.signups || 0) > 0);
+    const ch = (D.channels || []).filter((c) => (c.month30 && c.month30.signups || 0) > 0);
     const box = $("#channelChart");
     if (!ch.length) { showEmpty(box, "هنوز ثبت‌نامی برای کانال‌ها ثبت نشده."); return; }
 
@@ -199,7 +207,7 @@
       type: "doughnut",
       data: {
         labels: ch.map((c) => c.label || c.source),
-        datasets: [{ data: ch.map((c) => c.signups),
+        datasets: [{ data: ch.map((c) => c.month30.signups),
           backgroundColor: PALETTE, borderColor: "#0f1426", borderWidth: 2 }]
       },
       options: {
@@ -218,28 +226,27 @@
     const tbody = $("#channelTable tbody");
     const tfoot = $("#channelTable tfoot");
 
+    let tSess = 0, tPV = 0, tEv = 0, tSign = 0;
     tbody.innerHTML = ch.map((c) => {
-      const conv = pct(c.signups || 0, c.sessions || 0);
+      const pd = c[activePeriod] || {};
+      const s = pd.sessions || 0, pv = pd.pageViews || 0, ev = pd.events || 0, sg = pd.signups || 0;
+      tSess += s; tPV += pv; tEv += ev; tSign += sg;
+      const conv = pct(sg, s);
       return `<tr>
         <td>${c.label || c.source}</td>
-        <td class="num">${fmt(c.sessions || 0)}</td>
-        <td class="num">${fmt(c.pageViews || 0)}</td>
-        <td class="num">${fmt(c.events || 0)}</td>
-        <td class="num">${c.sessions ? fmtPct(conv) : "—"}</td>
+        <td class="num">${fmt(s)}</td>
+        <td class="num">${fmt(pv)}</td>
+        <td class="num">${fmt(ev)}</td>
+        <td class="num">${s ? fmtPct(conv) : "—"}</td>
       </tr>`;
     }).join("");
 
-    const tSess = sum(ch, "sessions");
-    const tPV   = sum(ch, "pageViews");
-    const tEv   = sum(ch, "events");
-    const tSign = sum(ch, "signups");
-    const tConv = pct(tSign, tSess);
     tfoot.innerHTML = `<tr>
       <td>مجموع</td>
       <td class="num">${fmt(tSess)}</td>
       <td class="num">${fmt(tPV)}</td>
       <td class="num">${fmt(tEv)}</td>
-      <td class="num">${tSess ? fmtPct(tConv) : "—"}</td>
+      <td class="num">${tSess ? fmtPct(pct(tSign, tSess)) : "—"}</td>
     </tr>`;
   }
 
