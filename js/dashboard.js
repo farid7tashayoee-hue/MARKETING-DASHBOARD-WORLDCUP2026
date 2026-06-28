@@ -312,10 +312,11 @@
   function renderRetention() {
     const r = D.retention || {};
     $("#retentionGrid").innerHTML = [
-      { v: r.invites, l: "دعوت دوست" },
-      { v: r.hatTricks, l: "هت‌تریک" },
-      { v: r.elixirsGiven, l: "اکسیر اهداشده" }
-    ].map((x) => `<div class="mini-card"><div class="m-val">${fmt(x.v || 0)}</div><div class="m-label">${x.l}</div></div>`).join("");
+      { v: r.invites,     l: "دعوت دوست",        sub: fmt(r.invitePoints || 0) + " امتیاز" },
+      { v: r.gmQuestions, l: "سوال گرداننده",      sub: fmt(r.gmQuestionPoints || 0) + " امتیاز" },
+      { v: r.hatTricks,   l: "هت‌تریک",           sub: "" },
+      { v: r.elixirsGiven,l: "اکسیر اهداشده",     sub: "" }
+    ].map((x) => `<div class="mini-card"><div class="m-val">${fmt(x.v || 0)}</div><div class="m-label">${x.l}</div>${x.sub ? `<div class="m-sub">${x.sub}</div>` : ""}</div>`).join("");
 
     const streaks = [
       { l: "۷ روز", v: r.streak7 || 0 },

@@ -222,7 +222,10 @@ const CAMPAIGN_DATA = {
 
   /* ---- متریک‌های نگهداشت و تعامل ---- */
   retention: {
-    invites:      0,
+    invites:         2801,    // واقعی — REFERRAL از دفتر امتیازات
+    invitePoints:    13583,   // واقعی — جمع امتیاز دعوت
+    gmQuestions:     1411,    // واقعی — GM_QUESTION از دفتر امتیازات
+    gmQuestionPoints:270000,  // واقعی — جمع امتیاز سوالات گرداننده
     hatTricks:    0,
     elixirsGiven: 0,
     streak7:      0,
