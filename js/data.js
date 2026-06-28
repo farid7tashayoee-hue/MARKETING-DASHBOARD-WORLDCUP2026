@@ -30,42 +30,23 @@ const CAMPAIGN_DATA = {
 
   /* ---- کارت‌های KPI اصلی ---- */
   kpis: {
-    signups:          14523,
-    signupsTarget:    25000,
-    activeUsersAvg:   17948,
-    totalPredictions: 358487,
-    visits:           155412,
+    signups:          14523,   // واقعی
+    signupsTarget:    0,
+    activeUsersAvg:   17948,   // واقعی — از پنل
+    totalPredictions: 358487,  // واقعی — از پنل
+    visits:           155412,  // واقعی — کل سشن ۳۰ روز
     totalSpendToman:  0        // از مجموع کانال‌ها محاسبه می‌شود
   },
 
-  /* ---- روند روزانه ---- */
-  daily: [
-    { date: "۲۱ خرداد", signups: 1840, predictions: 3200,  activeUsers: 1840,  event: "افتتاحیه" },
-    { date: "۲۲ خرداد", signups: 1210, predictions: 4800,  activeUsers: 2900  },
-    { date: "۲۳ خرداد", signups: 980,  predictions: 5100,  activeUsers: 3200  },
-    { date: "۲۴ خرداد", signups: 870,  predictions: 5400,  activeUsers: 3500  },
-    { date: "۲۵ خرداد", signups: 760,  predictions: 6200,  activeUsers: 3800,  event: "ددلاین پیش‌بینی‌های ایران" },
-    { date: "۲۶ خرداد", signups: 640,  predictions: 5800,  activeUsers: 3600  },
-    { date: "۲۷ خرداد", signups: 580,  predictions: 5500,  activeUsers: 3400  },
-    { date: "۲۸ خرداد", signups: 530,  predictions: 7100,  activeUsers: 4100,  event: "ددلاین براکت تیم‌ها" },
-    { date: "۲۹ خرداد", signups: 490,  predictions: 6300,  activeUsers: 3900  },
-    { date: "۳۰ خرداد", signups: 460,  predictions: 5900,  activeUsers: 3700  },
-    { date: "۳۱ خرداد", signups: 430,  predictions: 5700,  activeUsers: 3600  },
-    { date: "۱ تیر",    signups: 410,  predictions: 5500,  activeUsers: 3500  },
-    { date: "۲ تیر",    signups: 390,  predictions: 5300,  activeUsers: 3450  },
-    { date: "۳ تیر",    signups: 370,  predictions: 5100,  activeUsers: 3400  },
-    { date: "۴ تیر",    signups: 360,  predictions: 5000,  activeUsers: 3380  },
-    { date: "۵ تیر",    signups: 350,  predictions: 5200,  activeUsers: 3500  },
-    { date: "۶ تیر",    signups: 340,  predictions: 5400,  activeUsers: 3600  },
-    { date: "۷ تیر",    signups: 510,  predictions: 7800,  activeUsers: 4200,  event: "شروع مرحله حذفی" },
-  ],
+  /* ---- روند روزانه (منتظر داده واقعی روزانه) ---- */
+  daily: [],
 
   /* ---- قیف اکتساب ---- */
   funnel: {
-    visits:          98600,
-    signups:         14523,
-    firstPrediction: 11200,
-    returning:       6800
+    visits:          155412,  // واقعی
+    signups:         14523,   // واقعی
+    firstPrediction: 0,
+    returning:       0
   },
 
   /* ---- عملکرد کانال‌ها ----
@@ -82,40 +63,39 @@ const CAMPAIGN_DATA = {
     { source: "exiraz_sms",       label: "پیامک اکسیراز (یادآور/براکت)", spendToman: 18000000,  clicks: 777,   signups: 767  },
   ],
 
-  /* ---- پیش‌بینی به تفکیک نوع ---- */
+  /* ---- پیش‌بینی به تفکیک نوع (منتظر داده واقعی) ---- */
   predictionTypes: [
-    { name: "پیش‌بینی روزانه بازی‌ها",       count: 61400 },
-    { name: "براکت ۳۲ تیم (۴۰۰ امتیاز)",    count: 9800  },
-    { name: "چیدمان حذفی (۲۰۰ امتیاز)",     count: 0     },
-    { name: "پیش‌بینی قهرمان",               count: 7200  },
-    { name: "آقای گل",                       count: 4100  },
-    { name: "بهترین بازیساز",                count: 2640  },
-    { name: "پیش‌بینی‌های ویژه ایران",        count: 2200  },
+    { name: "پیش‌بینی روزانه بازی‌ها",    count: 0 },
+    { name: "براکت ۳۲ تیم (۴۰۰ امتیاز)", count: 0 },
+    { name: "چیدمان حذفی (۲۰۰ امتیاز)",  count: 0 },
+    { name: "پیش‌بینی قهرمان",            count: 0 },
+    { name: "آقای گل",                    count: 0 },
+    { name: "بهترین بازیساز",             count: 0 },
+    { name: "پیش‌بینی‌های ویژه ایران",     count: 0 },
   ],
 
   /* ---- متریک‌های نگهداشت و تعامل ---- */
   retention: {
-    invites:      3240,
-    hatTricks:    1180,
-    elixirsGiven: 2870,
-    streak7:      4200,
-    streak14:     1650,
+    invites:      0,
+    hatTricks:    0,
+    elixirsGiven: 0,
+    streak7:      0,
+    streak14:     0,
     streak30:     0
   },
 
   /* ---- کاربران جدید در برابر قدیمی ---- */
   users: {
-    newUsers: 9840,
-    oldUsers: 4683
+    newUsers: 0,
+    oldUsers: 0
   },
 
   /* ---- پیش‌بینی‌های ویژه‌ی تیم ملی ایران ---- */
   iran: {
-    ascensionGuess:   2200,
-    firstScorerGuess: 1840,
-    bestResultGuess:  1760
+    ascensionGuess:   0,
+    firstScorerGuess: 0,
+    bestResultGuess:  0
   }
 };
 
-// در دسترس قرار دادن برای منطق داشبورد (و آماده‌سازی برای اتصال آینده)
 window.CAMPAIGN_DATA = CAMPAIGN_DATA;
