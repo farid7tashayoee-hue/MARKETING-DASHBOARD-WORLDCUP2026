@@ -69,17 +69,36 @@ const CAMPAIGN_DATA = {
   },
 
   /* ---- عملکرد کانال‌ها ----
-     clicks = سشن واقعی از پنل آنالیتیکس (۳۰ روز اخیر)
-     signups = سشن کاربران ثبت‌نام‌شده از همان منبع ---- */
+     clicks = سشن از پنل آنالیتیکس (۳۰ روز)
+     signups = سشن کاربران ثبت‌نام‌شده از همان منبع (۳۰ روز) ---- */
   channels: [
-    { source: "zoomit",           label: "زومیت — بنر استیکی",          spendToman: 180000000, clicks: 8918,  signups: 260  },
-    { source: "khabaronline",     label: "خبرآنلاین — بنر استیکی",       spendToman: 341000000, clicks: 36928, signups: 318  },
-    { source: "asanpardakht",     label: "آسان‌پرداخت — ترنزکشن (A/B)",  spendToman: 95000000,  clicks: 610,   signups: 54   },
-    { source: "asanpardakht_sms", label: "آسان‌پرداخت — پیامک",          spendToman: 32000000,  clicks: 413,   signups: 395  },
-    { source: "asriran",          label: "عصر ایران — بنر",              spendToman: 28000000,  clicks: 8783,  signups: 170  },
-    { source: "chand",            label: "Chand — این‌اپ",               spendToman: 68000000,  clicks: 0,     signups: 0    },
-    { source: "tgju",             label: "TGJU — بنر دیسپلی",            spendToman: 45000000,  clicks: 0,     signups: 0    },
-    { source: "exiraz_sms",       label: "پیامک اکسیراز (یادآور/براکت)", spendToman: 18000000,  clicks: 777,   signups: 767  },
+    // ---- ارگانیک و مستقیم ----
+    { source: "direct",           label: "مستقیم",                                        spendToman: 0,         clicks: 52382, signups: 47746 },
+    { source: "google",           label: "گوگل — ارگانیک",                                spendToman: 0,         clicks: 32228, signups: 20634 },
+    // ---- رسانه‌های پولی ----
+    { source: "khabaronline",     label: "خبرآنلاین — بنر استیکی",                       spendToman: 341000000, clicks: 37076, signups: 318   },
+    { source: "zoomit",           label: "زومیت — بنر استیکی",                           spendToman: 180000000, clicks: 8980,  signups: 260   },
+    { source: "chand",            label: "Chand — این‌اپ",                               spendToman: 68000000,  clicks: 0,     signups: 0     },
+    { source: "tgju",             label: "TGJU — بنر دیسپلی",                            spendToman: 45000000,  clicks: 0,     signups: 0     },
+    { source: "asanpardakht",     label: "آسان‌پرداخت — ترنزکشن (A/B)",                  spendToman: 95000000,  clicks: 610,   signups: 54    },
+    { source: "asriran",          label: "عصر ایران — بنر",                              spendToman: 28000000,  clicks: 8946,  signups: 172   },
+    { source: "asanpardakht_sms", label: "آسان‌پرداخت — پیامک",                          spendToman: 32000000,  clicks: 413,   signups: 395   },
+    // ---- پیامک اکسیراز ----
+    { source: "exiraz_sms24",              label: "پیامک اکسیراز — عمومی",              spendToman: 18000000,  clicks: 777,   signups: 767   },
+    { source: "exiraz_24_iran_belg",       label: "پیامک اکسیراز — ایران/بلژیک",        spendToman: 0,         clicks: 981,   signups: 976   },
+    { source: "exiraz_24_reminder",        label: "پیامک اکسیراز — یادآور",             spendToman: 0,         clicks: 959,   signups: 954   },
+    { source: "exiraz_24_reminder1",       label: "پیامک اکسیراز — یادآور ۱",           spendToman: 0,         clicks: 927,   signups: 918   },
+    { source: "exiraz_24_sms_iran_new1stmatch", label: "پیامک اکسیراز — اولین بازی ایران", spendToman: 0,    clicks: 655,   signups: 653   },
+    // ---- لینک‌های داخلی و شبکه‌های اجتماعی ----
+    { source: "l24sabavision",    label: "صباویژن — لینک",                               spendToman: 0,         clicks: 4062,  signups: 47    },
+    { source: "l24jaryan",        label: "جریان — لینک داخلی",                           spendToman: 0,         clicks: 2978,  signups: 1174  },
+    { source: "bale_bazu24",      label: "بله — بازو",                                  spendToman: 0,         clicks: 1360,  signups: 1326  },
+    { source: "l24bale",          label: "بله — لیگ ۲۴",                               spendToman: 0,         clicks: 1194,  signups: 1186  },
+    { source: "l24agahsazan",     label: "آگاه‌سازان — لینک",                           spendToman: 0,         clicks: 765,   signups: 752   },
+    { source: "l24instagram",     label: "اینستاگرام — لینک",                           spendToman: 0,         clicks: 367,   signups: 285   },
+    { source: "l24chavosh",       label: "چاووش — لینک",                                spendToman: 0,         clicks: 192,   signups: 185   },
+    { source: "instagram",        label: "اینستاگرام — ارگانیک",                        spendToman: 0,         clicks: 155,   signups: 77    },
+    { source: "telegram",         label: "تلگرام",                                      spendToman: 0,         clicks: 96,    signups: 89    },
   ],
 
   /* ---- پیش‌بینی به تفکیک نوع (منتظر داده واقعی) ---- */
