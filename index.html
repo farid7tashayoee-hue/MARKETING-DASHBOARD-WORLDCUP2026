@@ -240,15 +240,28 @@
       var bl={x:W/2,y:H/3,vx:2.4,vy:-3.0,angle:0,spin:.04};
       var score=0,over=false,started=false,flash=0;
       var pts=[],popups=[],bonuses=[],bonusTick=0,BONUS_EVERY=6;
+      var codeShow={active:false,code:'',life:0};
       var keys={};
       document.addEventListener('keydown',function(e){keys[e.key]=true;if(e.key.startsWith('Arrow'))e.preventDefault();});
       document.addEventListener('keyup',function(e){keys[e.key]=false;});
+
+      /* انواع جایزه باکس — شانسی */
+      var PRIZES=[
+        {type:'code',   icon:'🎁', title:'کد تخفیف!',           color:'#ff69b4', codes:['GOLD24','LIGA24','SHAMS5','EXIRAZ10','PREDICT15','AYAR24']},
+        {type:'wallet', icon:'💰', title:'شارژ کیف پول!',        color:'#ffd700', codes:['WALLET50K','CHARGE30K','BONUS20K']},
+        {type:'free',   icon:'🚀', title:'ارسال رایگان!',        color:'#1faa6b', codes:['FREESHIP','FREEPOST','NOFEE24']},
+        {type:'fee',    icon:'💳', title:'خرید بدون کارمزد!',    color:'#2bb8c4', codes:['ZEROFEE','NOFEE100','FREE_FEE']},
+        {type:'empty',  icon:'🪙', title:'پوچ — شانست نیومد!',   color:'#888',    codes:[]},
+        {type:'empty',  icon:'🪙', title:'پوچ!',                 color:'#888',    codes:[]},
+      ];
 
       var BTYPES=[
         {icon:'⭐',label:'+۲۰ امتیاز',pts:20,color:'#ffd700'},
         {icon:'💎',label:'+۵۰ امتیاز',pts:50,color:'#00e5ff'},
         {icon:'⚡',label:'+۳۰ امتیاز',pts:30,color:'#ffe000'},
-        {icon:'🎁',label:'کد: GOLD24', pts:15,color:'#ff69b4'},
+        {icon:'⭐',label:'+۲۰ امتیاز',pts:20,color:'#ffd700'},
+        {icon:'🎁',label:'جعبه شانس!', pts:10,color:'#ff69b4',isCode:true},
+        {icon:'🎁',label:'جعبه شانس!', pts:10,color:'#ff69b4',isCode:true},
       ];
 
       function spawnBonus(){
@@ -264,6 +277,7 @@
         lvl=0; pd.w=w().pdW;
         bl.x=W/2; bl.y=H/3; bl.vx=2.4*(Math.random()>.5?1:-1); bl.vy=-3.0; bl.angle=0; bl.spin=.04;
         score=0;over=false;started=false;flash=0;pts=[];popups=[];bonuses=[];bonusTick=0;
+        codeShow={active:false,code:'',life:0};
         document.getElementById('g-score').textContent='امتیاز: ۰';
       }
 
@@ -309,19 +323,24 @@
           if(Math.sqrt(dx*dx+dy*dy)<b.r+HW2){
             score+=b.type.pts;
             document.getElementById('g-score').textContent='امتیاز: '+fa(score);
-            addPts(b.x,b.y,20,b.type.color); addPopup(b.x,b.y-22,b.type.label,b.type.color);
+            addPts(b.x,b.y,20,b.type.color);
+            if(b.type.isCode){var pr=PRIZES[Math.floor(Math.random()*PRIZES.length)];var cd=pr.codes.length?pr.codes[Math.floor(Math.random()*pr.codes.length)]:'';codeShow={active:true,prize:pr,code:cd,life:1};}
+            else{addPopup(b.x,b.y-22,b.type.label,b.type.color);}
             flash=1; bl.vy=-Math.abs(bl.vy)-.6; return false;
           }
           if(b.y+b.r>=pd.y&&b.y-b.r<=pd.y+pd.h&&b.x>pd.x-pd.w/2&&b.x<pd.x+pd.w/2){
             score+=b.type.pts;
             document.getElementById('g-score').textContent='امتیاز: '+fa(score);
-            addPts(b.x,pd.y,20,b.type.color); addPopup(b.x,pd.y-22,b.type.label,b.type.color);
+            addPts(b.x,pd.y,20,b.type.color);
+            if(b.type.isCode){var pr2=PRIZES[Math.floor(Math.random()*PRIZES.length)];var cd2=pr2.codes.length?pr2.codes[Math.floor(Math.random()*pr2.codes.length)]:'';codeShow={active:true,prize:pr2,code:cd2,life:1};}
+            else{addPopup(b.x,pd.y-22,b.type.label,b.type.color);}
             flash=1; return false;
           }
           return b.y<H+30;
         });
         pts=pts.filter(function(p){p.x+=p.vx;p.y+=p.vy;p.vy+=.13;p.life-=.02;return p.life>0;});
         popups=popups.filter(function(p){p.y-=p.vy;p.vy*=.96;p.life-=.016;return p.life>0;});
+        if(codeShow.active&&codeShow.life>0)codeShow.life-=.007;
       }
 
       function drawChar(x,y,angle,sc){
@@ -393,6 +412,27 @@
           ctx.fillStyle='rgba(232,193,86,.5)';ctx.font='bold 11px Vazirmatn,sans-serif';
           ctx.textAlign='left';ctx.textBaseline='top';ctx.fillText(w().label,8,8);
           ctx.textAlign='right';ctx.fillText('امتیاز: '+fa(score),W-8,8);
+        }
+        /* نمایش جایزه */
+        if(codeShow.active&&codeShow.life>0&&codeShow.prize){
+          var a=Math.min(codeShow.life*3,1),pr=codeShow.prize;
+          ctx.save();ctx.globalAlpha=a;
+          ctx.fillStyle='rgba(4,4,14,.92)';ctx.beginPath();ctx.roundRect(W/2-112,H/2-44,224,88,16);ctx.fill();
+          ctx.strokeStyle=pr.color+'aa';ctx.lineWidth=2;ctx.beginPath();ctx.roundRect(W/2-112,H/2-44,224,88,16);ctx.stroke();
+          ctx.font='20px serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(pr.icon,W/2,H/2-26);
+          ctx.fillStyle=pr.color;ctx.font='bold 13px Vazirmatn,sans-serif';
+          ctx.shadowColor=pr.color;ctx.shadowBlur=10;ctx.fillText(pr.title,W/2,H/2-6);ctx.shadowBlur=0;
+          if(codeShow.code){
+            ctx.fillStyle='#f4d77a';ctx.font='bold 20px monospace';
+            ctx.shadowColor='rgba(232,193,86,.9)';ctx.shadowBlur=14;
+            ctx.fillText(codeShow.code,W/2,H/2+18);ctx.shadowBlur=0;
+            ctx.fillStyle='rgba(255,255,255,.35)';ctx.font='9px Vazirmatn,sans-serif';
+            ctx.fillText('یادداشت کن ✦',W/2,H/2+36);
+          } else {
+            ctx.fillStyle='rgba(255,255,255,.35)';ctx.font='11px Vazirmatn,sans-serif';
+            ctx.fillText('دفعه بعد شانس بیاری!',W/2,H/2+22);
+          }
+          ctx.restore();
         }
         if(!started&&!over){
           ctx.fillStyle='rgba(232,193,86,.2)';ctx.beginPath();ctx.roundRect(W/2-100,H/2-26,200,52,12);ctx.fill();
