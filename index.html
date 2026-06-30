@@ -18,132 +18,182 @@
 <body>
 
   <!-- ============ صفحه رمز ============ -->
-  <div id="password-gate" style="
-    position:fixed;inset:0;z-index:9999;
-    background:#0d0d0d;
-    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;
-    font-family:'Vazirmatn',sans-serif;
-  ">
-    <!-- شمش شماره ۲۴ با صورت -->
-    <div style="position:relative;width:130px;height:180px;margin-bottom:4px;">
+  <style>
+    @keyframes gFloat   { 0%,100%{transform:translateY(0) rotate(-2deg)} 50%{transform:translateY(-16px) rotate(2deg)} }
+    @keyframes gCapRock { 0%,100%{transform:translateX(-50%) rotate(-2deg)} 50%{transform:translateX(-50%) rotate(2deg)} }
+    @keyframes gRing    { 0%{transform:translate(-50%,-50%) scale(.9);opacity:.8} 100%{transform:translate(-50%,-50%) scale(1.9);opacity:0} }
+    @keyframes gShimmer { 0%{left:-70%} 100%{left:170%} }
+    @keyframes gFadeUp  { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes gGlow    { 0%,100%{opacity:.35} 50%{opacity:.75} }
+    @keyframes gShake   { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-10px)} 40%{transform:translateX(10px)} 60%{transform:translateX(-6px)} 80%{transform:translateX(6px)} }
+    @keyframes gParticle{ 0%{transform:translateY(0) scale(1);opacity:1} 100%{transform:translateY(-90px) scale(0);opacity:0} }
+    @keyframes gBgPulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.08)} }
 
-      <!-- کلاه برزیل -->
-      <div style="position:absolute;top:14px;left:50%;transform:translateX(-50%);width:96px;z-index:3;">
-        <!-- تاج کلاه سبز -->
-        <div style="
-          background:linear-gradient(160deg,#00a550,#007a3d);
-          height:32px;width:82px;margin:0 auto;
-          border-radius:24px 24px 0 0;
-          position:relative;overflow:hidden;
-        ">
-          <!-- نوار لوسانژ زرد برزیل -->
-          <div style="
-            position:absolute;top:50%;left:50%;
-            transform:translate(-50%,-50%) rotate(0deg);
-            width:54px;height:18px;
-            background:#ffdf00;
-            clip-path:polygon(8px 50%,50% 0,calc(100% - 8px) 50%,50% 100%);
-            display:flex;align-items:center;justify-content:center;
-          ">
-            <!-- دایره آبی وسط -->
-            <div style="
-              width:12px;height:12px;
-              background:#002776;border-radius:50%;
-              display:flex;align-items:center;justify-content:center;
-            ">
-              <span style="font-size:5px;color:#fff;font-weight:900;line-height:1;">BR</span>
+    #password-gate {
+      position:fixed;inset:0;z-index:9999;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;
+      font-family:'Vazirmatn',sans-serif;
+      background:radial-gradient(ellipse 80% 60% at 50% 40%, rgba(232,193,86,.13) 0%, transparent 65%), #060610;
+      overflow:hidden;
+    }
+    /* اورب پس‌زمینه */
+    #g-orb {
+      position:absolute;top:35%;left:50%;transform:translate(-50%,-50%);
+      width:420px;height:420px;border-radius:50%;
+      background:radial-gradient(circle, rgba(232,193,86,.22) 0%, transparent 70%);
+      animation:gBgPulse 4s ease-in-out infinite;
+      pointer-events:none;
+    }
+    /* ذرات طلایی */
+    .g-particle {
+      position:absolute;width:4px;height:4px;border-radius:50%;
+      background:#e8c156;animation:gParticle linear infinite;opacity:0;
+    }
+    /* محتوا */
+    #g-content { display:flex;flex-direction:column;align-items:center;gap:0;position:relative;z-index:2;animation:gFadeUp .65s cubic-bezier(.22,1,.36,1) both; }
+    /* کاراکتر */
+    #g-char { position:relative;width:150px;height:210px;margin-bottom:12px;animation:gFloat 3.6s ease-in-out infinite; }
+    /* حلقه‌های پالس */
+    .g-ring {
+      position:absolute;top:50%;left:50%;
+      width:130px;height:130px;border-radius:50%;
+      border:2px solid rgba(232,193,86,.55);
+      animation:gRing 2.4s ease-out infinite;
+    }
+    .g-ring:nth-child(2){animation-delay:1.2s;}
+    /* کلاه */
+    #g-cap { position:absolute;top:10px;left:50%;transform:translateX(-50%);width:100px;z-index:3;animation:gCapRock 3.6s ease-in-out infinite; }
+    /* سر */
+    #g-head {
+      position:absolute;top:36px;left:50%;transform:translateX(-50%);
+      width:92px;height:82px;
+      background:linear-gradient(160deg,#f5d36a 0%,#e8c156 40%,#b8952e 100%);
+      border-radius:16px;overflow:hidden;z-index:2;
+      box-shadow:0 0 0 2px rgba(232,193,86,.3), 0 8px 32px rgba(232,193,86,.45);
+    }
+    /* شیمر روی سر */
+    #g-head::after {
+      content:'';position:absolute;top:0;width:45%;height:100%;
+      background:linear-gradient(105deg,transparent 20%,rgba(255,255,255,.45) 50%,transparent 80%);
+      animation:gShimmer 2.8s ease-in-out infinite;left:-70%;
+    }
+    /* گردن */
+    #g-neck { position:absolute;top:112px;left:50%;transform:translateX(-50%);width:24px;height:16px;background:linear-gradient(180deg,#d4aa3a,#c9a030);z-index:1; }
+    /* بدن */
+    #g-body { position:absolute;bottom:0;left:0;right:0;height:82px; }
+    /* لوگوی glow */
+    #g-glow {
+      position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);
+      width:100px;height:40px;border-radius:50%;
+      background:rgba(232,193,86,.35);filter:blur(18px);
+      animation:gGlow 3.6s ease-in-out infinite;
+    }
+    /* عنوان */
+    #g-title {
+      font-size:2rem;font-weight:900;letter-spacing:.5px;
+      background:linear-gradient(135deg,#f4d77a,#e8c156,#b8952e);
+      -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+      margin-bottom:2px;margin-top:8px;text-align:center;
+    }
+    #g-sub { font-size:.9rem;color:rgba(232,193,86,.7);font-weight:600;margin-bottom:24px;text-align:center; }
+    /* ورودی */
+    #pwd-input {
+      padding:14px 24px;border-radius:14px;
+      border:1.5px solid rgba(232,193,86,.22);
+      background:rgba(255,255,255,.04);color:#fff;
+      font-family:'Vazirmatn',sans-serif;font-size:1.05rem;
+      text-align:center;width:270px;outline:none;
+      direction:ltr;letter-spacing:4px;
+      transition:border-color .2s,box-shadow .2s;
+      backdrop-filter:blur(8px);
+    }
+    #pwd-input:focus { border-color:rgba(232,193,86,.65);box-shadow:0 0 0 3px rgba(232,193,86,.18); }
+    #pwd-input::placeholder { letter-spacing:1px;font-size:.9rem;color:rgba(255,255,255,.3); }
+    /* دکمه */
+    #g-btn {
+      position:relative;overflow:hidden;
+      padding:15px 52px;border-radius:14px;border:none;
+      background:linear-gradient(135deg,#f4d77a 0%,#e8c156 50%,#b8952e 100%);
+      color:#1a0e00;font-family:'Vazirmatn',sans-serif;
+      font-size:1.1rem;font-weight:900;cursor:pointer;
+      box-shadow:0 6px 30px rgba(232,193,86,.38),0 2px 0 rgba(255,255,255,.25) inset;
+      transition:transform .2s,box-shadow .2s;
+      margin-top:12px;
+    }
+    #g-btn:hover { transform:translateY(-3px);box-shadow:0 12px 40px rgba(232,193,86,.55); }
+    #g-btn:active { transform:scale(.97); }
+    #g-btn::after {
+      content:'';position:absolute;top:0;left:-80%;width:50%;height:100%;
+      background:linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);
+      transform:skewX(-15deg);
+    }
+    #g-btn:hover::after { animation:gShimmer .55s ease forwards; }
+    #pwd-error { color:#ff4466;font-size:.85rem;min-height:20px;margin-top:6px;text-align:center; }
+    #pwd-error.shake { animation:gShake .4s ease; }
+  </style>
+
+  <div id="password-gate">
+    <!-- اورب -->
+    <div id="g-orb"></div>
+    <!-- ذرات -->
+    <div class="g-particle" style="left:30%;bottom:20%;animation-duration:3.2s;animation-delay:0s"></div>
+    <div class="g-particle" style="left:45%;bottom:15%;animation-duration:2.8s;animation-delay:.7s;width:3px;height:3px"></div>
+    <div class="g-particle" style="left:60%;bottom:22%;animation-duration:4s;animation-delay:1.4s;width:5px;height:5px"></div>
+    <div class="g-particle" style="left:38%;bottom:18%;animation-duration:3.5s;animation-delay:2s;width:3px;height:3px"></div>
+    <div class="g-particle" style="left:55%;bottom:12%;animation-duration:2.5s;animation-delay:.3s"></div>
+    <div class="g-particle" style="left:25%;bottom:25%;animation-duration:3.8s;animation-delay:1s;width:3px;height:3px"></div>
+
+    <div id="g-content">
+      <!-- کاراکتر -->
+      <div id="g-char">
+        <!-- حلقه‌های پالس -->
+        <div class="g-ring"></div>
+        <div class="g-ring"></div>
+
+        <!-- کلاه برزیل -->
+        <div id="g-cap">
+          <div style="background:linear-gradient(160deg,#00a550,#007a3d);height:34px;width:84px;margin:0 auto;border-radius:24px 24px 0 0;position:relative;overflow:hidden;">
+            <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:54px;height:18px;background:#ffdf00;clip-path:polygon(8px 50%,50% 0,calc(100% - 8px) 50%,50% 100%);display:flex;align-items:center;justify-content:center;">
+              <div style="width:13px;height:13px;background:#002776;border-radius:50%;display:flex;align-items:center;justify-content:center;">
+                <span style="font-size:5px;color:#fff;font-weight:900;line-height:1;">BR</span>
+              </div>
             </div>
           </div>
+          <div style="height:11px;width:98px;background:linear-gradient(180deg,#005c28,#004d22);border-radius:2px 2px 6px 6px;position:relative;">
+            <div style="position:absolute;bottom:-5px;left:2px;width:74px;height:9px;background:#004d22;border-radius:0 0 8px 8px;"></div>
+          </div>
         </div>
-        <!-- لبه جلو (بریم) -->
-        <div style="
-          height:10px;width:96px;
-          background:linear-gradient(180deg,#005c28,#004d22);
-          border-radius:2px 2px 6px 6px;
-          position:relative;
-        ">
-          <div style="
-            position:absolute;bottom:-5px;left:2px;
-            width:72px;height:9px;
-            background:#004d22;
-            border-radius:0 0 8px 8px;
-          "></div>
+
+        <!-- سر شمش -->
+        <div id="g-head">
+          <div style="position:absolute;bottom:16px;left:50%;transform:translateX(-50%);width:30px;height:15px;border-bottom:3px solid #7a5c10;border-radius:0 0 16px 16px;"></div>
         </div>
+
+        <!-- گردن -->
+        <div id="g-neck"></div>
+
+        <!-- بدن -->
+        <div id="g-body">
+          <div style="position:absolute;top:0;left:0;width:32px;height:26px;background:linear-gradient(135deg,#e8c156,#b8952e);border-radius:8px 0 0 8px;transform:rotate(-6deg);transform-origin:right bottom;"></div>
+          <div style="position:absolute;top:0;right:0;width:32px;height:26px;background:linear-gradient(135deg,#b8952e,#e8c156);border-radius:0 8px 8px 0;transform:rotate(6deg);transform-origin:left bottom;"></div>
+          <div style="position:absolute;bottom:0;left:8px;right:8px;top:8px;background:linear-gradient(160deg,#e8c156,#b8952e);border-radius:6px 6px 12px 12px;display:flex;align-items:center;justify-content:center;box-shadow:inset 0 2px 0 rgba(255,255,255,.25);">
+            <span style="font-size:1.7rem;font-weight:900;color:#3a2800;letter-spacing:-1px;">۲۴</span>
+          </div>
+        </div>
+
+        <!-- سایه زیر -->
+        <div id="g-glow"></div>
       </div>
 
-      <!-- سر — شمش طلا -->
-      <div style="
-        position:absolute;top:28px;left:50%;transform:translateX(-50%);
-        width:88px;height:78px;
-        background:linear-gradient(160deg,#f5d36a 0%,#e8c156 40%,#b8952e 100%);
-        border-radius:14px;
-        box-shadow:0 4px 18px #e8c15640;
-      ">
-        <!-- لبخند -->
-        <div style="position:absolute;bottom:14px;left:50%;transform:translateX(-50%);width:28px;height:14px;border-bottom:3px solid #7a5c10;border-radius:0 0 14px 14px;"></div>
-      </div>
+      <!-- عنوان -->
+      <div id="g-title">شماره ۲۴</div>
+      <div id="g-sub">مدیر کمپین لیگ ۲۴ عیار اکسیراز</div>
 
-      <!-- گردن -->
-      <div style="
-        position:absolute;top:100px;left:50%;transform:translateX(-50%);
-        width:22px;height:14px;
-        background:linear-gradient(180deg,#d4aa3a,#c9a030);
-      "></div>
-
-      <!-- بدن — پیراهن با شماره -->
-      <div style="position:absolute;bottom:0;left:0;right:0;height:72px;">
-        <!-- آستین چپ -->
-        <div style="
-          position:absolute;top:0;left:0;
-          width:30px;height:24px;
-          background:linear-gradient(135deg,#e8c156,#b8952e);
-          border-radius:6px 0 0 6px;
-          transform:rotate(-6deg);transform-origin:right bottom;
-        "></div>
-        <!-- آستین راست -->
-        <div style="
-          position:absolute;top:0;right:0;
-          width:30px;height:24px;
-          background:linear-gradient(135deg,#b8952e,#e8c156);
-          border-radius:0 6px 6px 0;
-          transform:rotate(6deg);transform-origin:left bottom;
-        "></div>
-        <!-- بدنه -->
-        <div style="
-          position:absolute;bottom:0;left:8px;right:8px;top:6px;
-          background:linear-gradient(160deg,#e8c156,#b8952e);
-          border-radius:4px 4px 10px 10px;
-          display:flex;align-items:center;justify-content:center;
-        ">
-          <span style="font-size:1.5rem;font-weight:900;color:#3a2800;letter-spacing:-1px;">۲۴</span>
-        </div>
-      </div>
-
+      <!-- فرم -->
+      <input id="pwd-input" type="password" placeholder="رمز عبور را وارد کن" />
+      <button id="g-btn" onclick="checkPassword()">ورود به داشبورد ✦</button>
+      <div id="pwd-error"></div>
     </div>
-
-    <!-- هویت -->
-    <div style="text-align:center;line-height:1.6;">
-      <div style="font-size:1.25rem;font-weight:800;color:#fff;">شماره ۲۴</div>
-      <div style="font-size:.85rem;color:#e8c156;font-weight:600;">مدیر کمپین لیگ ۲۴ عیار</div>
-    </div>
-
-    <!-- فرم -->
-    <input id="pwd-input" type="password" placeholder="رمز عبور"
-      style="
-        padding:12px 20px;border-radius:10px;border:1.5px solid #2a2a2a;
-        background:#161616;color:#fff;font-family:'Vazirmatn',sans-serif;
-        font-size:1rem;text-align:center;width:240px;outline:none;
-        direction:ltr;letter-spacing:3px;margin-top:4px;
-      "
-    />
-    <button onclick="checkPassword()" style="
-      padding:12px 40px;border-radius:10px;border:none;
-      background:linear-gradient(135deg,#e8c156,#b8952e);
-      color:#0d0d0d;font-family:'Vazirmatn',sans-serif;
-      font-size:1rem;font-weight:800;cursor:pointer;
-      box-shadow:0 4px 20px #e8c15630;
-    ">ورود به داشبورد</button>
-    <div id="pwd-error" style="color:#ff4466;font-size:.85rem;min-height:18px;"></div>
   </div>
 
   <script>
@@ -153,9 +203,16 @@
     function checkPassword() {
       var v = document.getElementById('pwd-input').value;
       if(v === 'ExiR@z_L24##') {
-        document.getElementById('password-gate').style.display = 'none';
+        var gate = document.getElementById('password-gate');
+        gate.style.transition = 'opacity .4s';
+        gate.style.opacity = '0';
+        setTimeout(function(){ gate.style.display = 'none'; }, 400);
       } else {
-        document.getElementById('pwd-error').textContent = 'رمز اشتباه است';
+        var err = document.getElementById('pwd-error');
+        err.textContent = 'رمز اشتباه است';
+        err.classList.remove('shake');
+        void err.offsetWidth;
+        err.classList.add('shake');
         document.getElementById('pwd-input').value = '';
         document.getElementById('pwd-input').focus();
       }
