@@ -247,7 +247,7 @@
       pd.w=w().pdW;
       var bl={x:W/2,y:H/3,vx:2.4,vy:-3.0,angle:0,spin:.04};
       var score=0,over=false,started=false,flash=0;
-      var pts=[],popups=[],bonuses=[],bonusTick=0,BONUS_EVERY=6;
+      var pts=[],popups=[],bonuses=[],bonusTick=0,BONUS_EVERY=3;
       var codeShow={active:false,code:'',life:0};
       var collectedPrizes=[];
       var keys={};
@@ -266,11 +266,12 @@
 
       var BTYPES=[
         {icon:'⭐',label:'+۲۰ امتیاز',pts:20,color:'#ffd700'},
+        {icon:'🎁',label:'جعبه شانس!', pts:10,color:'#ff69b4',isCode:true},
         {icon:'💎',label:'+۵۰ امتیاز',pts:50,color:'#00e5ff'},
+        {icon:'🎁',label:'جعبه شانس!', pts:10,color:'#ff69b4',isCode:true},
         {icon:'⚡',label:'+۳۰ امتیاز',pts:30,color:'#ffe000'},
+        {icon:'🎁',label:'جعبه شانس!', pts:10,color:'#ff69b4',isCode:true},
         {icon:'⭐',label:'+۲۰ امتیاز',pts:20,color:'#ffd700'},
-        {icon:'🎁',label:'جعبه شانس!', pts:10,color:'#ff69b4',isCode:true},
-        {icon:'🎁',label:'جعبه شانس!', pts:10,color:'#ff69b4',isCode:true},
       ];
 
       function spawnBonus(){
@@ -314,10 +315,15 @@
           if(lvl<WEIGHTS.length-1){
             lvl++;
             pd.w=Math.max(w().pdW,36);
-            addPopup(bl.x,pd.y-28,w().label,'#f4d77a');
+            addPopup(bl.x,pd.y-28,'✦ '+w().label,'#f4d77a');
             addPts(bl.x,pd.y,18,'#f4d77a');
           } else {
-            addPts(bl.x,pd.y,12);
+            /* ۲۵۰ گرمی — رندوم سایز */
+            lvl=2+Math.floor(Math.random()*(WEIGHTS.length-2));
+            pd.w=Math.max(w().pdW,36);
+            addPopup(bl.x,pd.y-28,'⚡ '+w().label+'!','#e23744');
+            addPts(bl.x,pd.y,22,'#e23744');
+            flash=1;
           }
           document.getElementById('g-score').textContent='امتیاز: '+fa(score);
           bonusTick++;
