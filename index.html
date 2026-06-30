@@ -102,7 +102,7 @@
       border:1.5px solid rgba(232,193,86,.22);
       background:rgba(255,255,255,.04);color:#fff;
       font-family:'Vazirmatn',sans-serif;font-size:1.05rem;
-      text-align:center;width:270px;outline:none;
+      text-align:center;width:min(270px,calc(100vw - 48px));outline:none;
       direction:ltr;letter-spacing:4px;
       transition:border-color .2s,box-shadow .2s;
       backdrop-filter:blur(8px);
@@ -113,6 +113,7 @@
     #g-btn {
       position:relative;overflow:hidden;
       padding:15px 52px;border-radius:14px;border:none;
+      width:min(270px,calc(100vw - 48px));
       background:linear-gradient(135deg,#f4d77a 0%,#e8c156 50%,#b8952e 100%);
       color:#1a0e00;font-family:'Vazirmatn',sans-serif;
       font-size:1.1rem;font-weight:900;cursor:pointer;
@@ -192,7 +193,7 @@
       <!-- بازی -->
       <div style="position:relative;margin:10px 0 4px;text-align:center;">
         <div style="font-size:.75rem;color:rgba(232,193,86,.55);margin-bottom:6px;letter-spacing:.5px;">شمش رو هوا نگه دار ✦ موس · لمس · ← →</div>
-        <canvas id="g-game" width="300" height="185" style="border-radius:14px;border:1px solid rgba(232,193,86,.2);cursor:none;display:block;margin:0 auto;"></canvas>
+        <canvas id="g-game" width="300" height="185" style="border-radius:14px;border:1px solid rgba(232,193,86,.2);cursor:none;display:block;margin:0 auto;max-width:calc(100vw - 48px);height:auto;"></canvas>
         <div id="g-score" style="font-size:.8rem;color:rgba(232,193,86,.7);margin-top:5px;font-weight:700;letter-spacing:.5px;">امتیاز: ۰</div>
         <div style="display:flex;justify-content:center;gap:12px;margin-top:5px;flex-wrap:wrap;">
           <span style="font-size:.65rem;color:rgba(255,105,180,.7);">🎁 کد تخفیف</span>
@@ -204,7 +205,7 @@
       </div>
 
       <!-- جداکننده -->
-      <div style="display:flex;align-items:center;gap:10px;width:270px;margin:6px 0;">
+      <div style="display:flex;align-items:center;gap:10px;width:min(270px,calc(100vw - 48px));margin:6px 0;">
         <div style="flex:1;height:1px;background:rgba(232,193,86,.15);"></div>
         <span style="font-size:.75rem;color:rgba(232,193,86,.35);">ورود</span>
         <div style="flex:1;height:1px;background:rgba(232,193,86,.15);"></div>
