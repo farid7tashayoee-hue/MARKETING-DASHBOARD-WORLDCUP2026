@@ -9,6 +9,15 @@
   const D = window.CAMPAIGN_DATA;
   if (!D) { console.error("CAMPAIGN_DATA یافت نشد — js/data.js را بررسی کنید."); return; }
 
+  const ICONS = {
+    users:   `<svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
+    activity:`<svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>`,
+    target:  `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>`,
+    trending:`<svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>`,
+    lock:    `<svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`,
+    percent: `<svg viewBox="0 0 24 24"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg>`,
+  };
+
   let activePeriod = "today";
   window.switchPeriod = function(p, btn) {
     activePeriod = p;
@@ -89,40 +98,40 @@
 
     const cards = [
       {
-        icon: "👥", label: "کل ثبت‌نام‌ها", value: fmt(signups),
+        icon: ICONS.users,   label: "کل ثبت‌نام‌ها", value: fmt(signups),
         target: k.signupsTarget, current: signups,
         foot: k.signupsTarget ? "هدف: " + fmt(k.signupsTarget) : "KPI اصلی کمپین"
       },
       {
-        icon: "🔥", label: "کل بازیکنان فعال", value: fmt(k.activeUsersAvg),
+        icon: ICONS.activity, label: "کل بازیکنان فعال", value: fmt(k.activeUsersAvg),
         foot: "کاربران شرکت‌کننده در کمپین"
       },
       {
-        icon: "🎯", label: "کل پیش‌بینی‌ها", value: fmt(k.totalPredictions),
+        icon: ICONS.target,   label: "کل پیش‌بینی‌ها", value: fmt(k.totalPredictions),
         foot: "شاخص تعامل"
       },
       {
-        icon: "📈", label: "نرخ تبدیل بازدید → ثبت‌نام", value: fmtPct(conv),
+        icon: ICONS.trending, label: "نرخ تبدیل بازدید → ثبت‌نام", value: fmtPct(conv),
         foot: "از " + fmt(k.visits || 0) + " بازدید"
       },
       {
-        icon: "💰", label: "هزینه کل تبلیغات", value: "★ ★ ★ ★ ★", unit: "",
+        icon: ICONS.lock,     label: "هزینه کل تبلیغات", value: "★ ★ ★ ★ ★", unit: "",
         foot: toFa((D.channels || []).length) + " کانال", masked: true
       },
       {
-        icon: "🧮", label: "CPA — میانگین هزینه هر ثبت‌نام", value: fmtMoney(cpa), unit: " تومان",
+        icon: ICONS.percent,  label: "CPA — میانگین هزینه هر ثبت‌نام", value: fmtMoney(cpa), unit: " تومان",
         foot: "هزینه ÷ ثبت‌نام"
       }
     ];
 
-    $("#kpiGrid").innerHTML = cards.map((c) => {
+    $("#kpiGrid").innerHTML = cards.map((c, i) => {
       let bar = "";
       if (c.target && c.target > 0) {
         const p = Math.min(pct(c.current, c.target), 100);
         bar = `<div class="k-bar"><span style="width:${p}%"></span></div>`;
       }
       const unit = c.unit ? `<small>${c.unit}</small>` : "";
-      return `<div class="kpi-card">
+      return `<div class="kpi-card" style="--i:${i}">
         <div class="k-icon">${c.icon}</div>
         <div class="k-label">${c.label}</div>
         <div class="k-value">${c.value}${unit}</div>
