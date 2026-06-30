@@ -250,6 +250,8 @@
       var pts=[],popups=[],bonuses=[],bonusTick=0,BONUS_EVERY=3;
       var codeShow={active:false,code:'',life:0};
       var collectedPrizes=[];
+      var wind=0,windT=0,shakeT=0,fogT=0;
+      var eventTick=0,EVENT_EVERY=9,evName='',evLife=0;
       var keys={};
       document.addEventListener('keydown',function(e){keys[e.key]=true;if(e.key.startsWith('Arrow'))e.preventDefault();});
       document.addEventListener('keyup',function(e){keys[e.key]=false;});
@@ -289,12 +291,53 @@
         score=0;over=false;started=false;flash=0;pts=[];popups=[];bonuses=[];bonusTick=0;
         codeShow={active:false,code:'',life:0};
         collectedPrizes=[];
+        wind=0;windT=0;shakeT=0;fogT=0;eventTick=0;evName='';evLife=0;
         document.getElementById('g-score').textContent='امتیاز: ۰';
+      }
+
+      function triggerEvent(){
+        var EVS=[
+          {n:'⚡ طوفان!',c:'#ff4466',fn:function(){
+            bl.vx=(Math.random()>.5?1:-1)*(4.5+Math.random()*3);
+            bl.vy=-(4+Math.random()*3); bl.spin=(Math.random()-.5)*.3; flash=1.8;
+            addPts(bl.x,bl.y,28,'#ff4466');
+          }},
+          {n:'🌪 گرداب!',c:'#8b5cf6',fn:function(){
+            bl.vx=-bl.vx*1.4; bl.vy=-(Math.abs(bl.vy)+2.5);
+            bl.spin=(Math.random()-.5)*.45; flash=1;
+            addPts(bl.x,bl.y,22,'#8b5cf6');
+          }},
+          {n:'🌬 باد!',c:'#2bb8c4',fn:function(){
+            wind=(Math.random()>.5?1:-1)*0.38; windT=100+Math.floor(Math.random()*50);
+            addPts(W/2,H/2,15,'#2bb8c4');
+          }},
+          {n:'🌍 زلزله!',c:'#e8c156',fn:function(){
+            shakeT=80; flash=0.9; addPts(bl.x,bl.y,18,'#e8c156');
+          }},
+          {n:'🌫 مه!',c:'#aaa',fn:function(){
+            fogT=70;
+          }},
+          {n:'🚀 شتاب!',c:'#1faa6b',fn:function(){
+            var s=Math.sqrt(bl.vx*bl.vx+bl.vy*bl.vy);
+            bl.vx=bl.vx/s*(s*1.7); bl.vy=bl.vy/s*(s*1.7); flash=1.6;
+            addPts(bl.x,bl.y,24,'#1faa6b');
+          }},
+          {n:'🔄 برگشت!',c:'#e0489e',fn:function(){
+            bl.vx=-bl.vx; flash=0.7;
+          }},
+        ];
+        var ev=EVS[Math.floor(Math.random()*EVS.length)];
+        ev.fn(); evName=ev.n; evLife=1.6;
+        addPopup(W/2,H/2-30,ev.n,ev.c);
       }
 
       function update(){
         if(!started||over)return;
         if(flash>0)flash-=.055;
+        if(evLife>0)evLife-=.012;
+        if(windT>0){bl.vx+=wind;windT--;}else{wind=0;}
+        if(shakeT>0)shakeT--;
+        if(fogT>0)fogT--;
         if(keys['ArrowLeft']||keys['a'])  pd.x=Math.max(pd.w/2,pd.x-8);
         if(keys['ArrowRight']||keys['d']) pd.x=Math.min(W-pd.w/2,pd.x+8);
         var HW=hw(),HH=hh();
@@ -312,23 +355,17 @@
           bl.spin=(Math.random()-.5)*.14;
           score+=w().pts;
           /* grow ingot */
-          if(lvl<WEIGHTS.length-1){
-            lvl++;
-            pd.w=Math.max(w().pdW,36);
-            addPopup(bl.x,pd.y-28,'✦ '+w().label,'#f4d77a');
-            addPts(bl.x,pd.y,18,'#f4d77a');
-          } else {
-            /* ۲۵۰ گرمی — رندوم سایز */
-            lvl=2+Math.floor(Math.random()*(WEIGHTS.length-2));
-            pd.w=Math.max(w().pdW,36);
-            addPopup(bl.x,pd.y-28,'⚡ '+w().label+'!','#e23744');
-            addPts(bl.x,pd.y,22,'#e23744');
-            flash=1;
-          }
+          /* وزن رندوم — قاطی پاتی */
+          var prevLvl=lvl;
+          do { lvl=Math.floor(Math.random()*WEIGHTS.length); } while(lvl===prevLvl&&WEIGHTS.length>1);
+          pd.w=Math.max(w().pdW,36);
+          addPopup(bl.x,pd.y-28,'✦ '+w().label,'#f4d77a');
+          addPts(bl.x,pd.y,14,'#f4d77a');
           document.getElementById('g-score').textContent='امتیاز: '+fa(score);
-          bonusTick++;
+          bonusTick++; eventTick++;
           if(bonusTick>=BONUS_EVERY){bonusTick=0;spawnBonus();}
-          flash=lvl>=5?.8:.3;
+          if(eventTick>=EVENT_EVERY){eventTick=Math.floor(Math.random()*4);triggerEvent();}
+          flash=.25;
         }
         if(bl.y-HW>H+10)over=true;
         /* bonuses */
@@ -417,12 +454,30 @@
         for(var j=0;j<H;j+=40){ctx.beginPath();ctx.moveTo(0,j);ctx.lineTo(W,j);ctx.stroke();}
         pts.forEach(function(p){ctx.beginPath();ctx.arc(p.x,p.y,p.r*p.life,0,Math.PI*2);ctx.fillStyle=(p.col||'#e8c156').replace('#','rgba(').replace(/([0-9a-f]{2})/gi,function(m){return parseInt(m,16)+',';})+p.life+')';ctx.fill();});
         bonuses.forEach(drawBonus);
-        /* paddle */
-        var pg=ctx.createLinearGradient(pd.x-pd.w/2,pd.y,pd.x+pd.w/2,pd.y+pd.h);
+        /* paddle — با لرزش زلزله */
+        var sx=shakeT>0?(Math.random()-.5)*16:0, sy=shakeT>0?(Math.random()-.5)*6:0;
+        var pg=ctx.createLinearGradient(pd.x+sx-pd.w/2,pd.y,pd.x+sx+pd.w/2,pd.y+pd.h);
         pg.addColorStop(0,'#f4d77a');pg.addColorStop(.5,'#e8c156');pg.addColorStop(1,'#b8952e');
-        ctx.beginPath();ctx.roundRect(pd.x-pd.w/2,pd.y,pd.w,pd.h,6);
+        ctx.beginPath();ctx.roundRect(pd.x+sx-pd.w/2,pd.y+sy,pd.w,pd.h,6);
         ctx.fillStyle=pg;ctx.shadowColor='rgba(232,193,86,.7)';ctx.shadowBlur=10;ctx.fill();ctx.shadowBlur=0;
-        if(!over)drawChar(bl.x,bl.y,bl.angle,w().sc);
+        /* نمایش باد */
+        if(windT>0){
+          ctx.save();ctx.globalAlpha=.5;ctx.fillStyle='#2bb8c4';ctx.font='14px serif';
+          ctx.textAlign='left';ctx.textBaseline='top';
+          ctx.fillText(wind>0?'← باد':'باد →',wind>0?4:W-50,4);ctx.restore();
+        }
+        /* شمش با مه */
+        if(!over){
+          if(fogT>0){ctx.save();ctx.globalAlpha=.12;drawChar(bl.x,bl.y,bl.angle,w().sc);ctx.restore();}
+          else drawChar(bl.x,bl.y,bl.angle,w().sc);
+        }
+        /* نام رویداد */
+        if(evLife>0&&evName){
+          ctx.save();ctx.globalAlpha=Math.min(evLife,1);
+          ctx.fillStyle='#ff4466';ctx.shadowColor='#ff4466';ctx.shadowBlur=20;
+          ctx.font='bold 20px Vazirmatn,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
+          ctx.fillText(evName,W/2,H*0.38);ctx.restore();
+        }
         /* popups */
         popups.forEach(function(p){
           ctx.save();ctx.globalAlpha=p.life;
