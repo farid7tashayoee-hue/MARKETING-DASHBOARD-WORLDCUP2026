@@ -189,6 +189,20 @@
       <div id="g-title">شماره ۲۴</div>
       <div id="g-sub">مدیر کمپین لیگ ۲۴ عیار اکسیراز</div>
 
+      <!-- بازی -->
+      <div style="position:relative;margin:10px 0 4px;text-align:center;">
+        <div style="font-size:.75rem;color:rgba(232,193,86,.55);margin-bottom:6px;letter-spacing:.5px;">شمش رو هوا نگه دار ✦ موس · لمس · ← →</div>
+        <canvas id="g-game" width="300" height="160" style="border-radius:14px;border:1px solid rgba(232,193,86,.2);cursor:none;display:block;margin:0 auto;"></canvas>
+        <div id="g-score" style="font-size:.8rem;color:rgba(232,193,86,.7);margin-top:5px;font-weight:700;letter-spacing:.5px;">امتیاز: ۰</div>
+      </div>
+
+      <!-- جداکننده -->
+      <div style="display:flex;align-items:center;gap:10px;width:270px;margin:6px 0;">
+        <div style="flex:1;height:1px;background:rgba(232,193,86,.15);"></div>
+        <span style="font-size:.75rem;color:rgba(232,193,86,.35);">ورود</span>
+        <div style="flex:1;height:1px;background:rgba(232,193,86,.15);"></div>
+      </div>
+
       <!-- فرم -->
       <input id="pwd-input" type="password" placeholder="رمز عبور را وارد کن" />
       <button id="g-btn" onclick="checkPassword()">ورود به داشبورد ✦</button>
@@ -197,6 +211,142 @@
   </div>
 
   <script>
+    /* -------- بازی شمش -------- */
+    (function(){
+      var cv = document.getElementById('g-game');
+      var ctx = cv.getContext('2d');
+      var W = cv.width, H = cv.height;
+      var pd = { x: W/2, w: 72, h: 11, y: H - 18 };
+      var bl = { x: W/2, y: H/2 - 20, vx: 2.8, vy: -3.5, w: 30, h: 22, r: 7 };
+      var score = 0, over = false, started = false;
+      var pts = [];
+      var keys = {};
+      document.addEventListener('keydown', function(e){ keys[e.key]=true; e.key.startsWith('Arrow')&&e.preventDefault(); });
+      document.addEventListener('keyup',   function(e){ keys[e.key]=false; });
+
+      function toFaNum(n){ return String(n).replace(/\d/g,function(d){ return '۰۱۲۳۴۵۶۷۸۹'[d]; }); }
+
+      function addPts(x,y){
+        for(var i=0;i<10;i++) pts.push({x:x,y:y,vx:(Math.random()-.5)*5,vy:-Math.random()*4-1,life:1,r:Math.random()*3+1});
+      }
+
+      function reset(){
+        bl.x=W/2; bl.y=H/2-20;
+        var spd = Math.min(2.8+score*.06,6);
+        bl.vx=(Math.random()>.5?1:-1)*spd*(0.7+Math.random()*.6);
+        bl.vy=-spd;
+        score=0; over=false; started=false; pts=[];
+        document.getElementById('g-score').textContent='امتیاز: ۰';
+      }
+
+      function update(){
+        if(!started||over) return;
+        /* paddle */
+        if(keys['ArrowLeft']||keys['a'])  pd.x=Math.max(pd.w/2,pd.x-7);
+        if(keys['ArrowRight']||keys['d']) pd.x=Math.min(W-pd.w/2,pd.x+7);
+        /* ball */
+        bl.x+=bl.vx; bl.y+=bl.vy;
+        /* walls */
+        if(bl.x-bl.w/2<0)   { bl.x=bl.w/2; bl.vx=Math.abs(bl.vx); }
+        if(bl.x+bl.w/2>W)   { bl.x=W-bl.w/2; bl.vx=-Math.abs(bl.vx); }
+        if(bl.y-bl.h/2<0)   { bl.y=bl.h/2; bl.vy=Math.abs(bl.vy); }
+        /* paddle collision */
+        if(bl.y+bl.h/2>=pd.y&&bl.y+bl.h/2<=pd.y+pd.h&&bl.x+bl.w/2>pd.x-pd.w/2&&bl.x-bl.w/2<pd.x+pd.w/2){
+          bl.y=pd.y-bl.h/2;
+          var hit=(bl.x-pd.x)/(pd.w/2);
+          var spd=Math.min(Math.sqrt(bl.vx*bl.vx+bl.vy*bl.vy)+.1,7);
+          bl.vx=hit*spd*1.1; bl.vy=-Math.sqrt(Math.max(spd*spd-bl.vx*bl.vx,.5));
+          score++;
+          document.getElementById('g-score').textContent='امتیاز: '+toFaNum(score);
+          addPts(bl.x,pd.y);
+        }
+        /* game over */
+        if(bl.y-bl.h/2>H+10) over=true;
+        /* particles */
+        pts=pts.filter(function(p){ p.x+=p.vx;p.y+=p.vy;p.vy+=.12;p.life-=.025;return p.life>0; });
+      }
+
+      function drawIngot(x,y,w,h,r,alpha){
+        var g=ctx.createLinearGradient(x-w/2,y-h/2,x+w/2,y+h/2);
+        g.addColorStop(0,'rgba(245,211,106,'+alpha+')');
+        g.addColorStop(.45,'rgba(232,193,86,'+alpha+')');
+        g.addColorStop(1,'rgba(184,149,46,'+alpha+')');
+        ctx.beginPath();
+        ctx.roundRect(x-w/2,y-h/2,w,h,r);
+        ctx.fillStyle=g;
+        ctx.shadowColor='rgba(232,193,86,.7)';
+        ctx.shadowBlur=14;
+        ctx.fill();
+        ctx.shadowBlur=0;
+        /* shimmer */
+        ctx.save();
+        ctx.clip();
+        var sg=ctx.createLinearGradient(x-w/2,y,x+w/2,y);
+        sg.addColorStop(0,'transparent');
+        sg.addColorStop(.5,'rgba(255,255,255,.3)');
+        sg.addColorStop(1,'transparent');
+        ctx.fillStyle=sg;
+        ctx.fillRect(x-w/2,y-h/2,w,h);
+        ctx.restore();
+        /* text */
+        ctx.fillStyle='rgba(58,40,0,'+alpha+')';
+        ctx.font='bold 11px Vazirmatn,sans-serif';
+        ctx.textAlign='center'; ctx.textBaseline='middle';
+        ctx.fillText('۲۴',x,y+1);
+      }
+
+      function draw(){
+        ctx.clearRect(0,0,W,H);
+        /* bg */
+        ctx.fillStyle='rgba(6,6,18,.92)';
+        ctx.beginPath();ctx.roundRect(0,0,W,H,13);ctx.fill();
+        /* subtle grid */
+        ctx.strokeStyle='rgba(232,193,86,.05)';ctx.lineWidth=1;
+        for(var i=0;i<W;i+=40){ctx.beginPath();ctx.moveTo(i,0);ctx.lineTo(i,H);ctx.stroke();}
+        for(var j=0;j<H;j+=40){ctx.beginPath();ctx.moveTo(0,j);ctx.lineTo(W,j);ctx.stroke();}
+        /* particles */
+        pts.forEach(function(p){
+          ctx.beginPath();ctx.arc(p.x,p.y,p.r*p.life,0,Math.PI*2);
+          ctx.fillStyle='rgba(232,193,86,'+p.life+')';ctx.fill();
+        });
+        /* paddle */
+        var pg=ctx.createLinearGradient(pd.x-pd.w/2,pd.y,pd.x+pd.w/2,pd.y+pd.h);
+        pg.addColorStop(0,'#f4d77a');pg.addColorStop(.5,'#e8c156');pg.addColorStop(1,'#b8952e');
+        ctx.beginPath();ctx.roundRect(pd.x-pd.w/2,pd.y,pd.w,pd.h,5);
+        ctx.fillStyle=pg;ctx.shadowColor='rgba(232,193,86,.6)';ctx.shadowBlur=10;ctx.fill();ctx.shadowBlur=0;
+        /* ball */
+        if(!over) drawIngot(bl.x,bl.y,bl.w,bl.h,bl.r,1);
+        /* start screen */
+        if(!started&&!over){
+          ctx.fillStyle='rgba(232,193,86,.22)';ctx.beginPath();ctx.roundRect(W/2-90,H/2-22,180,44,10);ctx.fill();
+          ctx.fillStyle='#e8c156';ctx.font='bold 14px Vazirmatn,sans-serif';
+          ctx.textAlign='center';ctx.textBaseline='middle';
+          ctx.fillText('کلیک کن شروع کنی',W/2,H/2);
+        }
+        /* game over */
+        if(over){
+          ctx.fillStyle='rgba(6,6,18,.75)';ctx.fillRect(0,0,W,H);
+          ctx.fillStyle='#e8c156';ctx.font='bold 17px Vazirmatn,sans-serif';
+          ctx.textAlign='center';ctx.textBaseline='middle';
+          ctx.fillText('شمش افتاد! امتیاز: '+toFaNum(score),W/2,H/2-14);
+          ctx.fillStyle='rgba(232,193,86,.6)';ctx.font='12px Vazirmatn,sans-serif';
+          ctx.fillText('کلیک کن دوباره بازی کنی',W/2,H/2+14);
+        }
+      }
+
+      function loop(){ update();draw();requestAnimationFrame(loop); }
+      loop();
+
+      /* controls */
+      cv.addEventListener('mousemove',function(e){ var r=cv.getBoundingClientRect();pd.x=(e.clientX-r.left)*(W/r.width); });
+      cv.addEventListener('touchmove',function(e){ e.preventDefault();var r=cv.getBoundingClientRect();pd.x=(e.touches[0].clientX-r.left)*(W/r.width); },{passive:false});
+      cv.addEventListener('click',function(){
+        if(!started){started=true;}
+        else if(over){reset();started=true;}
+      });
+    })();
+
+    /* -------- رمز -------- */
     document.getElementById('pwd-input').addEventListener('keydown', function(e){
       if(e.key === 'Enter') checkPassword();
     });
