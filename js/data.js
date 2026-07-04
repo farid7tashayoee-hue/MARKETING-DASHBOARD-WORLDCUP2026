@@ -32,6 +32,7 @@ const CAMPAIGN_DATA = {
   kpis: {
     signups:          21945,   // واقعی — از participants-new.csv
     signupsPrev:      14523,   // قبلی — participants.csv (تا ۷ تیر)
+    signupsDay0:      500,     // روز قبل افتتاحیه — ۱۹ خرداد
     signupsTarget:    0,
     activeUsersAvg:   21792,   // واقعی — کل بازیکنان فعال کمپین
     totalPredictions: 415637,  // واقعی — از پنل

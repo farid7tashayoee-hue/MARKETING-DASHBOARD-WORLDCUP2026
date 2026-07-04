@@ -297,13 +297,14 @@
      ============================================================ */
   function renderSignupGrowth() {
     const k = D.kpis || {};
+    const day0 = k.signupsDay0 || 0;
     const prev = k.signupsPrev || 0;
     const curr = k.signups     || 0;
-    const growth = curr - prev;
-    const pct = prev ? ((growth / prev) * 100).toFixed(1) : 0;
+    const growth = curr - day0;
+    const pct = day0 ? ((growth / day0) * 100).toFixed(1) : 0;
 
     const sub = $("#signupGrowthSub");
-    if (sub) sub.textContent = "رشد " + toFa(pct) + "٪ — +" + fmt(growth) + " نفر جدید";
+    if (sub) sub.textContent = "رشد " + toFa(pct) + "٪ از روز صفر — +" + fmt(growth) + " نفر";
 
     const sub2 = $("#sourceChartSub");
     if (sub2) sub2.textContent = "بر اساس فایل participants — " + fmt(curr) + " بازیکن";
@@ -311,11 +312,11 @@
     new Chart($("#signupGrowthChart"), {
       type: "bar",
       data: {
-        labels: ["ثبت‌نام اولیه (۷ تیر)", "ثبت‌نام فعلی (۱۳ تیر)"],
+        labels: ["قبل از کمپین (۱۹ خرداد)", "میانه کمپین (۷ تیر)", "فعلی (۱۳ تیر)"],
         datasets: [{
-          data: [prev, curr],
-          backgroundColor: ["rgba(232,193,86,0.55)", "rgba(232,193,86,1)"],
-          borderColor: ["#e8c156", "#e8c156"],
+          data: [day0, prev, curr],
+          backgroundColor: ["rgba(232,193,86,0.3)", "rgba(232,193,86,0.65)", "rgba(232,193,86,1)"],
+          borderColor: ["#e8c156", "#e8c156", "#e8c156"],
           borderWidth: 2,
           borderRadius: 8
         }]
