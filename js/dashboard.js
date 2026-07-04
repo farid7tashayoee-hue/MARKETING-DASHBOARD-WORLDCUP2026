@@ -325,6 +325,7 @@
       { v: r.gmQuestions, l: "سوال گرداننده",          sub: fmt(r.gmQuestionPoints || 0) + " امتیاز" },
       { v: r.streakBonus, l: "زنجیره برد",              sub: fmt(r.streakPoints || 0) + " امتیاز" },
       { v: r.matchScored, l: "پیش‌بینی امتیازگرفته",   sub: fmt(r.matchPoints || 0) + " امتیاز" },
+      { v: r.followers,   l: "فالوور ماموریت",          sub: null },
     ].map((x) => `<div class="mini-card"><div class="m-val">${fmt(x.v || 0)}</div><div class="m-label">${x.l}</div>${x.sub ? `<div class="m-sub">${x.sub}</div>` : ""}</div>`).join("");
 
     const streaks = [

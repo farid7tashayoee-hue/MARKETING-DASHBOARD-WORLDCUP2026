@@ -252,14 +252,15 @@ const CAMPAIGN_DATA = {
 
   /* ---- متریک‌های نگهداشت و تعامل ---- */
   retention: {
-    invites:          2801,     // واقعی — REFERRAL
-    invitePoints:     13583,    // واقعی — جمع امتیاز دعوت
-    gmQuestions:      1411,     // واقعی — GM_QUESTION
-    gmQuestionPoints: 270000,   // واقعی — جمع امتیاز سوالات گرداننده
-    streakBonus:      12555,    // واقعی — STREAK_BONUS (حضور سری)
-    streakPoints:     163136,   // واقعی — جمع امتیاز سری
+    invites:          3403,     // واقعی — REFERRAL
+    invitePoints:     16593,    // واقعی — جمع امتیاز دعوت
+    gmQuestions:      1814,     // واقعی — GM_QUESTION
+    gmQuestionPoints: 345000,   // واقعی — جمع امتیاز سوالات گرداننده
+    streakBonus:      16694,    // واقعی — STREAK_BONUS (حضور سری)
+    streakPoints:     236739,   // واقعی — جمع امتیاز سری
     matchScored:      187916,   // واقعی — MATCH (پیش‌بینی‌های امتیازگرفته)
     matchPoints:      3565647,  // واقعی — جمع امتیاز بازی‌ها
+    followers:        1514,     // واقعی — فالوو به‌عنوان ماموریت
     hatTricks:    0,
     elixirsGiven: 0,
     streak7:      0,
