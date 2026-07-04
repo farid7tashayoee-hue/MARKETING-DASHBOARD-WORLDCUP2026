@@ -236,10 +236,14 @@
       .sort((a, b) => b.month30.sessions - a.month30.sessions)
       .slice(0, 12);
 
-    const doughnutOpts = (suffix) => ({
+    const doughnutOpts = () => ({
       responsive: true, maintainAspectRatio: false, cutout: "62%",
       plugins: { legend: { position: "bottom" },
-        tooltip: { callbacks: { label: (c) => " " + c.label + ": " + fmt(c.raw) + suffix } } }
+        tooltip: { callbacks: { label: (c) => {
+          const total = c.dataset.data.reduce((a, b) => a + b, 0);
+          const pctVal = total ? ((c.raw / total) * 100).toFixed(1) : 0;
+          return " " + c.label + ": " + toFa(pctVal) + "٪";
+        }}}}
     });
 
     const sessBox = $("#sessionChart");
@@ -251,7 +255,7 @@
           datasets: [{ data: top.map((c) => c.month30.sessions),
             backgroundColor: PALETTE, borderColor: "#0f1426", borderWidth: 2 }]
         },
-        options: doughnutOpts(" سشن")
+        options: doughnutOpts()
       });
     }
 
@@ -264,7 +268,7 @@
           datasets: [{ data: top.map((c) => c.month30.events),
             backgroundColor: PALETTE, borderColor: "#0f1426", borderWidth: 2 }]
         },
-        options: doughnutOpts(" رویداد")
+        options: doughnutOpts()
       });
     }
   }
