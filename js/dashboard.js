@@ -493,6 +493,7 @@
         })
       });
 
+      // channel_snapshots
       for (const ch of (D.channels || [])) {
         const row = {
           snapshot_date:    today,
@@ -506,7 +507,6 @@
           `${SB}/rest/v1/channel_snapshots?snapshot_date=eq.${today}&source=eq.${ch.source}&select=id`,
           { headers: h }
         ).then(r => r.json()).then(a => a.length > 0).catch(() => false);
-
         await fetch(
           exists
             ? `${SB}/rest/v1/channel_snapshots?snapshot_date=eq.${today}&source=eq.${ch.source}`
@@ -514,6 +514,35 @@
           { method: exists ? 'PATCH' : 'POST', headers: { ...h, 'Prefer': 'return=minimal' }, body: JSON.stringify(row) }
         ).catch(() => {});
       }
+
+      // retention_snapshots
+      const r = D.retention || {};
+      await fetch(`${SB}/rest/v1/retention_snapshots`, {
+        method: 'POST',
+        headers: { ...h, 'Prefer': 'resolution=merge-duplicates,return=minimal' },
+        body: JSON.stringify({
+          snapshot_date:       today,
+          invites:             r.invites             || 0,
+          invite_points:       r.invitePoints        || 0,
+          streak_bonus:        r.streakBonus         || 0,
+          streak_points:       r.streakPoints        || 0,
+          gm_questions:        r.gmQuestions         || 0,
+          gm_question_points:  r.gmQuestionPoints    || 0,
+          match_scored:        r.matchScored         || 0,
+          match_points:        r.matchPoints         || 0,
+          followers:           r.followers           || 0
+        })
+      }).catch(() => {});
+
+      // source_snapshots
+      for (const s of (D.sourceBreakdown || [])) {
+        await fetch(`${SB}/rest/v1/source_snapshots`, {
+          method: 'POST',
+          headers: { ...h, 'Prefer': 'resolution=merge-duplicates,return=minimal' },
+          body: JSON.stringify({ snapshot_date: today, source: s.source, label: s.label, count: s.count || 0 })
+        }).catch(() => {});
+      }
+
     } catch (_) { /* silent */ }
   }
 
