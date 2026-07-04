@@ -205,26 +205,68 @@
   }
 
   /* ============================================================
-     ۵) نمودار سهم کانال‌ها (دونات)
+     ۵) نمودار سهم کانال‌ها (دونات) — از فایل شرکت‌کنندگان
      ============================================================ */
   function renderChannelChart() {
-    const ch = (D.channels || []).filter((c) => (c.month30 && c.month30.signups || 0) > 0);
+    const sb = (D.sourceBreakdown || []).filter((s) => s.count > 0);
     const box = $("#channelChart");
-    if (!ch.length) { showEmpty(box, "هنوز ثبت‌نامی برای کانال‌ها ثبت نشده."); return; }
+    if (!sb.length) { showEmpty(box, "هنوز داده‌ای وجود ندارد."); return; }
 
     new Chart(box, {
       type: "doughnut",
       data: {
-        labels: ch.map((c) => c.label || c.source),
-        datasets: [{ data: ch.map((c) => c.month30.signups),
+        labels: sb.map((s) => s.label),
+        datasets: [{ data: sb.map((s) => s.count),
           backgroundColor: PALETTE, borderColor: "#0f1426", borderWidth: 2 }]
       },
       options: {
         responsive: true, maintainAspectRatio: false, cutout: "62%",
         plugins: { legend: { position: "bottom" },
-          tooltip: { callbacks: { label: (c) => " " + c.label + ": " + fmt(c.raw) } } }
+          tooltip: { callbacks: { label: (c) => " " + c.label + ": " + fmt(c.raw) + " نفر" } } }
       }
     });
+  }
+
+  /* ============================================================
+     ۵.۵) دونات سشن‌ها و رویدادها از آنالیتیکس
+     ============================================================ */
+  function renderAnalyticsCharts() {
+    const top = (D.channels || [])
+      .filter((c) => c.month30 && c.month30.sessions > 0)
+      .sort((a, b) => b.month30.sessions - a.month30.sessions)
+      .slice(0, 12);
+
+    const doughnutOpts = (suffix) => ({
+      responsive: true, maintainAspectRatio: false, cutout: "62%",
+      plugins: { legend: { position: "bottom" },
+        tooltip: { callbacks: { label: (c) => " " + c.label + ": " + fmt(c.raw) + suffix } } }
+    });
+
+    const sessBox = $("#sessionChart");
+    if (sessBox && top.length) {
+      new Chart(sessBox, {
+        type: "doughnut",
+        data: {
+          labels: top.map((c) => c.label),
+          datasets: [{ data: top.map((c) => c.month30.sessions),
+            backgroundColor: PALETTE, borderColor: "#0f1426", borderWidth: 2 }]
+        },
+        options: doughnutOpts(" سشن")
+      });
+    }
+
+    const evBox = $("#eventChart");
+    if (evBox && top.length) {
+      new Chart(evBox, {
+        type: "doughnut",
+        data: {
+          labels: top.map((c) => c.label),
+          datasets: [{ data: top.map((c) => c.month30.events),
+            backgroundColor: PALETTE, borderColor: "#0f1426", borderWidth: 2 }]
+        },
+        options: doughnutOpts(" رویداد")
+      });
+    }
   }
 
   /* ============================================================
@@ -478,6 +520,7 @@
     renderTrend();
     renderFunnel();
     renderChannelChart();
+    renderAnalyticsCharts();
     renderChannelTable();
     renderSignupGrowth();
     renderSourceChart();
