@@ -293,6 +293,48 @@
   }
 
   /* ============================================================
+     ۷.۵) نمودار رشد جذب ثبت‌نام
+     ============================================================ */
+  function renderSignupGrowth() {
+    const k = D.kpis || {};
+    const prev = k.signupsPrev || 0;
+    const curr = k.signups     || 0;
+    const growth = curr - prev;
+    const pct = prev ? ((growth / prev) * 100).toFixed(1) : 0;
+
+    const sub = $("#signupGrowthSub");
+    if (sub) sub.textContent = "رشد " + toFa(pct) + "٪ — +" + fmt(growth) + " نفر جدید";
+
+    const sub2 = $("#sourceChartSub");
+    if (sub2) sub2.textContent = "بر اساس فایل participants — " + fmt(curr) + " بازیکن";
+
+    new Chart($("#signupGrowthChart"), {
+      type: "bar",
+      data: {
+        labels: ["ثبت‌نام اولیه (۷ تیر)", "ثبت‌نام فعلی (۱۳ تیر)"],
+        datasets: [{
+          data: [prev, curr],
+          backgroundColor: ["rgba(232,193,86,0.55)", "rgba(232,193,86,1)"],
+          borderColor: ["#e8c156", "#e8c156"],
+          borderWidth: 2,
+          borderRadius: 8
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: { label: (c) => " " + fmt(c.raw) + " نفر" } }
+        },
+        scales: {
+          x: { grid: { display: false } },
+          y: { grid: GRID, ticks: { callback: (v) => toFa(v.toLocaleString("en-US")) } }
+        }
+      }
+    });
+  }
+
+  /* ============================================================
      ۸) نمودار انواع پیش‌بینی (دونات)
      ============================================================ */
   function renderPredictionChart() {
@@ -436,6 +478,7 @@
     renderFunnel();
     renderChannelChart();
     renderChannelTable();
+    renderSignupGrowth();
     renderSourceChart();
     renderPredictionChart();
     renderRetention();
