@@ -30,11 +30,11 @@ const CAMPAIGN_DATA = {
 
   /* ---- کارت‌های KPI اصلی ---- */
   kpis: {
-    signups:          14523,   // واقعی
+    signups:          21945,   // واقعی — از participants-new.csv
     signupsTarget:    0,
     activeUsersAvg:   21792,   // واقعی — کل بازیکنان فعال کمپین
     totalPredictions: 415637,  // واقعی — از پنل
-    visits:           155412,  // واقعی — کل سشن ۳۰ روز
+    visits:           155412,
     totalSpendToman:  0        // از مجموع کانال‌ها محاسبه می‌شود
   },
 
@@ -63,7 +63,7 @@ const CAMPAIGN_DATA = {
   /* ---- قیف اکتساب ---- */
   funnel: {
     visits:          155412,  // واقعی
-    signups:         14523,   // واقعی
+    signups:         21945,
     firstPrediction: 0,
     returning:       0
   },
@@ -213,30 +213,37 @@ const CAMPAIGN_DATA = {
     { label: "۳۰ روز", sessions: 156282, pageViews: 326957, events: 778450, userSessions: 79018 },
   ],
 
-  /* ---- منبع ورود بازیکنان (از فایل participants) ---- */
+  /* ---- منبع ورود بازیکنان (از فایل participants-new.csv — ۲۱٬۹۴۵ نفر) ---- */
   sourceBreakdown: [
-    { source: "google",                          label: "گوگل",                           count: 8382 },
-    { source: "direct",                          label: "مستقیم",                         count: 5493 },
-    { source: "l24jaryan",                       label: "جریان",                          count: 909  },
-    { source: "bale_bazu24",                     label: "بله — بازو",                    count: 495  },
-    { source: "exiraz_sms24",                    label: "پیامک اکسیراز — عمومی",         count: 450  },
-    { source: "l24agahsazan",                    label: "آگاه‌سازان",                    count: 336  },
-    { source: "asanpardakht_sms",                label: "آسان‌پرداخت — پیامک",           count: 229  },
-    { source: "khabaronline",                    label: "خبرآنلاین",                     count: 217  },
-    { source: "exiraz_24_reminder1",             label: "پیامک اکسیراز — یادآور ۱",      count: 217  },
-    { source: "l24bale",                         label: "بله — لیگ ۲۴",                 count: 208  },
-    { source: "l24chavosh",                      label: "چاووش",                         count: 174  },
-    { source: "zoomit",                          label: "زومیت",                         count: 172  },
-    { source: "asriran",                         label: "عصر ایران",                     count: 100  },
-    { source: "l24instagram",                    label: "اینستاگرام — لینک",             count: 94   },
-    { source: "exiraz_24_reminder",              label: "پیامک اکسیراز — یادآور",        count: 65   },
-    { source: "l24sabavision",                   label: "صباویژن",                       count: 43   },
-    { source: "asanpardakht",                    label: "آسان‌پرداخت",                   count: 36   },
-    { source: "exiraz_24_iran_belg",             label: "پیامک اکسیراز — ایران/بلژیک",   count: 20   },
-    { source: "instagram",                       label: "اینستاگرام",                    count: 18   },
-    { source: "exiraz_24_sms_iran_new1stmatch",  label: "پیامک اکسیراز — اولین بازی",   count: 14   },
-    { source: "telegram",                        label: "تلگرام",                        count: 9    },
-    { source: "linkedin",                        label: "لینکدین",                       count: 8    },
+    { source: "google",                         label: "گوگل",                          count: 11067 },
+    { source: "direct",                         label: "مستقیم",                        count: 6443  },
+    { source: "l24jaryan",                      label: "جریان",                         count: 909   },
+    { source: "bale_bazu24",                    label: "بله — بازو",                   count: 495   },
+    { source: "exiraz_sms24",                   label: "پیامک اکسیراز — عمومی",        count: 451   },
+    { source: "unknown",                        label: "منبع نامشخص",                   count: 368   },
+    { source: "l24agahsazan",                   label: "آگاه‌سازان",                   count: 336   },
+    { source: "l24chavosh",                     label: "چاووش",                         count: 247   },
+    { source: "asanpardakht_sms",               label: "آسان‌پرداخت — پیامک",          count: 231   },
+    { source: "khabaronline",                   label: "خبرآنلاین",                    count: 222   },
+    { source: "exiraz_24_reminder1",            label: "پیامک اکسیراز — یادآور ۱",     count: 219   },
+    { source: "l24bale",                        label: "بله — لیگ ۲۴",                count: 218   },
+    { source: "zoomit",                         label: "زومیت",                        count: 204   },
+    { source: "asriran",                        label: "عصر ایران",                    count: 170   },
+    { source: "l24instagram",                   label: "اینستاگرام — لینک",            count: 95    },
+    { source: "exiraz_24_reminder",             label: "پیامک اکسیراز — یادآور",       count: 65    },
+    { source: "l24sabavision",                  label: "صباویژن",                      count: 43    },
+    { source: "asanpardakht",                   label: "آسان‌پرداخت",                  count: 36    },
+    { source: "l24aparat",                      label: "آپارات",                       count: 18    },
+    { source: "exiraz_24_iran_belg",            label: "پیامک اکسیراز — ایران/بلژیک",  count: 20    },
+    { source: "exiraz_24_1stretention",         label: "پیامک اکسیراز — ریتنشن",       count: 20    },
+    { source: "instagram",                      label: "اینستاگرام",                   count: 19    },
+    { source: "exiraz_24_sms_iran_new1stmatch", label: "پیامک اکسیراز — اولین بازی",  count: 14    },
+    { source: "exiraz_24_gardananade2",         label: "پیامک اکسیراز — گرداننده ۲",  count: 9     },
+    { source: "telegram",                       label: "تلگرام",                       count: 9     },
+    { source: "linkedin",                       label: "لینکدین",                      count: 9     },
+    { source: "l24telegram",                    label: "تلگرام — لیگ ۲۴",             count: 4     },
+    { source: "chatgpt",                        label: "ChatGPT",                      count: 3     },
+    { source: "bing",                           label: "بینگ",                         count: 1     },
   ],
 
   /* ---- پیش‌بینی به تفکیک نوع (منتظر داده واقعی) ---- */
