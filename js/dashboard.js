@@ -103,10 +103,6 @@
         foot: k.signupsTarget ? "هدف: " + fmt(k.signupsTarget) : "KPI اصلی کمپین"
       },
       {
-        icon: ICONS.activity, label: "کل بازیکنان فعال", value: fmt(k.activeUsersAvg),
-        foot: "کاربران شرکت‌کننده در کمپین"
-      },
-      {
         icon: ICONS.target,   label: "کل پیش‌بینی‌ها", value: fmt(k.totalPredictions),
         foot: "شاخص تعامل"
       },
