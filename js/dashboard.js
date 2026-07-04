@@ -382,6 +382,52 @@
     canvas.replaceWith(p);
   }
 
+  /* ---------- Supabase snapshot (silent, once per load) ---------- */
+  async function saveSnapshot() {
+    const SB = 'https://dhcjgqkvzzdqjlxidnsa.supabase.co';
+    const KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRoY2pncWt2enpkcWpseGlkbnNhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI2MzU0MTEsImV4cCI6MjA5ODIxMTQxMX0.6pKbpLM9iUD4Ev543q0MQGFZHgvXwcqy05aq-pAlLuY';
+    const today = new Date().toISOString().slice(0, 10);
+    const h = { 'apikey': KEY, 'Authorization': 'Bearer ' + KEY, 'Content-Type': 'application/json' };
+
+    try {
+      await fetch(`${SB}/rest/v1/kpi_snapshots`, {
+        method: 'POST',
+        headers: { ...h, 'Prefer': 'resolution=merge-duplicates' },
+        body: JSON.stringify({
+          snapshot_date:     today,
+          signups:           (D.kpis || {}).signups           || 0,
+          active_users:      (D.kpis || {}).activeUsersAvg    || 0,
+          total_predictions: (D.kpis || {}).totalPredictions  || 0,
+          total_visits:      (D.kpis || {}).visits            || 0,
+          current_day:       (D.meta || {}).currentDay        || 0,
+          matches_played:    (D.meta || {}).matchesPlayed      || 0
+        })
+      });
+
+      for (const ch of (D.channels || [])) {
+        const row = {
+          snapshot_date:    today,
+          source:           ch.source,
+          label:            ch.label,
+          spend_toman:      ch.spendToman            || 0,
+          sessions:         (ch.today || {}).sessions || 0,
+          registered_users: (ch.today || {}).signups  || 0
+        };
+        const exists = await fetch(
+          `${SB}/rest/v1/channel_snapshots?snapshot_date=eq.${today}&source=eq.${ch.source}&select=id`,
+          { headers: h }
+        ).then(r => r.json()).then(a => a.length > 0).catch(() => false);
+
+        await fetch(
+          exists
+            ? `${SB}/rest/v1/channel_snapshots?snapshot_date=eq.${today}&source=eq.${ch.source}`
+            : `${SB}/rest/v1/channel_snapshots`,
+          { method: exists ? 'PATCH' : 'POST', headers: { ...h, 'Prefer': 'return=minimal' }, body: JSON.stringify(row) }
+        ).catch(() => {});
+      }
+    } catch (_) { /* silent */ }
+  }
+
   /* ---------- اجرا ---------- */
   function init() {
     renderHeader();
@@ -395,6 +441,7 @@
     renderRetention();
     renderUsers();
     renderIran();
+    saveSnapshot();
   }
 
   if (document.readyState === "loading") {
