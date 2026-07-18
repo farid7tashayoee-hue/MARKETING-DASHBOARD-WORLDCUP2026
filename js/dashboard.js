@@ -19,6 +19,7 @@
   };
 
   let activePeriod = "today";
+  let sortCol = "sessions", sortDir = -1;
   window.switchPeriod = function(p, btn) {
     activePeriod = p;
     document.querySelectorAll(".period-btn").forEach((b) => b.classList.remove("active"));
@@ -273,9 +274,41 @@
      ۶) جدول عملکرد کانال‌ها
      ============================================================ */
   function renderChannelTable() {
-    const ch = D.channels || [];
+    const ch = (D.channels || []).slice();
     const tbody = $("#channelTable tbody");
     const tfoot = $("#channelTable tfoot");
+    const theadRow = document.querySelector("#channelTable thead tr");
+
+    ch.sort((a, b) => {
+      const pa = a[activePeriod] || {}, pb = b[activePeriod] || {};
+      if (sortCol === "label") {
+        return sortDir * (a.label || a.source).localeCompare(b.label || b.source, "fa");
+      }
+      if (sortCol === "conv") {
+        return sortDir * (pct(pa.signups || 0, pa.sessions || 0) - pct(pb.signups || 0, pb.sessions || 0));
+      }
+      return sortDir * ((pa[sortCol] || 0) - (pb[sortCol] || 0));
+    });
+
+    const cols = [
+      { key: "label",    label: "کانال"  },
+      { key: "sessions", label: "سشن"    },
+      { key: "pageViews",label: "بازدید" },
+      { key: "events",   label: "رویداد" },
+      { key: "conv",     label: "تبدیل"  },
+    ];
+    theadRow.innerHTML = cols.map(col => {
+      const active = sortCol === col.key;
+      const arrow = active ? (sortDir === -1 ? " ▼" : " ▲") : "";
+      return `<th class="sortable${active ? " sort-active" : ""}" data-col="${col.key}">${col.label}${arrow}</th>`;
+    }).join("");
+    theadRow.querySelectorAll("th.sortable").forEach(th => {
+      th.addEventListener("click", () => {
+        if (sortCol === th.dataset.col) sortDir *= -1;
+        else { sortCol = th.dataset.col; sortDir = -1; }
+        renderChannelTable();
+      });
+    });
 
     let tSess = 0, tPV = 0, tEv = 0, tSign = 0;
     tbody.innerHTML = ch.map((c) => {

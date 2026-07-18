@@ -241,6 +241,9 @@ h1, h2, h3 { line-height: 1.25; font-weight: 800; }
 .data-table tfoot td { font-weight: 800; color: var(--gold); border-top: 2px solid var(--border-hi); border-bottom: none; }
 .data-table .cpa-good { color: var(--c-green); }
 .data-table .cpa-bad { color: var(--c-red); }
+.data-table th.sortable { cursor: pointer; user-select: none; transition: color .15s; }
+.data-table th.sortable:hover { color: var(--text-muted); }
+.data-table th.sort-active { color: var(--gold); }
 
 /* ---------------- مینی‌کارت‌ها ---------------- */
 .mini-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
