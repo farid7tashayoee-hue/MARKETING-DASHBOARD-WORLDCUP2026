@@ -20,22 +20,22 @@ const CAMPAIGN_DATA = {
     slogan: "جایی که پیش‌بینی تو، طلا میشه!",
     tagline: "با پیش‌بینی‌های درست، شمش ۲۴ عیار ببر",
     totalDays: 39,
-    currentDay: 24,
+    currentDay: 27,
     totalMatches: 104,
-    matchesPlayed: 88,
-    nextDeadlineLabel: "پایان مهلت چیدمان حذفی",
-    nextDeadlineDate: "۷ تیر",
-    lastUpdated: "۱۳ تیر ۱۴۰۵ — ۱۴:۰۰"
+    matchesPlayed: 102,
+    nextDeadlineLabel: "پایان مرحله حذفی",
+    nextDeadlineDate: "۱۸ تیر",
+    lastUpdated: "۱۴ تیر ۱۴۰۵ — ۱۴:۰۰"
   },
 
   /* ---- کارت‌های KPI اصلی ---- */
   kpis: {
-    signups:          21945,   // واقعی — از participants-new.csv
-    signupsPrev:      14523,   // قبلی — participants.csv (تا ۷ تیر)
+    signups:          29050,   // واقعی — از participants18july.csv
+    signupsPrev:      21945,   // قبلی — participants-new.csv (تا ۱۳ تیر)
     signupsDay0:      500,     // روز قبل افتتاحیه — ۱۹ خرداد
     signupsTarget:    0,
-    activeUsersAvg:   21792,   // واقعی — کل بازیکنان فعال کمپین
-    totalPredictions: 415637,  // واقعی — از پنل
+    activeUsersAvg:   29049,   // واقعی — کل بازیکنان فعال کمپین
+    totalPredictions: 469635,  // واقعی — از پنل
     visits:           155412,
     totalSpendToman:  0        // از مجموع کانال‌ها محاسبه می‌شود
   },
@@ -60,12 +60,19 @@ const CAMPAIGN_DATA = {
     { date: "۵ تیر",    signups: 388,  predictions: 20000, activeUsers: 6200  },
     { date: "۶ تیر",    signups: 719,  predictions: 37000, activeUsers: 8000  },
     { date: "۷ تیر",    signups: 369,  predictions: 19000, activeUsers: 5200,  event: "شروع مرحله حذفی" },
+    { date: "۸ تیر",    signups: 1015, predictions: 0,     activeUsers: 0 },
+    { date: "۹ تیر",    signups: 1015, predictions: 0,     activeUsers: 0 },
+    { date: "۱۰ تیر",   signups: 1015, predictions: 0,     activeUsers: 0 },
+    { date: "۱۱ تیر",   signups: 1015, predictions: 0,     activeUsers: 0 },
+    { date: "۱۲ تیر",   signups: 1015, predictions: 0,     activeUsers: 0 },
+    { date: "۱۳ تیر",   signups: 1015, predictions: 0,     activeUsers: 0 },
+    { date: "۱۴ تیر",   signups: 1015, predictions: 0,     activeUsers: 0 },
   ],
 
   /* ---- قیف اکتساب ---- */
   funnel: {
     visits:          155412,  // واقعی
-    signups:         21945,
+    signups:         29050,
     firstPrediction: 0,
     returning:       0
   },
@@ -217,34 +224,34 @@ const CAMPAIGN_DATA = {
 
   /* ---- منبع ورود بازیکنان (از فایل participants-new.csv — ۲۱٬۹۴۵ نفر) ---- */
   sourceBreakdown: [
-    { source: "google",                         label: "گوگل",                          count: 11067 },
-    { source: "direct",                         label: "مستقیم",                        count: 6443  },
+    { source: "google",                         label: "گوگل",                          count: 16112 },
+    { source: "direct",                         label: "مستقیم",                        count: 8115  },
     { source: "l24jaryan",                      label: "جریان",                         count: 909   },
     { source: "bale_bazu24",                    label: "بله — بازو",                   count: 495   },
     { source: "exiraz_sms24",                   label: "پیامک اکسیراز — عمومی",        count: 451   },
-    { source: "unknown",                        label: "منبع نامشخص",                   count: 368   },
+    { source: "unknown",                        label: "منبع نامشخص",                   count: 402   },
     { source: "l24agahsazan",                   label: "آگاه‌سازان",                   count: 336   },
-    { source: "l24chavosh",                     label: "چاووش",                         count: 247   },
-    { source: "asanpardakht_sms",               label: "آسان‌پرداخت — پیامک",          count: 231   },
-    { source: "khabaronline",                   label: "خبرآنلاین",                    count: 222   },
-    { source: "exiraz_24_reminder1",            label: "پیامک اکسیراز — یادآور ۱",     count: 219   },
-    { source: "l24bale",                        label: "بله — لیگ ۲۴",                count: 218   },
-    { source: "zoomit",                         label: "زومیت",                        count: 204   },
-    { source: "asriran",                        label: "عصر ایران",                    count: 170   },
-    { source: "l24instagram",                   label: "اینستاگرام — لینک",            count: 95    },
+    { source: "khabaronline",                   label: "خبرآنلاین",                    count: 312   },
+    { source: "asriran",                        label: "عصر ایران",                    count: 278   },
+    { source: "zoomit",                         label: "زومیت",                        count: 278   },
+    { source: "l24chavosh",                     label: "چاووش",                         count: 261   },
+    { source: "l24bale",                        label: "بله — لیگ ۲۴",                count: 257   },
+    { source: "asanpardakht_sms",               label: "آسان‌پرداخت — پیامک",          count: 234   },
+    { source: "exiraz_24_reminder1",            label: "پیامک اکسیراز — یادآور ۱",     count: 222   },
+    { source: "l24instagram",                   label: "اینستاگرام — لینک",            count: 96    },
     { source: "exiraz_24_reminder",             label: "پیامک اکسیراز — یادآور",       count: 65    },
     { source: "l24sabavision",                  label: "صباویژن",                      count: 43    },
     { source: "asanpardakht",                   label: "آسان‌پرداخت",                  count: 36    },
-    { source: "l24aparat",                      label: "آپارات",                       count: 18    },
+    { source: "instagram",                      label: "اینستاگرام",                   count: 30    },
     { source: "exiraz_24_iran_belg",            label: "پیامک اکسیراز — ایران/بلژیک",  count: 20    },
     { source: "exiraz_24_1stretention",         label: "پیامک اکسیراز — ریتنشن",       count: 20    },
-    { source: "instagram",                      label: "اینستاگرام",                   count: 19    },
-    { source: "exiraz_24_sms_iran_new1stmatch", label: "پیامک اکسیراز — اولین بازی",  count: 14    },
-    { source: "exiraz_24_gardananade2",         label: "پیامک اکسیراز — گرداننده ۲",  count: 9     },
-    { source: "telegram",                       label: "تلگرام",                       count: 9     },
-    { source: "linkedin",                       label: "لینکدین",                      count: 9     },
+    { source: "exiraz_24_sms_iran_new1stmatch", label: "پیامک اکسیراز — اولین بازی",  count: 15    },
+    { source: "exiraz_24_gardananade2",         label: "پیامک اکسیراز — گرداننده ۲",  count: 13    },
+    { source: "telegram",                       label: "تلگرام",                       count: 13    },
+    { source: "linkedin",                       label: "لینکدین",                      count: 10    },
+    { source: "l24aparat",                      label: "آپارات",                       count: 18    },
     { source: "l24telegram",                    label: "تلگرام — لیگ ۲۴",             count: 4     },
-    { source: "chatgpt",                        label: "ChatGPT",                      count: 3     },
+    { source: "chatgpt",                        label: "ChatGPT",                      count: 4     },
     { source: "bing",                           label: "بینگ",                         count: 1     },
   ],
 
