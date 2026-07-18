@@ -268,14 +268,16 @@ const CAMPAIGN_DATA = {
 
   /* ---- متریک‌های نگهداشت و تعامل ---- */
   retention: {
-    invites:          3403,     // واقعی — REFERRAL
-    invitePoints:     16593,    // واقعی — جمع امتیاز دعوت
+    invites:          4566,      // واقعی — REFERRAL
+    invitePoints:     22408,    // واقعی — جمع امتیاز دعوت
     gmQuestions:      1814,     // واقعی — GM_QUESTION
     gmQuestionPoints: 345000,   // واقعی — جمع امتیاز سوالات گرداننده
-    streakBonus:      16694,    // واقعی — STREAK_BONUS (حضور سری)
-    streakPoints:     236739,   // واقعی — جمع امتیاز سری
-    matchScored:      187916,   // واقعی — MATCH (پیش‌بینی‌های امتیازگرفته)
-    matchPoints:      3565647,  // واقعی — جمع امتیاز بازی‌ها
+    streakBonus:      18264,    // واقعی — STREAK_BONUS (حضور سری)
+    streakPoints:     256424,   // واقعی — جمع امتیاز سری
+    matchScored:      278235,   // واقعی — MATCH (پیش‌بینی‌های امتیازگرفته)
+    matchPoints:      8059564,  // واقعی — جمع امتیاز بازی‌ها
+    missionCount:     430,      // واقعی — MISSION (فالو اینستاگرام تأییدشده)
+    missionPoints:    129000,   // واقعی — جمع امتیاز ماموریت
     followers:        1514,     // واقعی — فالوو به‌عنوان ماموریت
     hatTricks:    0,
     elixirsGiven: 0,
