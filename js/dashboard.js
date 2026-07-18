@@ -99,9 +99,13 @@
 
     const cards = [
       {
-        icon: ICONS.users,   label: "کل ثبت‌نام‌ها", value: fmt(signups),
+        icon: ICONS.users,   label: "بازیکنان کمپین", value: fmt(signups),
         target: k.signupsTarget, current: signups,
         foot: k.signupsTarget ? "هدف: " + fmt(k.signupsTarget) : "KPI اصلی کمپین"
+      },
+      {
+        icon: ICONS.users,   label: "کل ثبت‌نام سایت", value: fmt(k.siteSignups || 0),
+        foot: "در بازه کمپین"
       },
       {
         icon: ICONS.target,   label: "کل پیش‌بینی‌ها", value: fmt(k.totalPredictions),

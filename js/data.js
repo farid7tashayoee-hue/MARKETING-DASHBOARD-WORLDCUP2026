@@ -30,7 +30,8 @@ const CAMPAIGN_DATA = {
 
   /* ---- کارت‌های KPI اصلی ---- */
   kpis: {
-    signups:          29050,   // واقعی — از participants18july.csv
+    signups:          29050,   // واقعی — بازیکنان کمپین (participants18july.csv)
+    siteSignups:      30000,   // واقعی — کل ثبت‌نام سایت اکسیراز در بازه کمپین
     signupsPrev:      21945,   // قبلی — participants-new.csv (تا ۱۳ تیر)
     signupsDay0:      500,     // روز قبل افتتاحیه — ۱۹ خرداد
     signupsTarget:    0,
