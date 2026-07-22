@@ -443,11 +443,14 @@
   function renderRetention() {
     const r = D.retention || {};
     $("#retentionGrid").innerHTML = [
-      { v: r.invites,     l: "دعوت دوست",            sub: fmt(r.invitePoints || 0) + " امتیاز" },
-      { v: r.gmQuestions, l: "سوال گرداننده",          sub: fmt(r.gmQuestionPoints || 0) + " امتیاز" },
-      { v: r.streakBonus, l: "زنجیره برد",              sub: fmt(r.streakPoints || 0) + " امتیاز" },
-      { v: r.matchScored, l: "پیش‌بینی امتیازگرفته",   sub: fmt(r.matchPoints || 0) + " امتیاز" },
-      { v: r.followers,   l: "فالوور ماموریت",          sub: null },
+      { v: r.matchScored,    l: "پیش‌بینی امتیازگرفته",  sub: fmt(r.matchPoints || 0) + " امتیاز" },
+      { v: r.bracketCount,   l: "جدول حذفی",              sub: fmt(r.bracketPoints || 0) + " امتیاز" },
+      { v: r.longtermCount,  l: "بلندمدت",                sub: fmt(r.longtermPoints || 0) + " امتیاز" },
+      { v: r.streakBonus,    l: "زنجیره برد",              sub: fmt(r.streakPoints || 0) + " امتیاز" },
+      { v: r.gmQuestions,    l: "سوال گرداننده",           sub: fmt(r.gmQuestionPoints || 0) + " امتیاز" },
+      { v: r.missionCount,   l: "ماموریت",                 sub: fmt(r.missionPoints || 0) + " امتیاز" },
+      { v: r.invites,        l: "دعوت دوست",               sub: fmt(r.invitePoints || 0) + " امتیاز" },
+      { v: r.joinBonusCount, l: "شرکت‌کننده",              sub: fmt(r.joinBonusPoints || 0) + " امتیاز" },
     ].map((x) => `<div class="mini-card"><div class="m-val">${fmt(x.v || 0)}</div><div class="m-label">${x.l}</div>${x.sub ? `<div class="m-sub">${x.sub}</div>` : ""}</div>`).join("");
 
     const streaks = [
