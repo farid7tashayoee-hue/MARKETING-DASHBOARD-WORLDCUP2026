@@ -25,7 +25,7 @@ const CAMPAIGN_DATA = {
     matchesPlayed: 104,
     nextDeadlineLabel: "پایان کمپین",
     nextDeadlineDate: "۲۹ تیر",
-    lastUpdated: "۲۹ تیر ۱۴۰۵ — ۱۴:۰۰"
+    lastUpdated: "۳۱ تیر ۱۴۰۵ — ۱۴:۰۰"
   },
 
   /* ---- کارت‌های KPI اصلی ---- */
