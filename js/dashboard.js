@@ -18,7 +18,7 @@
     percent: `<svg viewBox="0 0 24 24"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg>`,
   };
 
-  let activePeriod = "week7";
+  let activePeriod = "campaign";
   let sortCol = "sessions", sortDir = -1;
   window.switchPeriod = function(p, btn) {
     activePeriod = p;
@@ -233,8 +233,8 @@
      ============================================================ */
   function renderAnalyticsCharts() {
     const top = (D.channels || [])
-      .filter((c) => c.month30 && c.month30.sessions > 0)
-      .sort((a, b) => b.month30.sessions - a.month30.sessions)
+      .filter((c) => c.campaign && c.campaign.sessions > 0)
+      .sort((a, b) => b.campaign.sessions - a.campaign.sessions)
       .slice(0, 12);
 
     const doughnutOpts = () => ({
@@ -253,7 +253,7 @@
         type: "doughnut",
         data: {
           labels: top.map((c) => c.label),
-          datasets: [{ data: top.map((c) => c.month30.sessions),
+          datasets: [{ data: top.map((c) => c.campaign.sessions),
             backgroundColor: PALETTE, borderColor: "#0f1426", borderWidth: 2 }]
         },
         options: doughnutOpts()
@@ -266,7 +266,7 @@
         type: "doughnut",
         data: {
           labels: top.map((c) => c.label),
-          datasets: [{ data: top.map((c) => c.month30.events),
+          datasets: [{ data: top.map((c) => c.campaign.events),
             backgroundColor: PALETTE, borderColor: "#0f1426", borderWidth: 2 }]
         },
         options: doughnutOpts()

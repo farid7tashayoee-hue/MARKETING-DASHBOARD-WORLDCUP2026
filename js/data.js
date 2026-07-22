@@ -302,9 +302,9 @@ const CAMPAIGN_DATA = {
 
   /* ---- بازه‌های زمانی (جایگزین قیف اکتساب) ---- */
   periods: [
-    { label: "امروز",   sessions: 2742,   pageViews: 5520,   events: 9893,   userSessions: 1825  },
-    { label: "۷ روز",  sessions: 44485,  pageViews: 88962,  events: 181221, userSessions: 27616 },
-    { label: "۳۰ روز", sessions: 156282, pageViews: 326957, events: 778450, userSessions: 79018 },
+    { label: "۷ روز",      sessions: 44485,  pageViews: 88962,  events: 181221,  userSessions: 27616  },
+    { label: "۳۰ روز",     sessions: 156282, pageViews: 326957, events: 778450,  userSessions: 79018  },
+    { label: "کل کمپین",   sessions: 313724, pageViews: 629250, events: 1405962, userSessions: 163115 },
   ],
 
   /* ---- منبع ورود بازیکنان (از فایل participants-new.csv — ۲۱٬۹۴۵ نفر) ---- */
