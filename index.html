@@ -772,6 +772,18 @@
 
   </div>
 
+  <!-- ============ Login Overlay ============ -->
+  <div id="loginOverlay">
+    <div class="login-box">
+      <div class="login-logo">لیگ ۲۴ عیار</div>
+      <div class="login-sub">داشبورد KPI — جام جهانی ۲۰۲۶</div>
+      <input type="password" id="passInput" placeholder="رمز عبور"
+             onkeydown="if(event.key==='Enter')doLogin()">
+      <button onclick="doLogin()">ورود</button>
+      <p id="loginErr"></p>
+    </div>
+  </div>
+
   <script src="js/data.js"></script>
   <script src="js/dashboard.js"></script>
 </body>

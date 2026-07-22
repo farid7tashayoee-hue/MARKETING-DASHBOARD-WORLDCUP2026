@@ -245,6 +245,33 @@ h1, h2, h3 { line-height: 1.25; font-weight: 800; }
 .data-table th.sortable:hover { color: var(--text-muted); }
 .data-table th.sort-active { color: var(--gold); }
 
+/* ---- Login Overlay ---- */
+#loginOverlay {
+  position: fixed; inset: 0; background: var(--bg);
+  display: none; align-items: center; justify-content: center; z-index: 9999;
+}
+.login-box {
+  background: var(--bg-2); border: 1px solid var(--border-hi);
+  border-radius: var(--radius); padding: 2.5rem 2rem;
+  text-align: center; width: min(360px, 90vw);
+}
+.login-logo { font-size: 1.5rem; font-weight: 800; background: var(--gold-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: .4rem; }
+.login-sub  { font-size: .82rem; color: var(--text-faint); margin-bottom: 2rem; }
+.login-box input[type=password] {
+  width: 100%; padding: .75rem 1rem; margin-bottom: .9rem;
+  background: var(--bg); border: 1px solid var(--border); border-radius: 10px;
+  color: var(--text); font-family: var(--font); font-size: 1rem;
+  text-align: center; box-sizing: border-box; outline: none; transition: border .2s;
+}
+.login-box input[type=password]:focus { border-color: var(--gold); }
+.login-box button {
+  width: 100%; padding: .8rem; background: var(--gold-grad); border: none;
+  border-radius: 10px; color: #0a0e1a; font-family: var(--font);
+  font-weight: 700; font-size: 1rem; cursor: pointer; transition: opacity .15s;
+}
+.login-box button:hover { opacity: .88; }
+#loginErr { color: var(--c-red); font-size: .83rem; margin-top: .7rem; min-height: 1.2em; }
+
 /* ---------------- مینی‌کارت‌ها ---------------- */
 .mini-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
 .mini-grid.two { grid-template-columns: repeat(2, 1fr); margin-top: 14px; }

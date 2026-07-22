@@ -600,9 +600,33 @@
     saveSnapshot();
   }
 
+  /* ---------- احراز هویت ---------- */
+  const AUTH_KEY = 'l24_auth_v1';
+  const AUTH_PASS = 'lig24@1405';
+
+  window.doLogin = function () {
+    const val = document.getElementById('passInput').value;
+    if (val === AUTH_PASS) {
+      localStorage.setItem(AUTH_KEY, '1');
+      document.getElementById('loginOverlay').style.display = 'none';
+      init();
+    } else {
+      document.getElementById('loginErr').textContent = 'رمز عبور اشتباه است';
+      document.getElementById('passInput').value = '';
+    }
+  };
+
+  function boot() {
+    if (localStorage.getItem(AUTH_KEY) === '1') {
+      init();
+    } else {
+      document.getElementById('loginOverlay').style.display = 'flex';
+    }
+  }
+
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", init);
+    document.addEventListener("DOMContentLoaded", boot);
   } else {
-    init();
+    boot();
   }
 })();
