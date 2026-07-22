@@ -97,22 +97,22 @@ const CAMPAIGN_DATA = {
   channels: [
     { source:"direct",     label:"مستقیم",                              spendToman:0,
       today:   {sessions:1256,  pageViews:3111,   events:5654,   signups:1141 },
-      week7:   {sessions:12327, pageViews:30453,  events:53300,  signups:11462},
+      week7:   {sessions:9673,  pageViews:24379,  events:44916,  signups:8702 },
       month30: {sessions:64118, pageViews:146054, events:247903, signups:60348} },
 
     { source:"google",     label:"گوگل — ارگانیک",                     spendToman:0,
       today:   {sessions:1272,  pageViews:3109,   events:8167,   signups:794  },
-      week7:   {sessions:16412, pageViews:39728,  events:118677, signups:10404},
+      week7:   {sessions:12565, pageViews:30297,  events:90292,  signups:7974 },
       month30: {sessions:58131, pageViews:139528, events:370553, signups:38820} },
 
     { source:"khabaronline", label:"خبرآنلاین — بنر استیکی",           spendToman:341000000,
       today:   {sessions:609,   pageViews:696,   events:2744,  signups:7  },
-      week7:   {sessions:11855, pageViews:13708, events:26686, signups:124},
+      week7:   {sessions:9967,  pageViews:11561, events:23459, signups:100},
       month30: {sessions:35967, pageViews:41840, events:79307, signups:399} },
 
     { source:"zoomit",     label:"زومیت — بنر استیکی",                 spendToman:180000000,
       today:   {sessions:76,    pageViews:93,    events:137,   signups:6  },
-      week7:   {sessions:2564,  pageViews:2862,  events:4379,  signups:65 },
+      week7:   {sessions:1490,  pageViews:1683,  events:2732,  signups:48 },
       month30: {sessions:12877, pageViews:14080, events:20255, signups:260} },
 
     { source:"asanpardakht", label:"آسان‌پرداخت — ترنزکشن (A/B)",     spendToman:95000000,
@@ -122,22 +122,22 @@ const CAMPAIGN_DATA = {
 
     { source:"asriran",    label:"عصر ایران — بنر",                    spendToman:28000000,
       today:   {sessions:282,   pageViews:309,   events:487,   signups:6  },
-      week7:   {sessions:2996,  pageViews:3429,  events:4966,  signups:97 },
+      week7:   {sessions:2207,  pageViews:2486,  events:3631,  signups:70 },
       month30: {sessions:15832, pageViews:18627, events:31191, signups:353} },
 
     { source:"asanpardakht_sms", label:"آسان‌پرداخت — پیامک",         spendToman:32000000,
       today:   {sessions:0,  pageViews:0,  events:0,   signups:0 },
-      week7:   {sessions:7,  pageViews:10, events:19,  signups:6 },
+      week7:   {sessions:3,  pageViews:6,  events:15,  signups:3 },
       month30: {sessions:46, pageViews:90, events:137, signups:44} },
 
     { source:"exiraz_sms24", label:"پیامک اکسیراز — عمومی",           spendToman:18000000,
       today:   {sessions:1,  pageViews:1,   events:1,   signups:1 },
-      week7:   {sessions:9,  pageViews:15,  events:17,  signups:9 },
+      week7:   {sessions:7,  pageViews:10,  events:20,  signups:7 },
       month30: {sessions:71, pageViews:134, events:198, signups:70} },
 
     { source:"exiraz_24_iran_belg", label:"پیامک اکسیراز — ایران/بلژیک", spendToman:0,
       today:   {sessions:0,   pageViews:0,   events:0,   signups:0  },
-      week7:   {sessions:0,   pageViews:0,   events:0,   signups:0  },
+      week7:   {sessions:1,   pageViews:2,   events:2,   signups:1  },
       month30: {sessions:305, pageViews:637, events:830, signups:304} },
 
     { source:"exiraz_24_reminder", label:"پیامک اکسیراز — یادآور",    spendToman:0,
@@ -152,7 +152,7 @@ const CAMPAIGN_DATA = {
 
     { source:"exiraz_24_sms_iran_new1stmatch", label:"پیامک اکسیراز — اولین بازی ایران", spendToman:0,
       today:   {sessions:1,   pageViews:2,   events:2,   signups:1  },
-      week7:   {sessions:44,  pageViews:84,  events:99,  signups:44 },
+      week7:   {sessions:32,  pageViews:56,  events:68,  signups:32 },
       month30: {sessions:170, pageViews:256, events:294, signups:170} },
 
     { source:"exiraz_24_1stretention", label:"پیامک اکسیراز — ریتنشن", spendToman:0,
@@ -162,7 +162,7 @@ const CAMPAIGN_DATA = {
 
     { source:"exiraz_24_gardananade2", label:"پیامک اکسیراز — گرداننده ۲", spendToman:0,
       today:   {sessions:25,   pageViews:65,   events:65,   signups:25  },
-      week7:   {sessions:232,  pageViews:497,  events:545,  signups:232 },
+      week7:   {sessions:158,  pageViews:362,  events:418,  signups:155 },
       month30: {sessions:1560, pageViews:2979, events:4439, signups:1554} },
 
     { source:"exiraz_24_iran_egypt", label:"پیامک اکسیراز — ایران/مصر", spendToman:0,
@@ -177,32 +177,32 @@ const CAMPAIGN_DATA = {
 
     { source:"l24jaryan",  label:"جریان — لینک داخلی",               spendToman:0,
       today:   {sessions:1,  pageViews:2,   events:12,  signups:1 },
-      week7:   {sessions:5,  pageViews:6,   events:16,  signups:5 },
+      week7:   {sessions:5,  pageViews:6,   events:26,  signups:5 },
       month30: {sessions:73, pageViews:111, events:164, signups:73} },
 
     { source:"bale_bazu24", label:"بله — بازو",                       spendToman:0,
       today:   {sessions:5,   pageViews:7,   events:7,   signups:5  },
-      week7:   {sessions:24,  pageViews:34,  events:67,  signups:24 },
+      week7:   {sessions:21,  pageViews:31,  events:64,  signups:21 },
       month30: {sessions:131, pageViews:165, events:233, signups:131} },
 
     { source:"l24bale",    label:"بله — لیگ ۲۴",                      spendToman:0,
       today:   {sessions:16,   pageViews:59,   events:106,  signups:16  },
-      week7:   {sessions:175,  pageViews:393,  events:614,  signups:174 },
+      week7:   {sessions:120,  pageViews:283,  events:473,  signups:120 },
       month30: {sessions:1256, pageViews:2304, events:2866, signups:1251} },
 
     { source:"l24agahsazan", label:"آگاه‌سازان — لینک",               spendToman:0,
       today:   {sessions:0,  pageViews:0,  events:0,   signups:0 },
-      week7:   {sessions:3,  pageViews:3,  events:3,   signups:3 },
+      week7:   {sessions:2,  pageViews:2,  events:5,   signups:1 },
       month30: {sessions:28, pageViews:52, events:121, signups:27} },
 
     { source:"l24instagram", label:"اینستاگرام — لینک",               spendToman:0,
       today:   {sessions:0,   pageViews:0,   events:0,   signups:0  },
-      week7:   {sessions:11,  pageViews:15,  events:16,  signups:11 },
+      week7:   {sessions:3,   pageViews:4,   events:4,   signups:3  },
       month30: {sessions:117, pageViews:213, events:340, signups:110} },
 
     { source:"l24chavosh", label:"چاووش — لینک",                      spendToman:0,
       today:   {sessions:4,   pageViews:5,   events:6,    signups:4  },
-      week7:   {sessions:18,  pageViews:25,  events:37,   signups:17 },
+      week7:   {sessions:16,  pageViews:23,  events:35,   signups:15 },
       month30: {sessions:389, pageViews:959, events:1697, signups:378} },
 
     { source:"l24telegram", label:"تلگرام — لیگ ۲۴",                  spendToman:0,
@@ -217,12 +217,12 @@ const CAMPAIGN_DATA = {
 
     { source:"instagram",  label:"اینستاگرام — ارگانیک",              spendToman:0,
       today:   {sessions:1,   pageViews:2,   events:2,   signups:1 },
-      week7:   {sessions:27,  pageViews:50,  events:115, signups:21},
+      week7:   {sessions:46,  pageViews:67,  events:194, signups:19},
       month30: {sessions:197, pageViews:386, events:903, signups:95} },
 
     { source:"telegram",   label:"تلگرام",                            spendToman:0,
       today:   {sessions:8,   pageViews:24,  events:35,  signups:8  },
-      week7:   {sessions:64,  pageViews:174, events:200, signups:64 },
+      week7:   {sessions:44,  pageViews:110, events:136, signups:44 },
       month30: {sessions:273, pageViews:686, events:838, signups:270} },
 
     { source:"facebook",   label:"فیسبوک",                            spendToman:0,
@@ -232,7 +232,7 @@ const CAMPAIGN_DATA = {
 
     { source:"chatgpt",    label:"ChatGPT",                           spendToman:0,
       today:   {sessions:0, pageViews:0,  events:0,  signups:0},
-      week7:   {sessions:1, pageViews:4,  events:5,  signups:1},
+      week7:   {sessions:0, pageViews:0,  events:0,  signups:0},
       month30: {sessions:5, pageViews:12, events:23, signups:4} },
 
     { source:"yahoo",      label:"یاهو",                              spendToman:0,
