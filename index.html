@@ -559,16 +559,21 @@
     })();
 
     /* -------- رمز -------- */
+    function hidGate() {
+      var gate = document.getElementById('password-gate');
+      gate.style.transition = 'opacity .4s';
+      gate.style.opacity = '0';
+      setTimeout(function(){ gate.style.display = 'none'; }, 400);
+    }
+    if(localStorage.getItem('l24_auth') === '1') { hidGate(); }
     document.getElementById('pwd-input').addEventListener('keydown', function(e){
       if(e.key === 'Enter') checkPassword();
     });
     function checkPassword() {
       var v = document.getElementById('pwd-input').value;
       if(v === 'ExiR@z_L24##') {
-        var gate = document.getElementById('password-gate');
-        gate.style.transition = 'opacity .4s';
-        gate.style.opacity = '0';
-        setTimeout(function(){ gate.style.display = 'none'; }, 400);
+        localStorage.setItem('l24_auth', '1');
+        hidGate();
       } else {
         var err = document.getElementById('pwd-error');
         err.textContent = 'رمز اشتباه است';
@@ -772,19 +777,7 @@
 
   </div>
 
-  <!-- ============ Login Overlay ============ -->
-  <div id="loginOverlay">
-    <div class="login-box">
-      <div class="login-logo">لیگ ۲۴ عیار</div>
-      <div class="login-sub">داشبورد KPI — جام جهانی ۲۰۲۶</div>
-      <input type="password" id="passInput" placeholder="رمز عبور"
-             onkeydown="if(event.key==='Enter')doLogin()">
-      <button onclick="doLogin()">ورود</button>
-      <p id="loginErr"></p>
-    </div>
-  </div>
-
-  <script src="js/data.js"></script>
+<script src="js/data.js"></script>
   <script src="js/dashboard.js"></script>
 </body>
 </html>
