@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>پایگاه داده کمپین‌ها | اکسیراز</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="css/campaigns.css" />
+</head>
+<body>
+
+<!-- ============ Password Gate ============ -->
+<div id="password-gate">
+  <div id="g-orb"></div>
+  <div id="g-content">
+    <div id="g-emblem">۲۴</div>
+    <div id="g-ring-wrap"><div class="g-ring"></div><div class="g-ring"></div></div>
+    <div id="g-title">پایگاه داده کمپین‌ها</div>
+    <div id="g-sub">اکسیراز — مدیریت و تحلیل کمپین‌های بازاریابی</div>
+    <input id="pwd-input" type="password" placeholder="رمز عبور را وارد کن" autocomplete="current-password" />
+    <button id="g-btn" onclick="checkPassword()">ورود ✦</button>
+    <div id="pwd-error"></div>
+  </div>
+</div>
+
+<!-- ============ Loading & Notification ============ -->
+<div id="loading-bar"><span></span></div>
+<div id="notif-bar"></div>
+
+<!-- ============ Modal Overlay ============ -->
+<div id="modal-overlay"></div>
+
+<!-- ============ Modal: New Campaign ============ -->
+<div class="modal" id="modal-campaign">
+  <div class="modal-box">
+    <div class="modal-header">
+      <span class="modal-title">کمپین جدید</span>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <form id="form-campaign" autocomplete="off">
+      <div class="form-grid">
+        <div class="form-group form-full">
+          <label class="form-label" for="ci-name">نام کمپین *</label>
+          <input id="ci-name" class="form-input" type="text" placeholder="مثال: لیگ ۲۴ عیار — جام جهانی ۲۰۲۶" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="ci-start">تاریخ شروع</label>
+          <input id="ci-start" class="form-input" type="date" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="ci-end">تاریخ پایان</label>
+          <input id="ci-end" class="form-input" type="date" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="ci-budget">بودجه (تومان)</label>
+          <input id="ci-budget" class="form-input" type="number" min="0" placeholder="0" />
+        </div>
+        <div class="form-group form-full">
+          <label class="form-label" for="ci-desc">توضیحات</label>
+          <textarea id="ci-desc" class="form-textarea" placeholder="هدف کمپین، محصول، مخاطب..."></textarea>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn-gold">ذخیره کمپین</button>
+        <button type="button" class="btn-outline" onclick="closeModal()">انصراف</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ============ Modal: Edit KPIs ============ -->
+<div class="modal" id="modal-kpis">
+  <div class="modal-box">
+    <div class="modal-header">
+      <span class="modal-title">ویرایش KPI‌های کمپین</span>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <form id="form-kpis" autocomplete="off">
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label" for="k-signups">ثبت‌نام اکسیراز (داخل اپ)</label>
+          <input id="k-signups" class="form-input" type="number" min="0" placeholder="0" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="k-site_signups">ثبت‌نام سایت (کل)</label>
+          <input id="k-site_signups" class="form-input" type="number" min="0" placeholder="0" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="k-total_preds">پیش‌بینی ثبت‌شده</label>
+          <input id="k-total_preds" class="form-input" type="number" min="0" placeholder="0" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="k-visits">بازدید — Visits</label>
+          <input id="k-visits" class="form-input" type="number" min="0" placeholder="0" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="k-active_users">کاربر فعال میانگین</label>
+          <input id="k-active_users" class="form-input" type="number" min="0" placeholder="0" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="k-sessions">نشست — Sessions</label>
+          <input id="k-sessions" class="form-input" type="number" min="0" placeholder="0" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="k-page_views">صفحه‌بازدید — Page Views</label>
+          <input id="k-page_views" class="form-input" type="number" min="0" placeholder="0" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="k-events">رویداد — Events</label>
+          <input id="k-events" class="form-input" type="number" min="0" placeholder="0" />
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn-gold">ذخیره</button>
+        <button type="button" class="btn-outline" onclick="closeModal()">انصراف</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ============ Modal: Add Channel ============ -->
+<div class="modal" id="modal-channel">
+  <div class="modal-box">
+    <div class="modal-header">
+      <span class="modal-title">افزودن کانال / منبع ورودی</span>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <form id="form-channel" autocomplete="off">
+      <div class="form-grid">
+        <div class="form-group form-full">
+          <label class="form-label" for="ch-label">نام کانال *</label>
+          <input id="ch-label" class="form-input" type="text" placeholder="مثال: گوگل — سرچ ارگانیک" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="ch-source">کد UTM / منبع</label>
+          <input id="ch-source" class="form-input" type="text" placeholder="مثال: google" style="direction:ltr" />
+          <span class="form-hint">اگر خالی باشد از نام کانال ساخته می‌شود</span>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="ch-sessions">نشست — Sessions</label>
+          <input id="ch-sessions" class="form-input" type="number" min="0" placeholder="0" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="ch-pageviews">صفحه‌بازدید</label>
+          <input id="ch-pageviews" class="form-input" type="number" min="0" placeholder="0" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="ch-events">رویداد</label>
+          <input id="ch-events" class="form-input" type="number" min="0" placeholder="0" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="ch-users">کاربر یکتا</label>
+          <input id="ch-users" class="form-input" type="number" min="0" placeholder="0" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="ch-signups">ثبت‌نام</label>
+          <input id="ch-signups" class="form-input" type="number" min="0" placeholder="0" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="ch-purchases">خرید</label>
+          <input id="ch-purchases" class="form-input" type="number" min="0" placeholder="0" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="ch-basket">افزودن به سبد</label>
+          <input id="ch-basket" class="form-input" type="number" min="0" placeholder="0" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="ch-spend">هزینه (تومان)</label>
+          <input id="ch-spend" class="form-input" type="number" min="0" placeholder="0" />
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn-gold">افزودن کانال</button>
+        <button type="button" class="btn-outline" onclick="closeModal()">انصراف</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ============ Modal: Add Influencer ============ -->
+<div class="modal" id="modal-influencer">
+  <div class="modal-box">
+    <div class="modal-header">
+      <span class="modal-title">افزودن اینفلوئنسر / پست</span>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <form id="form-influencer" autocomplete="off">
+      <div class="form-grid">
+
+        <div class="form-section-title">مشخصات</div>
+
+        <div class="form-group form-full">
+          <label class="form-label" for="inf-name">نام اینفلوئنسر *</label>
+          <input id="inf-name" class="form-input" type="text" placeholder="مثال: علی رضایی" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="inf-platform">پلتفرم</label>
+          <select id="inf-platform" class="form-select">
+            <option value="instagram">اینستاگرام</option>
+            <option value="telegram">تلگرام</option>
+            <option value="youtube">یوتیوب</option>
+            <option value="twitter">توییتر/X</option>
+            <option value="tiktok">تیک‌تاک</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="inf-handle">آیدی / هندل</label>
+          <input id="inf-handle" class="form-input" type="text" placeholder="@username" style="direction:ltr" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="inf-posttype">نوع محتوا</label>
+          <select id="inf-posttype" class="form-select">
+            <option value="post">پست</option>
+            <option value="story">استوری</option>
+            <option value="reel">ریل / شورتز</option>
+            <option value="video">ویدیو</option>
+            <option value="multi">چند محتوا</option>
+          </select>
+        </div>
+
+        <div class="form-section-title">دیتای پلتفرم (از پنل اینستاگرام/تلگرام)</div>
+
+        <div class="form-group">
+          <label class="form-label" for="inf-impressions">ایمپرشن (Impressions)</label>
+          <input id="inf-impressions" class="form-input" type="number" min="0" placeholder="0" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="inf-reach">ریچ (Reach)</label>
+          <input id="inf-reach" class="form-input" type="number" min="0" placeholder="0" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="inf-storyviews">بازدید استوری</label>
+          <input id="inf-storyviews" class="form-input" type="number" min="0" placeholder="0" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="inf-linkclicks">کلیک لینک / لینک بایو</label>
+          <input id="inf-linkclicks" class="form-input" type="number" min="0" placeholder="0" />
+        </div>
+
+        <div class="form-section-title">دیتای سایت (از آنالیتیکس — UTM)</div>
+
+        <div class="form-group">
+          <label class="form-label" for="inf-utmsessions">نشست از UTM</label>
+          <input id="inf-utmsessions" class="form-input" type="number" min="0" placeholder="0" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="inf-utmsignups">ثبت‌نام از UTM</label>
+          <input id="inf-utmsignups" class="form-input" type="number" min="0" placeholder="0" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="inf-purchases">خرید از UTM</label>
+          <input id="inf-purchases" class="form-input" type="number" min="0" placeholder="0" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="inf-basket">افزودن به سبد از UTM</label>
+          <input id="inf-basket" class="form-input" type="number" min="0" placeholder="0" />
+        </div>
+
+        <div class="form-section-title">هزینه</div>
+
+        <div class="form-group">
+          <label class="form-label" for="inf-spend">هزینه (تومان)</label>
+          <input id="inf-spend" class="form-input" type="number" min="0" placeholder="0" />
+        </div>
+        <div class="form-group form-full">
+          <label class="form-label" for="inf-notes">یادداشت</label>
+          <textarea id="inf-notes" class="form-textarea" placeholder="توضیحات اضافی، لینک پست، تاریخ انتشار..."></textarea>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn-gold">افزودن اینفلوئنسر</button>
+        <button type="button" class="btn-outline" onclick="closeModal()">انصراف</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ============ App ============ -->
+<div id="app">
+
+  <!-- Header -->
+  <header id="app-header">
+    <div class="header-brand">
+      <div class="header-logo">۲۴</div>
+      <span class="header-brand-name">پایگاه داده کمپین‌ها | اکسیراز</span>
+    </div>
+    <div class="header-controls">
+      <select id="campaign-selector" title="انتخاب کمپین">
+        <option value="">— انتخاب کمپین —</option>
+      </select>
+      <button class="btn-gold" onclick="openModalCampaign()">+ کمپین جدید</button>
+      <a href="index.html" class="btn-outline" style="text-decoration:none;padding:9px 16px">داشبورد لیگ ۲۴ ↗</a>
+    </div>
+  </header>
+
+  <!-- ===== View: Campaign List ===== -->
+  <div id="view-list" class="page">
+    <div class="list-header">
+      <div>
+        <div class="list-title">کمپین‌ها</div>
+      </div>
+    </div>
+    <div id="campaign-grid"></div>
+  </div>
+
+  <!-- ===== View: Campaign Detail ===== -->
+  <div id="view-detail" class="page" style="display:none">
+
+    <!-- Detail Header -->
+    <div class="detail-header">
+      <div>
+        <div class="detail-breadcrumb" onclick="backToList()">← همه کمپین‌ها</div>
+        <div class="detail-title-wrap">
+          <h1 id="detail-title"></h1>
+          <div id="detail-dates"></div>
+        </div>
+      </div>
+      <div class="detail-actions">
+        <button class="btn-gold" onclick="openModalKpis()">✏️ ویرایش KPI‌ها</button>
+      </div>
+    </div>
+
+    <!-- KPI Cards -->
+    <div id="kpi-cards"></div>
+
+    <!-- Tabs -->
+    <div class="tab-bar">
+      <button class="tab-btn active" data-tab="channels">کانال‌ها</button>
+      <button class="tab-btn" data-tab="influencers">اینفلوئنسرها</button>
+      <button class="tab-btn" data-tab="compare">مقایسه کمپین‌ها</button>
+    </div>
+
+    <!-- Tab: Channels -->
+    <div class="tab-pane active" id="tab-channels">
+      <div class="chart-wrap">
+        <div class="chart-canvas-wrap">
+          <canvas id="ch-chart"></canvas>
+        </div>
+      </div>
+      <div class="sec-header">
+        <span class="sec-title">منابع ورودی (کانال‌ها)</span>
+        <button class="btn-gold" onclick="openModalChannel()">+ افزودن کانال</button>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th onclick="sortCh('label')">کانال</th>
+              <th onclick="sortCh('sessions')">نشست</th>
+              <th onclick="sortCh('page_views')">صفحه‌بازدید</th>
+              <th onclick="sortCh('events')">رویداد</th>
+              <th onclick="sortCh('user_sessions')">کاربر یکتا</th>
+              <th onclick="sortCh('signups')">ثبت‌نام</th>
+              <th onclick="sortCh('purchases')">خرید</th>
+              <th>نرخ تبدیل</th>
+              <th onclick="sortCh('spend_toman')">هزینه</th>
+              <th>حذف</th>
+            </tr>
+          </thead>
+          <tbody id="channel-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Tab: Influencers -->
+    <div class="tab-pane" id="tab-influencers">
+      <div class="chart-wrap">
+        <div class="chart-canvas-wrap">
+          <canvas id="inf-chart"></canvas>
+        </div>
+      </div>
+      <div class="sec-header">
+        <span class="sec-title">اینفلوئنسرها</span>
+        <button class="btn-gold" onclick="openModalInfluencer()">+ افزودن اینفلوئنسر</button>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th onclick="sortInf('name')">نام</th>
+              <th>پلتفرم</th>
+              <th>آیدی</th>
+              <th>نوع</th>
+              <th onclick="sortInf('impressions')">ایمپرشن</th>
+              <th onclick="sortInf('story_views')">بازدید استوری</th>
+              <th onclick="sortInf('link_clicks')">کلیک لینک</th>
+              <th>CTR</th>
+              <th onclick="sortInf('utm_signups')">ثبت‌نام</th>
+              <th>نرخ تبدیل</th>
+              <th onclick="sortInf('spend_toman')">هزینه</th>
+              <th>حذف</th>
+            </tr>
+          </thead>
+          <tbody id="inf-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Tab: Compare -->
+    <div class="tab-pane" id="tab-compare">
+      <div class="sec-header">
+        <span class="sec-title">مقایسه همه کمپین‌ها</span>
+      </div>
+      <div id="compare-content"></div>
+    </div>
+
+  </div><!-- /view-detail -->
+
+</div><!-- /app -->
+
+<script src="js/data.js"></script>
+<script src="js/campaigns.js"></script>
+
+</body>
+</html>
