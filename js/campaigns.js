@@ -260,7 +260,10 @@ window.selectCampaign = async function(id) {
     const isLiga24 = window.CAMPAIGN_DATA &&
       state.active &&
       (state.active.slug === 'liga24-worldcup-2026' || (state.active.name || '').includes('لیگ ۲۴'));
-    notif('slug: ' + (state.active ? state.active.slug : '?') + ' | liga24: ' + isLiga24, 'info');
+    const dbg = $id('notif-bar');
+    dbg.textContent = 'slug=' + (state.active ? state.active.slug : '?') + ' | CD=' + !!window.CAMPAIGN_DATA + ' | liga24=' + isLiga24;
+    dbg.className = 'notif-bar info';
+    dbg.style.display = '';
     if (isLiga24) {
       state.channels = buildLiga24Channels(id);
       await Promise.all([loadKpis(id), loadInfluencers(id)]);
