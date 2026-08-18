@@ -639,11 +639,8 @@ async function init() {
   try {
     loading(true);
     await loadCampaigns();
-
-    if (state.campaigns.length === 0) {
-      await maybeSeedLiga24();
-      await loadCampaigns();
-    }
+    await maybeSeedLiga24();
+    if (state.campaigns.length === 0) await loadCampaigns();
 
     await loadAllKpis();
     updateSelector();
