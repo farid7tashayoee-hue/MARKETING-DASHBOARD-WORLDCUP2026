@@ -257,7 +257,10 @@ window.selectCampaign = async function(id) {
   switchTab('channels');
 
   try {
-    const isLiga24 = window.CAMPAIGN_DATA && state.active && state.active.slug === 'liga24-worldcup-2026';
+    const isLiga24 = window.CAMPAIGN_DATA &&
+      state.active &&
+      (state.active.slug === 'liga24-worldcup-2026' || (state.active.name || '').includes('لیگ ۲۴'));
+    notif('slug: ' + (state.active ? state.active.slug : '?') + ' | liga24: ' + isLiga24, 'info');
     if (isLiga24) {
       state.channels = buildLiga24Channels(id);
       await Promise.all([loadKpis(id), loadInfluencers(id)]);
