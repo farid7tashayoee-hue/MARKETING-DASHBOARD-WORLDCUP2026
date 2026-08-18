@@ -307,7 +307,7 @@ function renderChannelTable() {
       labels: top.map(c => c.label || c.source),
       datasets: [
         { label: 'نشست', data: top.map(c => c.sessions || 0), backgroundColor: palette[0] + 'cc' },
-        { label: 'رویداد', data: top.map(c => c.events || 0), backgroundColor: palette[1] + 'cc' },
+        { label: 'ثبت‌نام', data: top.map(c => c.signups || 0), backgroundColor: palette[2] + 'cc' },
       ]
     },
     options: {
