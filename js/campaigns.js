@@ -84,6 +84,27 @@ async function upsertKpis(cid, d) {
 
 // ============ Channel CRUD ============
 async function loadChannels(cid) {
+  const camp = state.campaigns.find(c => c.id === cid);
+  if (camp && camp.slug === 'liga24-worldcup-2026' && window.CAMPAIGN_DATA) {
+    state.channels = (window.CAMPAIGN_DATA.channels || [])
+      .filter(ch => ch.campaign && (ch.campaign.sessions > 0 || (ch.campaign.signups || 0) > 0))
+      .map((ch, i) => ({
+        id: 'seed-' + i,
+        campaign_id: cid,
+        source: ch.source,
+        label: ch.label,
+        sessions:      ch.campaign.sessions      || 0,
+        page_views:    ch.campaign.pageViews      || 0,
+        events:        ch.campaign.events         || 0,
+        user_sessions: ch.campaign.userSessions   || 0,
+        signups:       ch.campaign.signups        || 0,
+        purchases:     0,
+        basket:        0,
+        spend_toman:   ch.spendToman              || 0,
+        _seeded: true,
+      }));
+    return;
+  }
   state.channels = await sb(`/rest/v1/campaign_channels?campaign_id=eq.${cid}&select=*`) || [];
 }
 
@@ -126,22 +147,7 @@ async function maybeSeedLiga24() {
   let campId = existing && existing.length > 0 ? existing[0].id : null;
 
   if (campId) {
-    // همیشه پاک کن و دوباره seed کن تا مطمئن بشیم همه کانال‌ها هستن
-    await sb(`/rest/v1/campaign_channels?campaign_id=eq.${campId}`, 'DELETE');
-    const chRows = (D.channels || [])
-      .filter(ch => ch.campaign && (ch.campaign.sessions > 0 || (ch.campaign.signups || 0) > 0))
-      .map(ch => ({
-        source: ch.source, label: ch.label,
-        sessions: ch.campaign.sessions || 0, page_views: ch.campaign.pageViews || 0,
-        events: ch.campaign.events || 0, user_sessions: ch.campaign.userSessions || 0,
-        signups: ch.campaign.signups || 0, spend_toman: ch.spendToman || 0,
-      }));
-    console.log('[seed] inserting', chRows.length, 'channels:', chRows.map(r => r.source + ':' + r.sessions).join(', '));
-    if (chRows.length) {
-      await createChannels(campId, chRows);
-      console.log('[seed] done');
-    }
-    return;
+    return; // کانال‌ها مستقیم از data.js خونده میشن
   }
 
   notif('در حال وارد کردن داده‌های لیگ ۲۴...', 'info');
@@ -299,7 +305,7 @@ function renderChannelTable() {
         <td>${fmt(ch.purchases)}</td>
         <td>${conv ? toFa(conv) + '٪' : '—'}</td>
         <td>${ch.spend_toman ? fmtMoney(ch.spend_toman) : '—'}</td>
-        <td><button class="btn-del" onclick="delChannel('${ch.id}')">حذف</button></td>
+        <td>${ch._seeded ? '' : `<button class="btn-del" onclick="delChannel('${ch.id}')">حذف</button>`}</td>
       </tr>`;
     }).join('');
   }
