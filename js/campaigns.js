@@ -598,10 +598,7 @@ async function init() {
   function hidGate() {
     gate.style.transition = 'opacity .4s';
     gate.style.opacity = '0';
-    setTimeout(() => {
-      gate.style.display = 'none';
-      $id('app').style.display = 'block';
-    }, 420);
+    setTimeout(() => { gate.style.display = 'none'; }, 420);
   }
   if (localStorage.getItem('l24_auth') === '1') hidGate();
 

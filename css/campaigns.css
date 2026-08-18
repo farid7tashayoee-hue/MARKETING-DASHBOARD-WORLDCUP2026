@@ -112,7 +112,7 @@ body {
 #pwd-error.shake { animation:gShake .4s ease; }
 
 /* ============ App Shell ============ */
-#app { display:none; min-height:100vh; }
+#app { min-height:100vh; }
 
 /* Loading bar */
 #loading-bar {
