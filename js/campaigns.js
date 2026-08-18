@@ -88,10 +88,16 @@ async function loadChannels(cid) {
 }
 
 async function createChannels(cid, rows) {
-  await sb('/rest/v1/campaign_channels', 'POST',
-    rows.map(r => ({ ...r, campaign_id: cid })),
-    { 'Prefer': 'return=minimal' }
-  );
+  for (const r of rows) {
+    try {
+      await sb('/rest/v1/campaign_channels', 'POST',
+        { ...r, campaign_id: cid },
+        { 'Prefer': 'return=minimal' }
+      );
+    } catch(e) {
+      console.error('[ch insert fail]', r.source, e.message);
+    }
+  }
 }
 
 async function deleteChannelById(id) {
@@ -132,7 +138,11 @@ async function maybeSeedLiga24() {
         events: ch.campaign.events || 0, user_sessions: ch.campaign.userSessions || 0,
         signups: ch.campaign.signups || 0, spend_toman: ch.spendToman || 0,
       }));
-    if (chRows.length) await createChannels(campId, chRows);
+    console.log('[seed] channels to insert:', chRows.length, chRows.map(r => r.source + ':' + r.sessions).join(', '));
+    if (chRows.length) {
+      await createChannels(campId, chRows);
+      console.log('[seed] done inserting channels');
+    }
     return;
   }
 
