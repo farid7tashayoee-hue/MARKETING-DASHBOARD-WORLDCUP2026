@@ -85,27 +85,27 @@ async function upsertKpis(cid, d) {
 }
 
 // ============ Channel CRUD ============
+function buildLiga24Channels(cid) {
+  return (window.CAMPAIGN_DATA.channels || [])
+    .filter(ch => ch.campaign && (ch.campaign.sessions > 0 || (ch.campaign.signups || 0) > 0))
+    .map((ch, i) => ({
+      id: 'seed-' + i,
+      campaign_id: cid,
+      source: ch.source,
+      label: ch.label,
+      sessions:      ch.campaign.sessions      || 0,
+      page_views:    ch.campaign.pageViews      || 0,
+      events:        ch.campaign.events         || 0,
+      user_sessions: ch.campaign.userSessions   || 0,
+      signups:       ch.campaign.signups        || 0,
+      purchases:     0,
+      basket:        0,
+      spend_toman:   ch.spendToman              || 0,
+      _seeded: true,
+    }));
+}
+
 async function loadChannels(cid) {
-  if (cid === liga24Id && window.CAMPAIGN_DATA) {
-    state.channels = (window.CAMPAIGN_DATA.channels || [])
-      .filter(ch => ch.campaign && (ch.campaign.sessions > 0 || (ch.campaign.signups || 0) > 0))
-      .map((ch, i) => ({
-        id: 'seed-' + i,
-        campaign_id: cid,
-        source: ch.source,
-        label: ch.label,
-        sessions:      ch.campaign.sessions      || 0,
-        page_views:    ch.campaign.pageViews      || 0,
-        events:        ch.campaign.events         || 0,
-        user_sessions: ch.campaign.userSessions   || 0,
-        signups:       ch.campaign.signups        || 0,
-        purchases:     0,
-        basket:        0,
-        spend_toman:   ch.spendToman              || 0,
-        _seeded: true,
-      }));
-    return;
-  }
   state.channels = await sb(`/rest/v1/campaign_channels?campaign_id=eq.${cid}&select=*`) || [];
 }
 
@@ -257,7 +257,13 @@ window.selectCampaign = async function(id) {
   switchTab('channels');
 
   try {
-    await Promise.all([loadKpis(id), loadChannels(id), loadInfluencers(id)]);
+    const isLiga24 = window.CAMPAIGN_DATA && state.active && state.active.slug === 'liga24-worldcup-2026';
+    if (isLiga24) {
+      state.channels = buildLiga24Channels(id);
+      await Promise.all([loadKpis(id), loadInfluencers(id)]);
+    } else {
+      await Promise.all([loadKpis(id), loadChannels(id), loadInfluencers(id)]);
+    }
     renderKpiCards();
     renderChannelTable();
   } finally {
