@@ -17,8 +17,8 @@ const state = {
   kpis: null,
   view: 'list',      // 'list' | 'detail'
   tab: 'channels',
-  chSort: { col: 'sessions', dir: -1 },
-  infSort: { col: 'impressions', dir: -1 },
+  chSort: { col: 'sessions', dir: 1 },
+  infSort: { col: 'impressions', dir: 1 },
 };
 
 // ============ Utils ============
@@ -260,7 +260,6 @@ window.selectCampaign = async function(id) {
     const isLiga24 = window.CAMPAIGN_DATA &&
       state.active &&
       (state.active.slug === 'liga24-worldcup-2026' || (state.active.name || '').includes('لیگ ۲۴'));
-    document.title = 'CD=' + !!window.CAMPAIGN_DATA + ' slug=' + (state.active ? state.active.slug : '?') + ' L24=' + isLiga24;
     if (isLiga24) {
       state.channels = buildLiga24Channels(id);
       await Promise.all([loadKpis(id), loadInfluencers(id)]);
