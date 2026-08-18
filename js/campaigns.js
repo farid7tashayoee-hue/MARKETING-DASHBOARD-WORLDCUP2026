@@ -6,6 +6,8 @@ const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJ
 const SB_H = { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type': 'application/json' };
 
 // ============ State ============
+let liga24Id = null; // ID کمپین لیگ ۲۴ — set در maybeSeedLiga24
+
 const state = {
   campaigns: [],
   allKpis: {},       // { campaignId: kpiRow }
@@ -84,8 +86,7 @@ async function upsertKpis(cid, d) {
 
 // ============ Channel CRUD ============
 async function loadChannels(cid) {
-  const camp = state.campaigns.find(c => c.id === cid);
-  if (camp && camp.slug === 'liga24-worldcup-2026' && window.CAMPAIGN_DATA) {
+  if (cid === liga24Id && window.CAMPAIGN_DATA) {
     state.channels = (window.CAMPAIGN_DATA.channels || [])
       .filter(ch => ch.campaign && (ch.campaign.sessions > 0 || (ch.campaign.signups || 0) > 0))
       .map((ch, i) => ({
@@ -147,6 +148,7 @@ async function maybeSeedLiga24() {
   let campId = existing && existing.length > 0 ? existing[0].id : null;
 
   if (campId) {
+    liga24Id = campId;
     return; // کانال‌ها مستقیم از data.js خونده میشن
   }
 
@@ -161,6 +163,7 @@ async function maybeSeedLiga24() {
     description: 'کمپین پیش‌بینی جام جهانی ۲۰۲۶ اکسیراز — ۱۴۰۴/۰۳/۲۱ تا ۱۴۰۴/۰۴/۲۸'
   });
   const cid = camp.id;
+  liga24Id = cid;
 
   const k = D.kpis || {};
   await sb('/rest/v1/campaign_kpis', 'POST', {
