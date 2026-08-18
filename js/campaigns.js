@@ -41,7 +41,8 @@ async function sb(path, method = 'GET', body = null, extra = {}) {
   if (body !== null) opts.body = JSON.stringify(body);
   const r = await fetch(SB_URL + path, opts);
   if (!r.ok) throw new Error(`SB ${method} ${path}: ${r.status}`);
-  return r.status === 204 ? null : r.json();
+  const text = await r.text();
+  return text ? JSON.parse(text) : null;
 }
 
 // ============ Campaign CRUD ============
