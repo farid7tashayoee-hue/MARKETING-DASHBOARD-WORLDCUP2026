@@ -126,10 +126,8 @@ async function maybeSeedLiga24() {
   let campId = existing && existing.length > 0 ? existing[0].id : null;
 
   if (campId) {
-    // کمپین وجود داره — فقط کانال‌ها رو چک کن
-    const chExist = await sb(`/rest/v1/campaign_channels?campaign_id=eq.${campId}&select=id&limit=1`);
-    if (chExist && chExist.length > 0) return; // همه چیز کامله
-    // کانال‌ها ناقصن — فقط seed کن
+    // همیشه پاک کن و دوباره seed کن تا مطمئن بشیم همه کانال‌ها هستن
+    await sb(`/rest/v1/campaign_channels?campaign_id=eq.${campId}`, 'DELETE');
     const chRows = (D.channels || [])
       .filter(ch => ch.campaign && (ch.campaign.sessions > 0 || (ch.campaign.signups || 0) > 0))
       .map(ch => ({
@@ -138,10 +136,10 @@ async function maybeSeedLiga24() {
         events: ch.campaign.events || 0, user_sessions: ch.campaign.userSessions || 0,
         signups: ch.campaign.signups || 0, spend_toman: ch.spendToman || 0,
       }));
-    console.log('[seed] channels to insert:', chRows.length, chRows.map(r => r.source + ':' + r.sessions).join(', '));
+    console.log('[seed] inserting', chRows.length, 'channels:', chRows.map(r => r.source + ':' + r.sessions).join(', '));
     if (chRows.length) {
       await createChannels(campId, chRows);
-      console.log('[seed] done inserting channels');
+      console.log('[seed] done');
     }
     return;
   }
