@@ -121,6 +121,77 @@
   </div>
 </div>
 
+<!-- ============ Modal: Edit Game Stats ============ -->
+<div class="modal" id="modal-game">
+  <div class="modal-box">
+    <div class="modal-header">
+      <span class="modal-title">ویرایش آمار بازی / تیکت</span>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <form id="form-game" autocomplete="off">
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label" for="g-total_users">تعداد کاربران</label>
+          <input id="g-total_users" class="form-input" type="number" min="0" placeholder="0" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="g-total_referrers">مجموع ریفرها</label>
+          <input id="g-total_referrers" class="form-input" type="number" min="0" placeholder="0" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="g-users_with_ticket">کاربران دارای بلیط</label>
+          <input id="g-users_with_ticket" class="form-input" type="number" min="0" placeholder="0" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="g-users_without_ticket">کاربران بدون بلیط</label>
+          <input id="g-users_without_ticket" class="form-input" type="number" min="0" placeholder="0" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="g-max_tickets_per_user">حداکثر بلیط یک کاربر</label>
+          <input id="g-max_tickets_per_user" class="form-input" type="number" min="0" placeholder="0" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="g-total_tickets">کل بلیط‌ها</label>
+          <input id="g-total_tickets" class="form-input" type="number" min="0" placeholder="0" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="g-streak_tickets">بلیط‌های استریک</label>
+          <input id="g-streak_tickets" class="form-input" type="number" min="0" placeholder="0" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="g-referral_tickets">بلیط‌های معرفی</label>
+          <input id="g-referral_tickets" class="form-input" type="number" min="0" placeholder="0" />
+        </div>
+        <div class="form-section-title">جزئیات تیکت‌ها</div>
+        <div class="form-group">
+          <label class="form-label" for="g-raffle_tickets">تیکت قرعه‌کشی</label>
+          <input id="g-raffle_tickets" class="form-input" type="number" min="0" placeholder="0" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="g-referral_reward_tickets">جایزه معرفی دوستان</label>
+          <input id="g-referral_reward_tickets" class="form-input" type="number" min="0" placeholder="0" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="g-streak3day_tickets">جایزه استریک ۳ روزه</label>
+          <input id="g-streak3day_tickets" class="form-input" type="number" min="0" placeholder="0" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="g-golden_tickets">تیکت طلایی</label>
+          <input id="g-golden_tickets" class="form-input" type="number" min="0" placeholder="0" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="g-instagram_tickets">تیکت اینستاگرام</label>
+          <input id="g-instagram_tickets" class="form-input" type="number" min="0" placeholder="0" />
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn-gold">ذخیره</button>
+        <button type="button" class="btn-outline" onclick="closeModal()">انصراف</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <!-- ============ Modal: Add Channel ============ -->
 <div class="modal" id="modal-channel">
   <div class="modal-box">
@@ -140,6 +211,17 @@
           <span class="form-hint">اگر خالی باشد از نام کانال ساخته می‌شود</span>
         </div>
         <div class="form-group">
+          <label class="form-label" for="ch-platform">پلتفرم</label>
+          <select id="ch-platform" class="form-select">
+            <option value="telegram">تلگرام</option>
+            <option value="instagram">اینستاگرام</option>
+            <option value="video">ویدیویی (آپارات/صبا ویژن...)</option>
+            <option value="site">بنر سایت</option>
+            <option value="sms">پیامک</option>
+            <option value="other" selected>سایر</option>
+          </select>
+        </div>
+        <div class="form-group">
           <label class="form-label" for="ch-sessions">نشست — Sessions</label>
           <input id="ch-sessions" class="form-input" type="number" min="0" placeholder="0" />
         </div>
@@ -156,6 +238,14 @@
           <input id="ch-users" class="form-input" type="number" min="0" placeholder="0" />
         </div>
         <div class="form-group">
+          <label class="form-label" for="ch-clicks">کلیک</label>
+          <input id="ch-clicks" class="form-input" type="number" min="0" placeholder="0" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="ch-members">تعداد عضو</label>
+          <input id="ch-members" class="form-input" type="number" min="0" placeholder="0" />
+        </div>
+        <div class="form-group">
           <label class="form-label" for="ch-signups">ثبت‌نام</label>
           <input id="ch-signups" class="form-input" type="number" min="0" placeholder="0" />
         </div>
@@ -170,6 +260,14 @@
         <div class="form-group">
           <label class="form-label" for="ch-spend">هزینه (تومان)</label>
           <input id="ch-spend" class="form-input" type="number" min="0" placeholder="0" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="ch-start">تاریخ شروع</label>
+          <input id="ch-start" class="form-input" type="date" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="ch-end">تاریخ پایان</label>
+          <input id="ch-end" class="form-input" type="date" />
         </div>
       </div>
       <div class="form-actions">
@@ -331,6 +429,7 @@
     <div class="tab-bar">
       <button class="tab-btn active" data-tab="channels">کانال‌ها</button>
       <button class="tab-btn" data-tab="influencers">اینفلوئنسرها</button>
+      <button class="tab-btn" data-tab="game">بازی / تیکت</button>
       <button class="tab-btn" data-tab="compare">مقایسه کمپین‌ها</button>
     </div>
 
@@ -354,10 +453,14 @@
               <th onclick="sortCh('page_views')">صفحه‌بازدید</th>
               <th onclick="sortCh('events')">رویداد</th>
               <th onclick="sortCh('user_sessions')">کاربر یکتا</th>
+              <th onclick="sortCh('clicks')">کلیک</th>
+              <th onclick="sortCh('members')">تعداد عضو</th>
               <th onclick="sortCh('signups')">ثبت‌نام</th>
               <th onclick="sortCh('purchases')">خرید</th>
               <th>نرخ تبدیل</th>
               <th onclick="sortCh('spend_toman')">هزینه</th>
+              <th onclick="sortCh('budget_toman')">باقی‌مانده</th>
+              <th onclick="sortCh('start_date')">بازه اجرا</th>
               <th>حذف</th>
             </tr>
           </thead>
@@ -397,6 +500,20 @@
           </thead>
           <tbody id="inf-tbody"></tbody>
         </table>
+      </div>
+    </div>
+
+    <!-- Tab: Game / Tickets -->
+    <div class="tab-pane" id="tab-game">
+      <div class="sec-header">
+        <span class="sec-title">آمار بازی قرعه‌کشی (تیکت)</span>
+        <button class="btn-gold" onclick="openModalGame()">✏️ ویرایش آمار بازی</button>
+      </div>
+      <div id="game-cards"></div>
+      <div class="chart-wrap">
+        <div class="chart-canvas-wrap">
+          <canvas id="game-chart"></canvas>
+        </div>
       </div>
     </div>
 

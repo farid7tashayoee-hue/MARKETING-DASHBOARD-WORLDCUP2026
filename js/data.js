@@ -107,7 +107,7 @@ const CAMPAIGN_DATA = {
       month30: {sessions:58131,  pageViews:139528, events:370553, signups:38820},
       campaign:{sessions:80281,  pageViews:200329, events:552761, signups:52621} },
 
-    { source:"khabaronline", label:"خبرآنلاین — بنر استیکی",           spendToman:341000000,
+    { source:"khabaronline", label:"خبرآنلاین — بنر استیکی",           spendToman:620000000,
       today:   {sessions:609,    pageViews:696,    events:2744,   signups:7   },
       week7:   {sessions:9967,   pageViews:11561,  events:23459,  signups:100 },
       month30: {sessions:35967,  pageViews:41840,  events:79307,  signups:399 },
@@ -125,7 +125,7 @@ const CAMPAIGN_DATA = {
       month30: {sessions:0, pageViews:0, events:0, signups:0},
       campaign:{sessions:610, pageViews:743, events:1238, signups:54} },
 
-    { source:"asriran",    label:"عصر ایران — بنر",                    spendToman:28000000,
+    { source:"asriran",    label:"عصر ایران — بنر",                    spendToman:150000000,
       today:   {sessions:282,    pageViews:309,    events:487,    signups:6   },
       week7:   {sessions:2207,   pageViews:2486,   events:3631,   signups:70  },
       month30: {sessions:15832,  pageViews:18627,  events:31191,  signups:353 },

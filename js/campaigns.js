@@ -15,6 +15,7 @@ const state = {
   channels: [],
   influencers: [],
   kpis: null,
+  gameStats: null,
   view: 'list',      // 'list' | 'detail'
   tab: 'channels',
   chSort: { col: 'sessions', dir: 1 },
@@ -84,6 +85,22 @@ async function upsertKpis(cid, d) {
   state.allKpis[cid] = state.kpis;
 }
 
+// ============ Game Stats CRUD ============
+async function loadGameStats(cid) {
+  const rows = await sb(`/rest/v1/campaign_game_stats?campaign_id=eq.${cid}&select=*`) || [];
+  state.gameStats = rows[0] || null;
+}
+
+async function upsertGameStats(cid, d) {
+  const exists = state.gameStats && state.gameStats.campaign_id === cid;
+  if (exists) {
+    await sb(`/rest/v1/campaign_game_stats?campaign_id=eq.${cid}`, 'PATCH', { ...d, updated_at: new Date().toISOString() });
+  } else {
+    await sb('/rest/v1/campaign_game_stats', 'POST', { ...d, campaign_id: cid }, { 'Prefer': 'return=minimal' });
+  }
+  state.gameStats = { ...(state.gameStats || {}), ...d, campaign_id: cid };
+}
+
 // ============ Channel CRUD ============
 function buildLiga24Channels(cid) {
   return (window.CAMPAIGN_DATA.channels || [])
@@ -93,6 +110,7 @@ function buildLiga24Channels(cid) {
       campaign_id: cid,
       source: ch.source,
       label: ch.label,
+      platform: LIGA24_CHANNEL_PLATFORM[ch.source] || 'other',
       sessions:      ch.campaign.sessions      || 0,
       page_views:    ch.campaign.pageViews      || 0,
       events:        ch.campaign.events         || 0,
@@ -207,6 +225,7 @@ function switchTab(name) {
   document.querySelectorAll('.tab-pane').forEach(p => p.classList.toggle('active', p.id === 'tab-' + name));
   if (name === 'channels')    renderChannelTable();
   if (name === 'influencers') renderInfluencerTable();
+  if (name === 'game')        renderGameStats();
   if (name === 'compare')     renderCompare();
 }
 
@@ -262,9 +281,9 @@ window.selectCampaign = async function(id) {
       (state.active.slug === 'liga24-worldcup-2026' || (state.active.name || '').includes('لیگ ۲۴'));
     if (isLiga24) {
       state.channels = buildLiga24Channels(id);
-      await Promise.all([loadKpis(id), loadInfluencers(id)]);
+      await Promise.all([loadKpis(id), loadInfluencers(id), loadGameStats(id)]);
     } else {
-      await Promise.all([loadKpis(id), loadChannels(id), loadInfluencers(id)]);
+      await Promise.all([loadKpis(id), loadChannels(id), loadInfluencers(id), loadGameStats(id)]);
     }
     renderKpiCards();
     renderChannelTable();
@@ -302,20 +321,25 @@ function renderChannelTable() {
   });
 
   if (!sorted.length) {
-    $id('channel-tbody').innerHTML = '<tr><td colspan="10" class="empty-row">هنوز کانالی اضافه نشده</td></tr>';
+    $id('channel-tbody').innerHTML = '<tr><td colspan="14" class="empty-row">هنوز کانالی اضافه نشده</td></tr>';
   } else {
     $id('channel-tbody').innerHTML = sorted.map(ch => {
       const conv = pct(ch.signups || 0, ch.sessions || 0);
+      const remaining = (ch.budget_toman != null) ? ch.budget_toman - (ch.spend_toman || 0) : null;
       return `<tr>
-        <td class="td-label">${ch.label || ch.source}</td>
+        <td class="td-label">${ch.label || ch.source} <span class="ch-platform-badge">${platformLbl(ch.platform)}</span></td>
         <td>${fmt(ch.sessions)}</td>
         <td>${fmt(ch.page_views)}</td>
         <td>${fmt(ch.events)}</td>
         <td>${fmt(ch.user_sessions)}</td>
+        <td>${fmt(ch.clicks)}</td>
+        <td>${fmt(ch.members)}</td>
         <td>${fmt(ch.signups)}</td>
         <td>${fmt(ch.purchases)}</td>
         <td>${conv ? toFa(conv) + '٪' : '—'}</td>
         <td>${ch.spend_toman ? fmtMoney(ch.spend_toman) : '—'}</td>
+        <td>${remaining != null ? fmtMoney(remaining) : '—'}</td>
+        <td>${ch.start_date || ch.end_date ? `${ch.start_date || '؟'} تا ${ch.end_date || '؟'}` : '—'}</td>
         <td>${ch._seeded ? '' : `<button class="btn-del" onclick="delChannel('${ch.id}')">حذف</button>`}</td>
       </tr>`;
     }).join('');
@@ -414,8 +438,21 @@ function renderInfluencerTable() {
 }
 
 function platformLbl(p) {
-  return { instagram:'اینستاگرام', telegram:'تلگرام', youtube:'یوتیوب', twitter:'توییتر', tiktok:'تیک‌تاک' }[p] || p || '—';
+  return { instagram:'اینستاگرام', telegram:'تلگرام', youtube:'یوتیوب', twitter:'توییتر', tiktok:'تیک‌تاک', video:'ویدیویی', site:'بنر سایت', sms:'پیامک', search:'جستجو', other:'سایر' }[p] || p || '—';
 }
+
+// نگاشت پلتفرم کانال‌های لیگ ۲۴ (source در js/data.js) برای نمایش بج کنار نام کانال
+const LIGA24_CHANNEL_PLATFORM = {
+  direct:'other', google:'search', khabaronline:'site', zoomit:'site', asanpardakht:'site',
+  asriran:'site', asanpardakht_sms:'sms', exiraz_sms24:'sms', exiraz_24_iran_belg:'sms',
+  exiraz_24_reminder:'sms', exiraz_24_reminder1:'sms', exiraz_24_sms_iran_new1stmatch:'sms',
+  exiraz_24_1stretention:'sms', exiraz_24_gardananade2:'sms', exiraz_24_iran_egypt:'sms',
+  l24sabavision:'video', l24jaryan:'other', bale_bazu24:'other', l24bale:'other',
+  l24agahsazan:'other', l24instagram:'instagram', l24chavosh:'other', l24telegram:'telegram',
+  l24aparat:'video', instagram:'instagram', telegram:'telegram', facebook:'other',
+  chatgpt:'other', yahoo:'search', bing:'search', linkedin:'other', twitter:'other',
+  duckduckgo:'search', yeklist:'other',
+};
 function postTypeLbl(t) {
   return { post:'پست', story:'استوری', reel:'ریل', video:'ویدیو', multi:'چند رسانه' }[t] || t || 'پست';
 }
@@ -448,6 +485,84 @@ function renderCompare() {
   }).join('');
 
   ctr.innerHTML = `<div class="table-wrap"><table class="data-table"><thead>${header}</thead><tbody>${rows}</tbody></table></div>`;
+}
+
+// ============ Render: Game Stats ============
+let gameChart = null;
+function renderGameStats() {
+  const g = state.gameStats || {};
+  const defs = [
+    { icon:'👥', label:'تعداد کاربران',        key:'total_users' },
+    { icon:'🔗', label:'مجموع ریفرها',          key:'total_referrers' },
+    { icon:'🎟', label:'کاربران دارای بلیط',    key:'users_with_ticket' },
+    { icon:'🚫', label:'کاربران بدون بلیط',     key:'users_without_ticket' },
+    { icon:'🏆', label:'حداکثر بلیط یک کاربر',  key:'max_tickets_per_user' },
+    { icon:'🎫', label:'کل بلیط‌ها',             key:'total_tickets' },
+    { icon:'🔥', label:'بلیط‌های استریک',       key:'streak_tickets' },
+    { icon:'🤝', label:'بلیط‌های معرفی',        key:'referral_tickets' },
+  ];
+  $id('game-cards').innerHTML = defs.map(d => `
+    <div class="kpi-card">
+      <div class="kpi-icon">${d.icon}</div>
+      <div class="kpi-val">${fmt(g[d.key] || 0)}</div>
+      <div class="kpi-lbl">${d.label}</div>
+    </div>
+  `).join('');
+
+  const breakdown = [
+    { label:'تیکت قرعه‌کشی',       value: g.raffle_tickets          || 0 },
+    { label:'جایزه معرفی دوستان',  value: g.referral_reward_tickets || 0 },
+    { label:'جایزه استریک ۳ روزه', value: g.streak3day_tickets      || 0 },
+    { label:'تیکت طلایی',          value: g.golden_tickets          || 0 },
+    { label:'تیکت اینستاگرام',     value: g.instagram_tickets       || 0 },
+  ];
+  const canvas = $id('game-chart');
+  if (!canvas || !window.Chart) return;
+  if (gameChart) { gameChart.destroy(); gameChart = null; }
+  if (!breakdown.some(b => b.value > 0)) return;
+  gameChart = new Chart(canvas, {
+    type: 'doughnut',
+    data: {
+      labels: breakdown.map(b => b.label),
+      datasets: [{ data: breakdown.map(b => b.value), backgroundColor: palette.map(c => c + 'cc') }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'bottom', labels: { color: 'rgba(243,240,230,.7)', font: { family: 'Vazirmatn' } } },
+        tooltip: { rtl: true, bodyFont: { family: 'Vazirmatn' }, titleFont: { family: 'Vazirmatn' } }
+      }
+    }
+  });
+}
+
+window.openModalGame = function() {
+  if (!state.active) return;
+  const g = state.gameStats || {};
+  ['total_users','total_referrers','users_with_ticket','users_without_ticket','max_tickets_per_user',
+   'total_tickets','streak_tickets','referral_tickets','raffle_tickets','referral_reward_tickets',
+   'streak3day_tickets','golden_tickets','instagram_tickets']
+    .forEach(f => { const el = $id('g-'+f); if (el) el.value = g[f] || ''; });
+  openModal('modal-game');
+};
+
+async function onSubmitGame(e) {
+  e.preventDefault();
+  if (!state.active) return;
+  const d = {};
+  ['total_users','total_referrers','users_with_ticket','users_without_ticket','max_tickets_per_user',
+   'total_tickets','streak_tickets','referral_tickets','raffle_tickets','referral_reward_tickets',
+   'streak3day_tickets','golden_tickets','instagram_tickets']
+    .forEach(f => { const el = $id('g-'+f); if (el) d[f] = parseInt(el.value) || 0; });
+  try {
+    loading(true);
+    await upsertGameStats(state.active.id, d);
+    renderGameStats();
+    closeModal();
+    notif('آمار بازی به‌روز شد');
+  } catch(e) { notif(e.message, 'error'); }
+  finally { loading(false); }
 }
 
 // ============ Selector ============
@@ -563,14 +678,19 @@ async function onSubmitChannel(e) {
   const d = {
     source:        $id('ch-source').value.trim()  || label.toLowerCase().replace(/\s/g,'-'),
     label,
+    platform:      $id('ch-platform').value,
     sessions:      parseInt($id('ch-sessions').value)  || 0,
     page_views:    parseInt($id('ch-pageviews').value) || 0,
     events:        parseInt($id('ch-events').value)    || 0,
     user_sessions: parseInt($id('ch-users').value)     || 0,
+    clicks:        parseInt($id('ch-clicks').value)    || 0,
+    members:       parseInt($id('ch-members').value)   || 0,
     signups:       parseInt($id('ch-signups').value)   || 0,
     purchases:     parseInt($id('ch-purchases').value) || 0,
     basket:        parseInt($id('ch-basket').value)    || 0,
     spend_toman:   parseInt($id('ch-spend').value)     || 0,
+    start_date:    $id('ch-start').value || null,
+    end_date:      $id('ch-end').value   || null,
   };
   try {
     loading(true);
@@ -701,6 +821,7 @@ async function init() {
   $id('form-kpis').addEventListener('submit', onSubmitKpis);
   $id('form-channel').addEventListener('submit', onSubmitChannel);
   $id('form-influencer').addEventListener('submit', onSubmitInfluencer);
+  $id('form-game').addEventListener('submit', onSubmitGame);
 
   // Tabs
   document.querySelectorAll('.tab-btn').forEach(b => {
