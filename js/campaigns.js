@@ -224,7 +224,7 @@ function switchTab(name) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === name));
   document.querySelectorAll('.tab-pane').forEach(p => p.classList.toggle('active', p.id === 'tab-' + name));
   if (name === 'channels')    renderChannelTable();
-  if (name === 'influencers') renderInfluencerTable();
+  if (name === 'influencers' || name === 'reach-pages') renderInfluencerTable();
   if (name === 'game')        renderGameStats();
   if (name === 'compare')     renderCompare();
 }
@@ -376,17 +376,24 @@ function renderChannelTable() {
 }
 
 // ============ Render: Influencer Table ============
-let infChart = null;
+const creatorCharts = {};
+function isReachPage(inf) {
+  return (inf.notes || '').startsWith('[category:reach-page]');
+}
 function renderInfluencerTable() {
-  const sorted = [...state.influencers].sort((a, b) => {
+  const reachPages = state.tab === 'reach-pages';
+  const prefix = reachPages ? 'reach' : 'inf';
+  const sorted = state.influencers.filter(inf => isReachPage(inf) === reachPages).sort((a, b) => {
     const av = a[state.infSort.col] || 0, bv = b[state.infSort.col] || 0;
-    return state.infSort.dir * (bv - av);
+    return state.infSort.dir * (typeof av === 'string' ? String(bv).localeCompare(av, 'fa') : bv - av);
   });
 
+  const total = key => sorted.reduce((sum, row) => sum + (Number(row[key]) || 0), 0);
+  $id(prefix + '-summary').textContent = 'تعداد: ' + fmt(sorted.length) + ' | هزینه: ' + fmt(total('spend_toman')) + ' تومان | ایمپرشن: ' + fmt(total('impressions')) + ' | کلیک: ' + fmt(total('link_clicks'));
   if (!sorted.length) {
-    $id('inf-tbody').innerHTML = '<tr><td colspan="12" class="empty-row">هنوز اینفلوئنسری اضافه نشده</td></tr>';
+    $id(prefix + '-tbody').innerHTML = `<tr><td colspan="12" class="empty-row">${reachPages ? "هنوز ریچ‌پیجی اضافه نشده" : "هنوز اینفلوئنسری اضافه نشده"}</td></tr>`;
   } else {
-    $id('inf-tbody').innerHTML = sorted.map(inf => {
+    $id(prefix + '-tbody').innerHTML = sorted.map(inf => {
       const ctr  = pct(inf.link_clicks || 0, inf.impressions || 0);
       const conv = pct(inf.utm_signups || 0, inf.link_clicks  || 0);
       return `<tr>
@@ -408,10 +415,10 @@ function renderInfluencerTable() {
 
   // Chart
   const top = sorted.filter(i => i.impressions > 0).slice(0, 10);
-  const canvas = $id('inf-chart');
+  const canvas = $id(prefix + '-chart');
+  if (creatorCharts[prefix]) { creatorCharts[prefix].destroy(); delete creatorCharts[prefix]; }
   if (!canvas || !window.Chart || !top.length) return;
-  if (infChart) { infChart.destroy(); infChart = null; }
-  infChart = new Chart(canvas, {
+  creatorCharts[prefix] = new Chart(canvas, {
     type: 'bar',
     data: {
       labels: top.map(i => i.name),
@@ -594,7 +601,7 @@ window.openModalKpis = function() {
   openModal('modal-kpis');
 };
 window.openModalChannel    = function() { $id('form-channel').reset();    openModal('modal-channel');    };
-window.openModalInfluencer = function() { $id('form-influencer').reset(); openModal('modal-influencer'); };
+window.openModalInfluencer = function() { $id('form-influencer').reset(); $id('inf-category').value = state.tab === 'reach-pages' ? 'reach-page' : 'influencer'; openModal('modal-influencer'); };
 
 // ============ Delete handlers ============
 window.delChannel = async function(id) {
@@ -608,12 +615,13 @@ window.delChannel = async function(id) {
 };
 
 window.delInfluencer = async function(id) {
-  if (!confirm('این اینفلوئنسر حذف شود؟')) return;
+  const reachPage = isReachPage(state.influencers.find(i => i.id === id) || {});
+  if (!confirm(reachPage ? 'این ریچ‌پیج حذف شود؟' : 'این اینفلوئنسر حذف شود؟')) return;
   try {
     await deleteInfluencerById(id);
     state.influencers = state.influencers.filter(i => i.id !== id);
     renderInfluencerTable();
-    notif('اینفلوئنسر حذف شد');
+    notif(reachPage ? 'ریچ‌پیج حذف شد' : 'اینفلوئنسر حذف شد');
   } catch(e) { notif(e.message, 'error'); }
 };
 
@@ -722,7 +730,7 @@ async function onSubmitInfluencer(e) {
     purchases:    parseInt($id('inf-purchases').value)    || 0,
     basket:       parseInt($id('inf-basket').value)       || 0,
     spend_toman:  parseInt($id('inf-spend').value)        || 0,
-    notes:        $id('inf-notes').value.trim()
+    notes:        ($id('inf-category').value === 'reach-page' ? '[category:reach-page]\n' : '') + $id('inf-notes').value.trim()
   };
   try {
     loading(true);
@@ -730,7 +738,8 @@ async function onSubmitInfluencer(e) {
     await loadInfluencers(state.active.id);
     renderInfluencerTable();
     closeModal();
-    notif('اینفلوئنسر اضافه شد');
+    switchTab($id('inf-category').value === 'reach-page' ? 'reach-pages' : 'influencers');
+    notif('اطلاعات اضافه شد');
   } catch(e) { notif(e.message, 'error'); }
   finally { loading(false); }
 }

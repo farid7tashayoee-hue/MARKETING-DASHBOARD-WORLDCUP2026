@@ -282,7 +282,7 @@
 <div class="modal" id="modal-influencer">
   <div class="modal-box">
     <div class="modal-header">
-      <span class="modal-title">افزودن اینفلوئنسر / پست</span>
+      <span class="modal-title">افزودن اینفلوئنسر / ریچ‌پیج</span>
       <button class="modal-close" onclick="closeModal()">✕</button>
     </div>
     <form id="form-influencer" autocomplete="off">
@@ -291,6 +291,8 @@
         <div class="form-section-title">مشخصات</div>
 
         <div class="form-group form-full">
+          <label class="form-label" for="inf-category">گروه</label>
+          <select id="inf-category" class="form-select"><option value="influencer">اینفلوئنسر</option><option value="reach-page">ریچ‌پیج</option></select>
           <label class="form-label" for="inf-name">نام اینفلوئنسر *</label>
           <input id="inf-name" class="form-input" type="text" placeholder="مثال: علی رضایی" required />
         </div>
@@ -429,6 +431,7 @@
     <div class="tab-bar">
       <button class="tab-btn active" data-tab="channels">کانال‌ها</button>
       <button class="tab-btn" data-tab="influencers">اینفلوئنسرها</button>
+      <button class="tab-btn" data-tab="reach-pages">ریچ‌پیج‌ها</button>
       <button class="tab-btn" data-tab="game">بازی / تیکت</button>
       <button class="tab-btn" data-tab="compare">مقایسه کمپین‌ها</button>
     </div>
@@ -471,6 +474,7 @@
 
     <!-- Tab: Influencers -->
     <div class="tab-pane" id="tab-influencers">
+      <p id="inf-summary"></p>
       <div class="chart-wrap">
         <div class="chart-canvas-wrap">
           <canvas id="inf-chart"></canvas>
@@ -499,6 +503,40 @@
             </tr>
           </thead>
           <tbody id="inf-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="tab-pane" id="tab-reach-pages">
+      <p id="reach-summary"></p>
+      <div class="chart-wrap">
+        <div class="chart-canvas-wrap">
+          <canvas id="reach-chart"></canvas>
+        </div>
+      </div>
+      <div class="sec-header">
+        <span class="sec-title">ریچ‌پیج‌ها</span>
+        <button class="btn-gold" onclick="openModalInfluencer()">+ افزودن ریچ‌پیج</button>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th onclick="sortInf('name')">نام</th>
+              <th>پلتفرم</th>
+              <th>آیدی</th>
+              <th>نوع</th>
+              <th onclick="sortInf('impressions')">ایمپرشن</th>
+              <th onclick="sortInf('story_views')">بازدید استوری</th>
+              <th onclick="sortInf('link_clicks')">کلیک لینک</th>
+              <th>CTR</th>
+              <th onclick="sortInf('utm_signups')">ثبت‌نام</th>
+              <th>نرخ تبدیل</th>
+              <th onclick="sortInf('spend_toman')">هزینه</th>
+              <th>حذف</th>
+            </tr>
+          </thead>
+          <tbody id="reach-tbody"></tbody>
         </table>
       </div>
     </div>
