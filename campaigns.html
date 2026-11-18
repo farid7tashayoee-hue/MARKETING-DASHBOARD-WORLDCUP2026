@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-  <link rel="stylesheet" href="css/campaigns.css" />
+  <link rel="stylesheet" href="css/campaigns.css?v=5" />
 </head>
 <body>
 
@@ -438,6 +438,12 @@
 
     <!-- Tab: Channels -->
     <div class="tab-pane active" id="tab-channels">
+      <div id="routine-months" class="routine-months" hidden>
+        <label for="routine-month">ماه هزینه‌های روتین</label>
+        <select id="routine-month" class="form-select" onchange="setRoutineMonth(this.value)"></select>
+        <p id="routine-month-summary"></p>
+        <p class="form-hint">تفکیک بر اساس تاریخ ثبت‌شده هر ردیف است (پرداخت یا شروع اجرا). مبالغ چندمرحله‌ای بدون جزئیات پرداخت، بین ماه‌ها تقسیم نمی‌شوند.</p>
+      </div>
       <div class="chart-wrap">
         <div class="chart-canvas-wrap">
           <canvas id="ch-chart"></canvas>
@@ -568,7 +574,7 @@
 </div><!-- /app -->
 
 <script src="js/data.js?v=3"></script>
-<script src="js/campaigns.js?v=4"></script>
+<script src="js/campaigns.js?v=5"></script>
 
 </body>
 </html>

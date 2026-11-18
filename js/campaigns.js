@@ -314,19 +314,58 @@ function renderKpiCards() {
 
 // ============ Render: Channel Table ============
 let chChart = null;
+let routineMonth = 'all';
+function routineMonthInfo(date) {
+  if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) return { key:'unknown', label:'بدون ماه مشخص' };
+  const value = new Date(date + 'T12:00:00Z');
+  if (!Number.isFinite(value.getTime())) return { key:'unknown', label:'بدون ماه مشخص' };
+  const parts = new Intl.DateTimeFormat('en-US-u-ca-persian', { year:'numeric', month:'2-digit', timeZone:'Asia/Tehran' }).formatToParts(value);
+  const year = parts.find(p => p.type === 'year').value;
+  const month = parts.find(p => p.type === 'month').value;
+  return { key:year + '-' + month.padStart(2, '0'), label:new Intl.DateTimeFormat('fa-IR-u-ca-persian', { year:'numeric', month:'long', timeZone:'Asia/Tehran' }).format(value) };
+}
+window.setRoutineMonth = function(value) { routineMonth = value; renderChannelTable(); };
 function renderChannelTable() {
-  const sorted = [...state.channels].sort((a, b) => {
+  const routine = state.active && state.active.slug === 'monthly-ops';
+  const monthPanel = $id('routine-months');
+  monthPanel.hidden = !routine;
+  let visible = state.channels;
+  const months = new Map();
+  if (routine) {
+    state.channels.forEach(ch => { const month = routineMonthInfo(ch.start_date); months.set(month.key, month.label); });
+    if (routineMonth !== 'all' && !months.has(routineMonth)) routineMonth = 'all';
+    const keys = [...months.keys()].sort().reverse();
+    $id('routine-month').innerHTML = '<option value="all">همه ماه‌ها</option>' + keys.map(key => `<option value="${key}">${months.get(key)}</option>`).join('');
+    $id('routine-month').value = routineMonth;
+    visible = state.channels.filter(ch => routineMonth === 'all' || routineMonthInfo(ch.start_date).key === routineMonth);
+    const total = visible.reduce((n, ch) => n + (Number(ch.spend_toman) || 0), 0);
+    $id('routine-month-summary').textContent = `تعداد ردیف: ${fmt(visible.length)} | جمع هزینه کانال‌ها و پرداخت‌های ثبت‌شده: ${fmt(total)} تومان`;
+  }
+  const sorted = [...visible].sort((a, b) => {
+    if (routine) {
+      const group = routineMonthInfo(b.start_date).key.localeCompare(routineMonthInfo(a.start_date).key);
+      if (group) return group;
+    }
     const av = a[state.chSort.col] || 0, bv = b[state.chSort.col] || 0;
+    if (typeof av === 'string' || typeof bv === 'string') return state.chSort.dir * String(bv).localeCompare(String(av), 'fa');
     return state.chSort.dir * (bv - av);
   });
 
   if (!sorted.length) {
     $id('channel-tbody').innerHTML = '<tr><td colspan="14" class="empty-row">هنوز کانالی اضافه نشده</td></tr>';
   } else {
+    let previousMonth = null;
     $id('channel-tbody').innerHTML = sorted.map(ch => {
+      let heading = '';
+      const month = routineMonthInfo(ch.start_date);
+      if (routine && month.key !== previousMonth) {
+        const total = sorted.filter(row => routineMonthInfo(row.start_date).key === month.key).reduce((n, row) => n + (Number(row.spend_toman) || 0), 0);
+        heading = `<tr class="routine-month-heading"><td colspan="14">${month.label} — جمع هزینه ثبت‌شده: ${fmt(total)} تومان</td></tr>`;
+        previousMonth = month.key;
+      }
       const conv = pct(ch.signups || 0, ch.sessions || 0);
       const remaining = (ch.budget_toman != null) ? ch.budget_toman - (ch.spend_toman || 0) : null;
-      return `<tr>
+      return heading + `<tr>
         <td class="td-label">${ch.label || ch.source} <span class="ch-platform-badge">${platformLbl(ch.platform)}</span></td>
         <td>${fmt(ch.sessions)}</td>
         <td>${fmt(ch.page_views)}</td>
@@ -348,8 +387,8 @@ function renderChannelTable() {
   // Chart
   const top = sorted.slice(0, 12);
   const canvas = $id('ch-chart');
-  if (!canvas || !window.Chart || !top.length) return;
   if (chChart) { chChart.destroy(); chChart = null; }
+  if (!canvas || !window.Chart || !top.length) return;
   chChart = new Chart(canvas, {
     type: 'bar',
     data: {
@@ -643,7 +682,13 @@ window.openModalKpis = function() {
     .forEach(f => { const el = $id('k-'+f); if(el) el.value = k[f] || ''; });
   openModal('modal-kpis');
 };
-window.openModalChannel    = function() { $id('form-channel').reset();    openModal('modal-channel');    };
+window.openModalChannel = function() {
+  $id('form-channel').reset();
+  const routine = state.active && state.active.slug === 'monthly-ops';
+  $id('ch-start').required = !!routine;
+  if (routine) $id('ch-start').value = new Intl.DateTimeFormat('en-CA', { timeZone:'Asia/Tehran', year:'numeric', month:'2-digit', day:'2-digit' }).format(new Date());
+  openModal('modal-channel');
+};
 window.openModalInfluencer = function() { $id('form-influencer').reset(); $id('inf-category').value = state.tab === 'reach-pages' ? 'reach-page' : 'influencer'; openModal('modal-influencer'); };
 
 // ============ Delete handlers ============
