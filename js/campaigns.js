@@ -465,13 +465,52 @@ function postTypeLbl(t) {
 }
 
 // ============ Render: Compare ============
-function renderCompare() {
+async function renderCompare() {
   const ctr = $id('compare-content');
   if (state.campaigns.length < 2) {
     ctr.innerHTML = '<p class="empty-row">برای مقایسه به حداقل ۲ کمپین نیاز دارید.</p>';
     return;
   }
 
+  ctr.innerHTML = '<p class="empty-row">در حال دریافت اطلاعات مقایسه…</p>';
+  let channels, influencers;
+  try {
+    [channels, influencers] = await Promise.all([
+      sb('/rest/v1/campaign_channels?select=*'),
+      sb('/rest/v1/campaign_influencers?select=*'),
+      loadAllKpis(),
+    ]);
+  } catch (err) {
+    console.error(err);
+    ctr.innerHTML = '<p class="empty-row">دریافت اطلاعات مقایسه ناموفق بود؛ دوباره این تب را باز کنید.</p>';
+    return;
+  }
+  const totals = {};
+  state.campaigns.forEach(c => {
+    const seeded = c.id === liga24Id;
+    const ch = seeded ? buildLiga24Channels(c.id) : (channels || []).filter(r => r.campaign_id === c.id);
+    const inf = (influencers || []).filter(r => r.campaign_id === c.id);
+    // The reach-pages channel already contains the totals of its detail rows.
+    const hasReachTotal = ch.some(r => r.source === 'reach_pages');
+    const counted = inf.filter(r => !(hasReachTotal && isReachPage(r)));
+    const sum = (rows, key) => rows.reduce((n, r) => n + (Number(r[key]) || 0), 0);
+    totals[c.id] = {
+      spend: ch.length || counted.length ? sum(ch, 'spend_toman') + sum(counted, 'spend_toman') : null,
+      // Legacy channel page_views holds media displays, except Liga24's web analytics.
+      impressions: (seeded ? 0 : sum(ch.filter(r => r.platform !== 'sms'), 'page_views')) + sum(counted, 'impressions'),
+      clicks: sum(ch, 'clicks') + sum(counted, 'link_clicks'),
+      reachPages: inf.filter(isReachPage).length,
+      influencers: inf.filter(r => !isReachPage(r)).length,
+    };
+  });
+
+  const mediaKeys = [
+    { key:'spend', label:'هزینه ثبت‌شده (تومان)', zero:true },
+    { key:'impressions', label:'نمایش رسانه‌ای گزارش‌شده' },
+    { key:'clicks', label:'کلیک گزارش‌شده' },
+    { key:'reachPages', label:'تعداد ریچ‌پیج‌های ثبت‌شده' },
+    { key:'influencers', label:'تعداد اینفلوئنسرهای ثبت‌شده' },
+  ];
   const kpiKeys = [
     { key:'signups',      label:'ثبت‌نام اکسیراز' },
     { key:'site_signups', label:'ثبت‌نام سایت' },
@@ -483,15 +522,19 @@ function renderCompare() {
   ];
 
   const header = `<tr><th>متریک</th>${state.campaigns.map(c => `<th>${c.name}</th>`).join('')}</tr>`;
+  const mediaRows = mediaKeys.map(kd => `<tr><td class="td-label">${kd.label}</td>${state.campaigns.map(c => {
+    const value = totals[c.id][kd.key];
+    return `<td>${value != null && (value > 0 || kd.zero) ? fmt(value) : '—'}</td>`;
+  }).join('')}</tr>`).join('');
   const rows = kpiKeys.map(kd => {
     const vals = state.campaigns.map(c => {
       const k = state.allKpis[c.id] || {};
-      return `<td>${fmt(k[kd.key] || 0)}</td>`;
+      return `<td>${Number(k[kd.key]) > 0 ? fmt(k[kd.key]) : '—'}</td>`;
     }).join('');
     return `<tr><td class="td-label">${kd.label}</td>${vals}</tr>`;
   }).join('');
 
-  ctr.innerHTML = `<div class="table-wrap"><table class="data-table"><thead>${header}</thead><tbody>${rows}</tbody></table></div>`;
+  ctr.innerHTML = `<div class="table-wrap"><table class="data-table"><thead>${header}</thead><tbody>${mediaRows}${rows}</tbody></table></div><p class="empty-row">— یعنی داده تأییدشده موجود نیست. هزینه و عملکرد فقط شامل اطلاعات ثبت‌شده است؛ تعداد ارسال پیامک، نمایش رسانه‌ای محسوب نمی‌شود. جمع ریچ‌پیج‌ها و جزئیات آن‌ها دوبار محاسبه نمی‌شود.</p>`;
 }
 
 // ============ Render: Game Stats ============
